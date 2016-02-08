@@ -100,8 +100,8 @@ solution "sdl2template"
 			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/SDL2_mixer.dll", path.join(binPath, "SDL2_mixer.dll"))
 			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/libFLAC-8.dll", path.join(binPath, "libFLAC-8.dll"))
 			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/libmodplug-1.dll", path.join(binPath, "libmodplug-1.dll"))
-			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/libFLAC.dll", path.join(binPath, "libFLAC.dll"))
-			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/libvorbis-0-0.dll", path.join(binPath, "libvorbis-0-0.dll"))
+			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/libogg-0.dll", path.join(binPath, "libogg-0.dll"))
+			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/libvorbis-0.dll", path.join(binPath, "libvorbis-0.dll"))
 			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/libvorbisfile-3.dll", path.join(binPath, "libvorbisfile-3.dll"))
 			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/smpeg2.dll", path.join(binPath, "smpeg2.dll"))
 
