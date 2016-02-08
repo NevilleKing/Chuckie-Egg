@@ -82,6 +82,7 @@ solution "sdl2template"
 		print("OS is:", os.get())
 		if os.get() == "windows" then
 			print("Copying binaries for Windows ...")
+			os.mkdir(binPath)
 
 			-- SDL2
 			print("  ... SDL2")
