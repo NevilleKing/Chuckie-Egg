@@ -1,0 +1,29 @@
+== SDL - no OpenGL
+
+:toc:
+:!numbered:
+
+=== Summary
+
+This example uses SDL's 2D renderer. It *may* use OpenGL at the backend to render, but we can ignore that here - it renders a single
+
+It is, more or less, the most simple SDL program.
+
+include::../../doc/_includes/gettingTheSource.asciidoc[]
+
+include::../../doc/_includes/buildAndRun.asciidoc[]
+
+=== Activities
+
+* You can do these in any order.
+* You may want to make a new git branch for these
+* Try to answer the questions for each also
+
+//
+
+. TODO
+  .. TODO
+
+=== Stretch Activities
+
+. TODO

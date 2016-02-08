@@ -1,0 +1,63 @@
+A starting point for C++ projects using SDL2
+
+Issues and pull requests are very welcome. :-)
+
+== Getting the code
+
+You have two options:
+
+. Duplicate this repository to your own github account
+  * https://help.github.com/articles/duplicating-a-repository/
+. Download the zip of this repository and do your own versioning
+
+== Using the code
+
+* we are using https://premake.github.io/index.html[premake5] to build solutions and projects
+  ** Visual Studio 2005, 2008, 2010, 2012, 2013, 2015
+  ** Make
+  ** Xcode4
+  ** MonoDevelop
+
+=== Create project files
+
+.Windows
+[source, bat]
+----
+./premake5.bat %ACTION% # <1> <2> <3>
+----
+
+.Linux, OS X
+[source, bash]
+----
+./premake5 $ACTION # <1> <2> <3>
+----
+
+<1> replace `ACTION` with the tool you wish to use - e.g. `vs2015` or `gmake`
+<2> uses the project specification given in the `premake5.lua` file. Have a look at it if you're interested.
+<3> try `premake5 --help` for the options* to build, in the root of the repository, run:
+
+
+==== Build your project
+
+===== Visual Studio
+
+1. Load the `.sln` file
+2. Build and run the project - kbd:[F5]
+  ** you can set the project to debug or release mode in the UI
+
+===== Make
+
+[source, bash]
+----
+make $EXAMPLE # <1> <2> <3> <4>
+./src/$EXAMPLE/$EXAMPLE-debug # <5>
+----
+<1> replace `EXAMPLE` with the example you wish to run
+<2> compile and link project `EXAMPLE`.
+<3> running just `make` will build all projects
+<4> use `make $EXAMPLE config=release` to build for release mode
+<5> run `EXAMPLE`. Strip off `-debug` for release builds
+
+== Licensing
+
+* this template is MIT licensed (see link:LICENSE[LICENSE])
