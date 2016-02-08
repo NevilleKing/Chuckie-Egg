@@ -127,7 +127,7 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	std::string imagePath = "../assets/Opengl-logo.svg.png";
+	std::string imagePath = "./assets/Opengl-logo.svg.png";
 	surface = IMG_Load(imagePath.c_str());
 	if (surface == nullptr){
 		std::cout << "SDL IMG_Load Error: " << SDL_GetError() << std::endl;
@@ -148,7 +148,7 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	TTF_Font* sans = TTF_OpenFont("../assets/Hack-Regular.ttf", 96);
+	TTF_Font* sans = TTF_OpenFont("./assets/Hack-Regular.ttf", 96);
 	if (sans == nullptr)
 	{
 		std::cout << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
@@ -174,4 +174,5 @@ int main( int argc, char* args[] )
 	}
 
 	cleanExit(0);
+	return 0;
 }

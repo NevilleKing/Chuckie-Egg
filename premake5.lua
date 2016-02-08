@@ -79,11 +79,16 @@ solution "sdl2template"
 
 
 		-- copy dlls on windows
+		print("OS is:", os.get())
 		if os.get() == "windows" then
+			print("Copying binaries for Windows ...")
+
 			-- SDL2
+			print("  ... SDL2")
 			os.copyfile("./graphics_dependencies/SDL2/lib/win32/SDL2.dll", path.join(binPath, "SDL2.dll"))
 
 			-- SDL2_image
+			print("  ... SDL2_image")
 			os.copyfile("./graphics_dependencies/SDL2_image/lib/x86/SDL2_image.dll", path.join(binPath, "SDL2_image.dll"))
 			os.copyfile("./graphics_dependencies/SDL2_image/lib/x86/libjpeg-9.dll", path.join(binPath, "libjpeg-9.dll"))
 			os.copyfile("./graphics_dependencies/SDL2_image/lib/x86/libpng16-16.dll", path.join(binPath, "libpng16-16.dll"))
@@ -92,11 +97,13 @@ solution "sdl2template"
 			os.copyfile("./graphics_dependencies/SDL2_image/lib/x86/zlib1.dll", path.join(binPath, "zlib1.dll"))
 
 			-- SDL2_ttf
+			print("  ... SDL2_ttf")
 			os.copyfile("./graphics_dependencies/SDL2_ttf/lib/x86/SDL2_ttf.dll", path.join(binPath, "SDL2_ttf.dll"))
 			os.copyfile("./graphics_dependencies/SDL2_ttf/lib/x86/libfreetype-6.dll", path.join(binPath, "libfreetype-6.dll"))
 				-- also requires zlib1, but copied already
 
 			-- SDL2_mixer
+			print("  ... SDL2_mixer")
 			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/SDL2_mixer.dll", path.join(binPath, "SDL2_mixer.dll"))
 			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/libFLAC-8.dll", path.join(binPath, "libFLAC-8.dll"))
 			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/libmodplug-1.dll", path.join(binPath, "libmodplug-1.dll"))
@@ -106,5 +113,6 @@ solution "sdl2template"
 			os.copyfile("./graphics_dependencies/SDL2_mixer/lib/x86/smpeg2.dll", path.join(binPath, "smpeg2.dll"))
 
 			-- glew
+			print("  ... glew")
 			os.copyfile("./graphics_dependencies/glew/bin/Release/Win32/glew32.dll", path.join(binPath, "glew32.dll"))
 		end
