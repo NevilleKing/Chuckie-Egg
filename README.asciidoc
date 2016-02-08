@@ -34,7 +34,7 @@ You have two options:
 
 <1> replace `ACTION` with the tool you wish to use - e.g. `vs2015` or `gmake`
 <2> uses the project specification given in the `premake5.lua` file. Have a look at it if you're interested.
-<3> try `premake5 --help` for the options* to build, in the root of the repository, run:
+<3> try `premake5 --help` for the options to build, in the root of the repository, run:
 
 
 ==== Build your project
@@ -49,14 +49,13 @@ You have two options:
 
 [source, bash]
 ----
-make $EXAMPLE # <1> <2> <3> <4>
-./src/$EXAMPLE/$EXAMPLE-debug # <5>
+make # <1> <2>
+cd ./bin
+./sdl2template-debug # <3>
 ----
-<1> replace `EXAMPLE` with the example you wish to run
-<2> compile and link project `EXAMPLE`.
-<3> running just `make` will build all projects
-<4> use `make $EXAMPLE config=release` to build for release mode
-<5> run `EXAMPLE`. Strip off `-debug` for release builds
+<1> compile and link
+<2> use `make config=release` to build for release mode
+<3> run `sdl2template-debug`. Replace `-debug` with `-release` for release builds
 
 == Licensing
 
