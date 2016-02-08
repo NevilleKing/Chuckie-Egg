@@ -50,8 +50,7 @@ You have two options:
 [source, bash]
 ----
 make # <1> <2>
-cd ./bin
-./sdl2template-debug # <3>
+./bin/sdl2template-debug # <3>
 ----
 <1> compile and link
 <2> use `make config=release` to build for release mode
