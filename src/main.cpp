@@ -148,19 +148,19 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	TTF_Font* sans = TTF_OpenFont("./assets/Hack-Regular.ttf", 96);
+	TTF_Font* sans = TTF_OpenFont("./assets/Hack-Regular.ttf", 12);
 	if (sans == nullptr)
 	{
 		std::cout << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
 		cleanExit(1);
 	}
-	SDL_Color White = {255, 255, 255};
-	messageSurface = TTF_RenderText_Solid(sans, "Hello Nev!", White);
+	SDL_Color Red = {255, 0, 0};
+	messageSurface = TTF_RenderText_Solid(sans, "Hello Nev!", Red);
 	messageTexture = SDL_CreateTextureFromSurface(ren, messageSurface);
-	message_rect.x = 0;
-	message_rect.y = 0;
-	message_rect.w = 300;
-	message_rect.h = 100;
+	message_rect.x = 100;
+	message_rect.y = 100;
+	message_rect.w = 50;
+	message_rect.h = 10;
 
 	while (!done) //loop until done flag is set)
 	{
