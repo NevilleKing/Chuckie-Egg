@@ -8,21 +8,22 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-
 #else // NOT compiling on windows
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #endif
 
+// custom classes
+#include "Text.h"
+
 std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 SDL_Surface *surface; //pointer to the SDL_Surface
 SDL_Texture *tex; //pointer to the SDL_Texture
-SDL_Surface *messageSurface; //pointer to the SDL_Surface for message
-SDL_Texture *messageTexture; //pointer to the SDL_Texture for message
-SDL_Rect message_rect; //SDL_rect for the message
+
+Text* message;
 
 bool done = false;
 
@@ -83,7 +84,7 @@ void render()
 		SDL_RenderCopy(ren, tex, NULL, NULL);
 
 		//Draw the text
-		SDL_RenderCopy(ren, messageTexture, NULL, &message_rect);
+		message->render(ren);
 
 		//Update the screen
 		SDL_RenderPresent(ren);
@@ -91,7 +92,6 @@ void render()
 
 void cleanExit(int returnValue)
 {
-	if (messageTexture != nullptr) SDL_DestroyTexture(messageTexture);
 	if (tex != nullptr) SDL_DestroyTexture(tex);
 	if (ren != nullptr) SDL_DestroyRenderer(ren);
 	if (win != nullptr) SDL_DestroyWindow(win);
@@ -141,26 +141,13 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-
 	if( TTF_Init() == -1 )
 	{
 		std::cout << "TTF_Init Failed: " << TTF_GetError() << std::endl;
 		cleanExit(1);
 	}
 
-	TTF_Font* sans = TTF_OpenFont("./assets/Hack-Regular.ttf", 12);
-	if (sans == nullptr)
-	{
-		std::cout << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
-		cleanExit(1);
-	}
-	SDL_Color Red = {255, 0, 0};
-	messageSurface = TTF_RenderText_Solid(sans, "Hello Nev!", Red);
-	messageTexture = SDL_CreateTextureFromSurface(ren, messageSurface);
-	message_rect.x = 100;
-	message_rect.y = 100;
-	message_rect.w = 50;
-	message_rect.h = 10;
+	message = new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 0,0,100,100 }, { 255,255,255 }, 96);
 
 	while (!done) //loop until done flag is set)
 	{
