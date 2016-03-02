@@ -155,7 +155,7 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 	SDL_Color White = {255, 255, 255};
-	messageSurface = TTF_RenderText_Solid(sans, "Hello World!", White);
+	messageSurface = TTF_RenderText_Solid(sans, "Hello Nev!", White);
 	messageTexture = SDL_CreateTextureFromSurface(ren, messageSurface);
 	message_rect.x = 0;
 	message_rect.y = 0;
