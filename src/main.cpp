@@ -147,7 +147,7 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	message = new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 0,0,100,100 }, { 255,255,255 }, 96);
+	message = new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 100,100,200,200 }, { 125,255,20 }, 150);
 
 	while (!done) //loop until done flag is set)
 	{
