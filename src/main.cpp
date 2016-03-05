@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <vector>
 
 
 #ifdef _WIN32 // compiling on windows
@@ -23,7 +24,7 @@ SDL_Renderer *ren; //pointer to the SDL_Renderer
 SDL_Surface *surface; //pointer to the SDL_Surface
 SDL_Texture *tex; //pointer to the SDL_Texture
 
-Text* message;
+std::vector<Text*> messages;
 
 bool done = false;
 
@@ -84,7 +85,8 @@ void render()
 		SDL_RenderCopy(ren, tex, NULL, NULL);
 
 		//Draw the text
-		message->render(ren);
+		for (auto msg : messages)
+			msg->render(ren);
 
 		//Update the screen
 		SDL_RenderPresent(ren);
@@ -147,7 +149,9 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	message = new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 100,100,200,200 }, { 125,255,20 }, 150);
+	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 100,100,200,200 }, { 125,255,20 }, 150));
+	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50));
+	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30));
 
 	while (!done) //loop until done flag is set)
 	{
