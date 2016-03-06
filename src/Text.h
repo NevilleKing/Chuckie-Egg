@@ -16,6 +16,7 @@ public:
 	void render(SDL_Renderer* ren);
 
 	void ChangeText(const std::string newFontText, SDL_Renderer* ren);
+	void ChangeFont(const std::string newFontPath, SDL_Renderer* ren);
 
 private:
 	SDL_Texture* texture = NULL;

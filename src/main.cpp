@@ -85,6 +85,7 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	{
 		changeText = false;
 		messages[0]->ChangeText(a, ren);
+		messages[0]->ChangeFont("./assets/Hack-Regular.ttf", ren);
 		a += "a";
 	}
 }

@@ -51,3 +51,9 @@ void Text::ChangeText(const std::string newFontText, SDL_Renderer* ren)
 	text = newFontText;
 	initFont(ren);
 }
+
+void Text::ChangeFont(const std::string newFontPath, SDL_Renderer* ren)
+{
+	path = newFontPath;
+	initFont(ren);
+}
