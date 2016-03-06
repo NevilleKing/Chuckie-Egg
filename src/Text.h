@@ -10,15 +10,24 @@ public:
 	Text(SDL_Renderer* ren, const char* fontPath, const char* fontText, const SDL_Rect fontRect) : Text(ren, fontPath, fontText, fontRect, { 255, 255, 255 }) {};
 	Text(SDL_Renderer* ren, const char* fontPath, const char* fontText) : Text(ren, fontPath, fontText, { 0, 0, 100, 100 }) {};
 
-
 	~Text();
 
+
 	void render(SDL_Renderer* ren);
+
+	void ChangeText(const char* newFontText, SDL_Renderer* ren);
+
 private:
 	TTF_Font* font;
 	SDL_Surface* surface;
 	SDL_Texture* texture;
 	SDL_Rect rect;
 
+	std::string path;
+	std::string text;
+	SDL_Color colour;
+	int pointSize;
+
+	void initFont(SDL_Renderer* ren);
 };
 

@@ -28,6 +28,10 @@ std::vector<Text*> messages;
 
 bool done = false;
 
+// TEMP
+bool changeText = false;
+// END TEMP
+
 void handleInput()
 {
 	//Event-based input handling
@@ -62,7 +66,8 @@ void handleInput()
 				switch (event.key.keysym.sym)
 				{
 					//hit escape to exit
-					case SDLK_ESCAPE: done = true;
+				case SDLK_ESCAPE: done = true; break;
+				case SDLK_f: changeText = true; break;
 				}
 			break;
 		}
@@ -74,6 +79,12 @@ void handleInput()
 void updateSimulation(double simLength = 0.02) //update simulation with an amount of time to simulate for (in seconds)
 {
   //CHANGE ME
+
+	if (changeText)
+	{
+		changeText = false;
+		messages[0]->ChangeText("New Text!", ren);
+	}
 }
 
 void render()
