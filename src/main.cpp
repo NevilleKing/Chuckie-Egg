@@ -68,13 +68,14 @@ void handleInput()
 					//hit escape to exit
 				case SDLK_ESCAPE: done = true; break;
 				case SDLK_f: changeText = true; break;
+				case SDLK_d: delete messages[0]; messages.erase(messages.begin()); break;
 				}
 			break;
 		}
 	}
 }
 // end::handleInput[]
-
+std::string a = "a";
 // tag::updateSimulation[]
 void updateSimulation(double simLength = 0.02) //update simulation with an amount of time to simulate for (in seconds)
 {
@@ -83,7 +84,8 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	if (changeText)
 	{
 		changeText = false;
-		messages[0]->ChangeText("New Text!", ren);
+		messages[0]->ChangeText(a, ren);
+		a += "a";
 	}
 }
 
