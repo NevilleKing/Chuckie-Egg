@@ -32,6 +32,8 @@ bool done = false;
 
 // TEMP
 bool changeText = false;
+Mix_Music* music;
+std::vector<Mix_Chunk*> sfx;
 // END TEMP
 
 void handleInput()
@@ -168,6 +170,21 @@ int main( int argc, char* args[] )
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 100,100,200,200 }, { 125,255,20 }, 150));
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50));
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30));
+
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1)
+	{
+		std::cout << "OpenAudio Failed : " << Mix_GetError() << std::endl;
+		cleanExit(1);
+	}
+
+	music = Mix_LoadMUS("./assets/music1.mp3");
+	if (music == nullptr)
+	{
+		std::cout << "Loading Music Failed: " << Mix_GetError() << std::endl;
+		cleanExit(1);
+	}
+
+	Mix_PlayMusic(music, -1);
 
 	while (!done) //loop until done flag is set)
 	{
