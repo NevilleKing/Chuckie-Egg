@@ -17,14 +17,14 @@
 
 // custom classes
 #include "Text.h"
+#include "Sprite.h"
 
 std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
-SDL_Surface *surface; //pointer to the SDL_Surface
-SDL_Texture *tex; //pointer to the SDL_Texture
 
 std::vector<Text*> messages;
+Sprite* spr;
 
 bool done = false;
 
@@ -96,7 +96,7 @@ void render()
 		SDL_RenderClear(ren);
 
 		//Draw the texture
-		SDL_RenderCopy(ren, tex, NULL, NULL);
+		spr->render(ren);
 
 		//Draw the text
 		for (auto msg : messages)
@@ -108,7 +108,6 @@ void render()
 
 void cleanExit(int returnValue)
 {
-	if (tex != nullptr) SDL_DestroyTexture(tex);
 	if (ren != nullptr) SDL_DestroyRenderer(ren);
 	if (win != nullptr) SDL_DestroyWindow(win);
 	SDL_Quit();
@@ -143,20 +142,6 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	std::string imagePath = "./assets/Opengl-logo.svg.png";
-	surface = IMG_Load(imagePath.c_str());
-	if (surface == nullptr){
-		std::cout << "SDL IMG_Load Error: " << SDL_GetError() << std::endl;
-		cleanExit(1);
-	}
-
-	tex = SDL_CreateTextureFromSurface(ren, surface);
-	SDL_FreeSurface(surface);
-	if (tex == nullptr){
-		std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
-		cleanExit(1);
-	}
-
 	if( TTF_Init() == -1 )
 	{
 		std::cout << "TTF_Init Failed: " << TTF_GetError() << std::endl;
@@ -166,6 +151,8 @@ int main( int argc, char* args[] )
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 100,100,200,200 }, { 125,255,20 }, 150));
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50));
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30));
+
+	spr = new Sprite(ren, "./assets/Opengl-logo.svg.png");
 
 	while (!done) //loop until done flag is set)
 	{
