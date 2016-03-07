@@ -73,6 +73,11 @@ void handleInput()
 				case SDLK_ESCAPE: done = true; break;
 				case SDLK_f: changeText = true; break;
 				case SDLK_d: delete messages[0]; messages.erase(messages.begin()); break;
+				case SDLK_p:
+					if (Mix_PausedMusic() == 0)
+						Mix_PauseMusic();
+					else
+						Mix_ResumeMusic();
 				}
 			break;
 		}
@@ -112,6 +117,7 @@ void render()
 
 void cleanExit(int returnValue)
 {
+	if (music != nullptr) Mix_FreeMusic(music);
 	if (tex != nullptr) SDL_DestroyTexture(tex);
 	if (ren != nullptr) SDL_DestroyRenderer(ren);
 	if (win != nullptr) SDL_DestroyWindow(win);
