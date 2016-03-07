@@ -74,10 +74,20 @@ void handleInput()
 				case SDLK_f: changeText = true; break;
 				case SDLK_d: delete messages[0]; messages.erase(messages.begin()); break;
 				case SDLK_p:
-					if (Mix_PausedMusic() == 0)
-						Mix_PauseMusic();
+					if (Mix_PlayingMusic())
+					{
+						if (Mix_PausedMusic() == 0)
+							Mix_PauseMusic();
+						else
+							Mix_ResumeMusic();
+					}
 					else
-						Mix_ResumeMusic();
+					{
+						Mix_PlayMusic(music, -1);
+					}
+					break;
+				case SDLK_o:
+					Mix_HaltMusic();
 				}
 			break;
 		}
