@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include "Drawable.h"
 #include "Text.h"
 
 Text::Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect, const SDL_Color fontColour, const int fontPointSize)
@@ -35,15 +36,6 @@ void Text::initFont(SDL_Renderer* ren)
 
 Text::~Text()
 {
-	if (texture != nullptr)
-	{
-		SDL_DestroyTexture(texture);
-	}
-}
-
-void Text::render(SDL_Renderer* ren)
-{
-	SDL_RenderCopy(ren, texture, NULL, &rect);
 }
 
 void Text::ChangeText(const std::string newFontText, SDL_Renderer* ren)

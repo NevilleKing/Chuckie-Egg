@@ -1,5 +1,6 @@
 #pragma once
-class Text
+#include "Drawable.h"
+class Text : public Drawable
 {
 public:
 	// main constructor
@@ -12,17 +13,10 @@ public:
 
 	~Text();
 
-
-	void render(SDL_Renderer* ren);
-
 	void ChangeText(const std::string newFontText, SDL_Renderer* ren);
 	void ChangeFont(const std::string newFontPath, SDL_Renderer* ren);
 
 private:
-	SDL_Texture* texture = NULL;
-	SDL_Rect rect;
-
-	std::string path;
 	std::string text;
 	SDL_Color colour;
 	int pointSize;
