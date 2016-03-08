@@ -24,7 +24,7 @@ SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 
 std::vector<Text*> messages;
-Sprite* spr;
+std::vector<Sprite*> sprites;
 
 bool done = false;
 
@@ -96,7 +96,8 @@ void render()
 		SDL_RenderClear(ren);
 
 		//Draw the texture
-		spr->render(ren);
+		for (auto spr : sprites)
+			spr->render(ren);
 
 		//Draw the text
 		for (auto msg : messages)
@@ -152,7 +153,7 @@ int main( int argc, char* args[] )
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50));
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30));
 
-	spr = new Sprite(ren, "./assets/Opengl-logo.svg.png");
+	sprites.push_back(new Sprite(ren, "./assets/Opengl-logo.svg.png"));
 
 	while (!done) //loop until done flag is set)
 	{
