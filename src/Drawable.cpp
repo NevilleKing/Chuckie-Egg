@@ -5,6 +5,10 @@
 Drawable::Drawable()
 {
 	texture = NULL;
+	rect.w = 0;
+	rect.h = 0;
+	rect.x = 0;
+	rect.y = 0;
 }
 
 
@@ -16,5 +20,9 @@ Drawable::~Drawable()
 
 void Drawable::render(SDL_Renderer* ren)
 {
-	SDL_RenderCopy(ren, texture, NULL, &rect);
+	if (rect.h == 0 && rect.w == 0)
+		SDL_RenderCopy(ren, texture, NULL, NULL);
+	else 
+		SDL_RenderCopy(ren, texture, NULL, &rect);
+
 }
