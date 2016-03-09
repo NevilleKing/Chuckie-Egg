@@ -21,6 +21,11 @@ Sprite::Sprite(SDL_Renderer* ren, const std::string imagePath)
 	}
 }
 
+Sprite::Sprite(SDL_Renderer * ren, const std::string imagePath, SDL_Rect spriteRect) : Sprite(ren, imagePath)
+{
+	rect = spriteRect;
+}
+
 Sprite::Sprite(const Sprite& sprite) {
 	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Sprite Constructed(%p) - Copied from(%p)", this, sprite);
 }

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <memory>
 
 
 #ifdef _WIN32 // compiling on windows
@@ -24,7 +25,7 @@ SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 
 std::vector<Text*> messages;
-std::vector<Sprite*> sprites;
+std::vector<std::unique_ptr<Sprite>> sprites;
 
 bool done = false;
 
@@ -96,7 +97,7 @@ void render()
 		SDL_RenderClear(ren);
 
 		//Draw the texture
-		for (auto spr : sprites)
+		for (auto const& spr : sprites)
 			spr->render(ren);
 
 		//Draw the text
@@ -153,7 +154,8 @@ int main( int argc, char* args[] )
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50));
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30));
 
-	sprites.push_back(new Sprite(ren, "./assets/Opengl-logo.svg.png"));
+	sprites.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 100,100,100,100 })));
+	sprites.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 300,300,100,100 })));
 
 	while (!done) //loop until done flag is set)
 	{
