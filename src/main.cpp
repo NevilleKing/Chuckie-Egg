@@ -5,6 +5,8 @@
 #include <vector>
 #include <memory>
 
+#include <random>
+#include <time.h>
 
 #ifdef _WIN32 // compiling on windows
 #include <SDL.h>
@@ -32,6 +34,14 @@ bool done = false;
 // TEMP
 bool changeText = false;
 // END TEMP
+
+void addSprite()
+{
+	SDL_Rect rect = { 0,0,100,100 };
+	rect.x = rand() % 40;
+	rect.y = rand() % 40;
+	sprites.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", rect)));
+}
 
 void handleInput()
 {
@@ -70,6 +80,9 @@ void handleInput()
 				case SDLK_ESCAPE: done = true; break;
 				case SDLK_f: changeText = true; break;
 				case SDLK_d: messages.erase(messages.begin()); break;
+				case SDLK_1: addSprite(); break;
+				case SDLK_2: sprites.erase(sprites.begin()); break;
+
 				}
 			break;
 		}
@@ -119,6 +132,8 @@ void cleanExit(int returnValue)
 // based on http://www.willusher.io/sdl2%20tutorials/2013/08/17/lesson-1-hello-world/
 int main( int argc, char* args[] )
 {
+	srand(time(NULL));
+
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
@@ -171,3 +186,4 @@ int main( int argc, char* args[] )
 	cleanExit(0);
 	return 0;
 }
+
