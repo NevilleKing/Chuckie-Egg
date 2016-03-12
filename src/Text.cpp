@@ -6,6 +6,8 @@
 
 Text::Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect, const SDL_Color fontColour, const int fontPointSize)
 {
+	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Text Constructed(%p)", this);
+
 	path = fontPath;
 	text = fontText;
 	rect = fontRect;
@@ -34,8 +36,14 @@ void Text::initFont(SDL_Renderer* ren)
 	SDL_FreeSurface(surface);
 }
 
+Text::Text(const Text & t)
+{
+	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Text Constructed(%p) - Copied from(%p)", this, t);
+}
+
 Text::~Text()
 {
+	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Text Destructed(%p)", this);
 }
 
 void Text::ChangeText(const std::string newFontText, SDL_Renderer* ren)

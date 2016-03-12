@@ -24,7 +24,7 @@ std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 
-std::vector<Text*> messages;
+std::vector<std::unique_ptr<Text>> messages;
 std::vector<std::unique_ptr<Sprite>> sprites;
 
 bool done = false;
@@ -69,7 +69,7 @@ void handleInput()
 					//hit escape to exit
 				case SDLK_ESCAPE: done = true; break;
 				case SDLK_f: changeText = true; break;
-				case SDLK_d: delete messages[0]; messages.erase(messages.begin()); break;
+				case SDLK_d: messages.erase(messages.begin()); break;
 				}
 			break;
 		}
@@ -101,7 +101,7 @@ void render()
 			spr->render(ren);
 
 		//Draw the text
-		for (auto msg : messages)
+		for (auto const& msg : messages)
 			msg->render(ren);
 
 		//Update the screen
@@ -150,9 +150,9 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 100,100,200,200 }, { 125,255,20 }, 150));
-	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50));
-	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30));
+	messages.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 100,100,200,200 }, { 125,255,20 }, 150)));
+	messages.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50)));
+	messages.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30)));
 
 	sprites.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 100,100,100,100 })));
 	sprites.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 300,300,100,100 })));

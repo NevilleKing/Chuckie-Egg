@@ -11,6 +11,7 @@ public:
 	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect) : Text(ren, fontPath, fontText, fontRect, { 255, 255, 255 }) {};
 	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText) : Text(ren, fontPath, fontText, { 0, 0, 100, 100 }) {};
 
+	Text(const Text& t);
 	~Text();
 
 	void ChangeText(const std::string newFontText, SDL_Renderer* ren);
