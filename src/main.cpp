@@ -88,6 +88,9 @@ void handleInput()
 					break;
 				case SDLK_o:
 					Mix_HaltMusic();
+				case SDLK_BACKSPACE:
+					std::cout << Mix_PlayChannel(-1, sfx[0], 0) << std::endl;
+					break;
 				}
 			break;
 		}
@@ -198,6 +201,12 @@ int main( int argc, char* args[] )
 	{
 		std::cout << "Loading Music Failed: " << Mix_GetError() << std::endl;
 		cleanExit(1);
+	}
+
+	sfx.push_back(Mix_LoadWAV("./assets/sfx1.wav"));
+	if (sfx[0] == nullptr)
+	{
+		std::cout << "SFX Audio Loading Failed: " << Mix_GetError() << std::endl;
 	}
 
 	Mix_PlayMusic(music, -1);
