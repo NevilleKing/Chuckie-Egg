@@ -8,6 +8,7 @@
 
 #include <random>
 #include <time.h>
+#include <chrono>
 
 #ifdef _WIN32 // compiling on windows
 #include <SDL.h>
@@ -32,9 +33,12 @@ std::map<std::string, std::unique_ptr<Sprite>> sprites; // maps std::string => s
 
 bool done = false;
 
+typedef std::chrono::high_resolution_clock Clock;
+typedef std::chrono::steady_clock::time_point TimePoint;
+
 // TEMP
 bool changeText = false;
-int prevTime = 0;
+TimePoint prevTime;
 // END TEMP
 
 void addSprite()
@@ -125,9 +129,9 @@ void render()
 		SDL_RenderPresent(ren);
 
 		// Time since last frame
-		int currTime = SDL_GetTicks() - prevTime;
+		auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
 		std::cout << "Render Time: " << currTime << std::endl;
-		prevTime = SDL_GetTicks();
+		prevTime = Clock::now();
 }
 
 void cleanExit(int returnValue)
@@ -181,7 +185,7 @@ int main( int argc, char* args[] )
 	sprites["second logo"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 100,100,100,100 })));
 	sprites["third logo"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 300,300,100,100 })));
 
-	prevTime = SDL_GetTicks();
+	prevTime = Clock::now();
 
 	while (!done) //loop until done flag is set)
 	{
@@ -191,7 +195,7 @@ int main( int argc, char* args[] )
 
 		render(); // this should render the world state according to VARIABLES
 
-		SDL_Delay(20); // unless vsync is on??
+		//SDL_Delay(20); // unless vsync is on??
 	}
 
 	cleanExit(0);
