@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <map>
 
 #include <random>
 #include <time.h>
@@ -27,7 +28,7 @@ SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 
 std::vector<std::unique_ptr<Text>> messages;
-std::vector<std::unique_ptr<Sprite>> sprites;
+std::map<std::string, std::unique_ptr<Sprite>> sprites; // maps std::string => sprite class. Can be called: sprites['name']
 
 bool done = false;
 
@@ -40,7 +41,9 @@ void addSprite()
 	SDL_Rect rect = { 0,0,100,100 };
 	rect.x = rand() % 40;
 	rect.y = rand() % 40;
-	sprites.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", rect)));
+	int no = sprites.size();
+	std::cout << "logo" + std::to_string(no) << std::endl;
+	sprites["logo" + std::to_string(no)] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", rect)));
 }
 
 void handleInput()
@@ -111,7 +114,7 @@ void render()
 
 		//Draw the texture
 		for (auto const& spr : sprites)
-			spr->render(ren);
+			spr.second->render(ren); // .first is the key, .second is the data
 
 		//Draw the text
 		for (auto const& msg : messages)
@@ -169,8 +172,8 @@ int main( int argc, char* args[] )
 	messages.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50)));
 	messages.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30)));
 
-	sprites.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 100,100,100,100 })));
-	sprites.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 300,300,100,100 })));
+	sprites["second logo"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 100,100,100,100 })));
+	sprites["third logo"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 300,300,100,100 })));
 
 	while (!done) //loop until done flag is set)
 	{
