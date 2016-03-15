@@ -161,7 +161,7 @@ int main( int argc, char* args[] )
 	}
 	std::cout << "SDL CreatedWindow OK!\n";
 
-	ren = SDL_CreateRenderer(win, -1, NULL);
+	ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (ren == nullptr)
 	{
 		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
@@ -191,7 +191,7 @@ int main( int argc, char* args[] )
 
 		render(); // this should render the world state according to VARIABLES
 
-		//SDL_Delay(20); // unless vsync is on??
+		SDL_Delay(20); // unless vsync is on??
 	}
 
 	cleanExit(0);
