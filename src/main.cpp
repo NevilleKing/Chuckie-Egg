@@ -34,6 +34,7 @@ bool done = false;
 
 // TEMP
 bool changeText = false;
+int prevTime = 0;
 // END TEMP
 
 void addSprite()
@@ -122,6 +123,11 @@ void render()
 
 		//Update the screen
 		SDL_RenderPresent(ren);
+
+		// Time since last frame
+		int currTime = SDL_GetTicks() - prevTime;
+		std::cout << "Render Time: " << currTime << std::endl;
+		prevTime = SDL_GetTicks();
 }
 
 void cleanExit(int returnValue)
@@ -174,6 +180,8 @@ int main( int argc, char* args[] )
 
 	sprites["second logo"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 100,100,100,100 })));
 	sprites["third logo"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 300,300,100,100 })));
+
+	prevTime = SDL_GetTicks();
 
 	while (!done) //loop until done flag is set)
 	{
