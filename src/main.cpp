@@ -28,7 +28,6 @@ std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 
-std::vector<std::unique_ptr<Text>> messages;
 std::map<std::string, std::unique_ptr<Sprite>> sprites; // maps std::string => sprite class. Can be called: sprites['name']
 
 bool done = false;
@@ -37,7 +36,6 @@ typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::steady_clock::time_point TimePoint;
 
 // TEMP
-bool changeText = false;
 TimePoint prevTime;
 // END TEMP
 
@@ -86,8 +84,6 @@ void handleInput()
 				{
 					//hit escape to exit
 				case SDLK_ESCAPE: done = true; break;
-				case SDLK_f: changeText = true; break;
-				case SDLK_d: messages.erase(messages.begin()); break;
 				case SDLK_1: addSprite(); break;
 				case SDLK_2: sprites.erase(sprites.begin()); break;
 
@@ -102,14 +98,6 @@ std::string a = "a";
 void updateSimulation(double simLength = 0.02) //update simulation with an amount of time to simulate for (in seconds)
 {
   //CHANGE ME
-
-	if (changeText)
-	{
-		changeText = false;
-		messages[0]->ChangeText(a, ren);
-		messages[0]->ChangeFont("./assets/Hack-Regular.ttf", ren);
-		a += "a";
-	}
 }
 
 void render()
@@ -120,10 +108,6 @@ void render()
 		//Draw the texture
 		for (auto const& spr : sprites)
 			spr.second->render(ren); // .first is the key, .second is the data
-
-		//Draw the text
-		for (auto const& msg : messages)
-			msg->render(ren);
 
 		//Update the screen
 		SDL_RenderPresent(ren);
@@ -178,12 +162,8 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	messages.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 100,100,200,200 }, { 125,255,20 }, 150)));
-	messages.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50)));
-	messages.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30)));
-
-	sprites["second logo"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 100,100,100,100 })));
-	sprites["third logo"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", { 300,300,100,100 })));
+	sprites["sun"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/sun.png", { (600 / 2) - 50,(600 / 2) - 50,100,100 })));
+	sprites["earth"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/earth.png", { (600/2)-25,(600 / 2) - 200,50,50 })));
 
 	prevTime = Clock::now();
 
