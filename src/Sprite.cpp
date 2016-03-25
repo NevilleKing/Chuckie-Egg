@@ -1,7 +1,10 @@
 #include "Sprite.h"
 
-Sprite::Sprite(SDL_Renderer* ren, const std::string imagePath)
+Sprite::Sprite(SDL_Renderer* ren, const std::string imagePath, const Vector location, const Size size1)
 {
+	position = location;
+	size = size1;
+
 	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Sprite Constructed(%p)", this);
 	auto surface = IMG_Load(imagePath.c_str());
 	if (surface == nullptr) {
@@ -15,11 +18,6 @@ Sprite::Sprite(SDL_Renderer* ren, const std::string imagePath)
 		SDL_LogError(SDL_LOG_PRIORITY_ERROR, (char("Sprite texture not initialised: ") + SDL_GetError()));
 		return;
 	}
-}
-
-Sprite::Sprite(SDL_Renderer * ren, const std::string imagePath, SDL_Rect spriteRect) : Sprite(ren, imagePath)
-{
-	//rect = spriteRect;
 }
 
 Sprite::Sprite(const Sprite& sprite) {

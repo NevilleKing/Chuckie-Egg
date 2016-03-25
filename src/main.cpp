@@ -23,6 +23,8 @@
 // custom classes
 #include "Text.h"
 #include "Sprite.h"
+#include "Size.h"
+#include "Vector.h"
 
 std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
@@ -38,16 +40,6 @@ typedef std::chrono::steady_clock::time_point TimePoint;
 // TEMP
 TimePoint prevTime;
 // END TEMP
-
-void addSprite()
-{
-	SDL_Rect rect = { 0,0,100,100 };
-	rect.x = rand() % 40;
-	rect.y = rand() % 40;
-	int no = sprites.size();
-	std::cout << "logo" + std::to_string(no) << std::endl;
-	sprites["logo" + std::to_string(no)] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/Opengl-logo.svg.png", rect)));
-}
 
 void handleInput()
 {
@@ -84,7 +76,6 @@ void handleInput()
 				{
 					//hit escape to exit
 				case SDLK_ESCAPE: done = true; break;
-				case SDLK_1: addSprite(); break;
 				case SDLK_2: sprites.erase(sprites.begin()); break;
 
 				}
@@ -162,8 +153,9 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	sprites["sun"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/sun.png", { (600 / 2) - 50,(600 / 2) - 50,100,100 })));
-	sprites["earth"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/earth.png", { (600/2)-25,(600 / 2) - 200,50,50 })));
+	sprites["sun"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/sun.png", Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
+	sprites["earth"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/earth.png", Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
+
 
 	prevTime = Clock::now();
 
