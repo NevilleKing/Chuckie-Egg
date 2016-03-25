@@ -9,7 +9,7 @@ class AnimatedSprite :
 	public Sprite
 {
 public:
-	AnimatedSprite(SDL_Renderer* ren, std::string imagePath, float velocity1);
+	AnimatedSprite(SDL_Renderer* ren, std::string imagePath, float velocity1, Vector location, Size size1);
 	~AnimatedSprite();
 
 	void setVelocity(float newVelocity) { velocity = newVelocity; };

@@ -22,7 +22,7 @@
 
 // custom classes
 #include "Text.h"
-#include "Sprite.h"
+#include "AnimatedSprite.h"
 #include "Size.h"
 #include "Vector.h"
 
@@ -30,7 +30,7 @@ std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 
-std::map<std::string, std::unique_ptr<Sprite>> sprites; // maps std::string => sprite class. Can be called: sprites['name']
+std::map<std::string, std::unique_ptr<AnimatedSprite>> sprites; // maps std::string => sprite class. Can be called: sprites['name']
 
 bool done = false;
 
@@ -153,8 +153,8 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	sprites["sun"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/sun.png", Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
-	sprites["earth"] = (std::unique_ptr<Sprite>(new Sprite(ren, "./assets/earth.png", Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
+	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/sun.png", 0, Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
+	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", 0, Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
 
 
 	prevTime = Clock::now();
