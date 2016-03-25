@@ -1,5 +1,3 @@
-#include <iostream>
-#include <SDL.h>
 #include "Drawable.h"
 
 Drawable::Drawable()
@@ -9,6 +7,8 @@ Drawable::Drawable()
 	rect.h = 0;
 	rect.x = 0;
 	rect.y = 0;
+	position = Vector();
+	size = Size();
 }
 
 
@@ -20,9 +20,15 @@ Drawable::~Drawable()
 
 void Drawable::render(SDL_Renderer* ren)
 {
+	// set the positions of the rectangle for rendering
+	rect.x = position.x;
+	rect.y = position.y;
+	rect.w = size.width;
+	rect.h = size.height;
+	// if the width and height are zero the texture must be full screen
 	if (rect.h == 0 && rect.w == 0)
 		SDL_RenderCopy(ren, texture, NULL, NULL);
-	else 
+	else // otherwise use the rectangle
 		SDL_RenderCopy(ren, texture, NULL, &rect);
 
 }

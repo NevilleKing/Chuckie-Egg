@@ -1,15 +1,18 @@
 #pragma once
+
 #include "Drawable.h"
+
+#include <iostream>
+#include <SDL.h>
+#include <SDL_ttf.h>
+#include "Vector.h"
+#include "Size.h"
+
 class Text : public Drawable
 {
 public:
 	// main constructor
-	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect, const SDL_Color fontColour, const int fontPointSize);
-
-	// constructor overloads
-	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect, const SDL_Color fontColour) : Text(ren, fontPath, fontText, fontRect, fontColour, 96) {};
-	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect) : Text(ren, fontPath, fontText, fontRect, { 255, 255, 255 }) {};
-	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText) : Text(ren, fontPath, fontText, { 0, 0, 100, 100 }) {};
+	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Color fontColour, const Size size1, const Vector location, const int fontPointSize);
 
 	Text(const Text& t);
 	~Text();

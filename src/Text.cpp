@@ -1,16 +1,13 @@
-#include <iostream>
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include "Drawable.h"
 #include "Text.h"
 
-Text::Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect, const SDL_Color fontColour, const int fontPointSize)
+Text::Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Color fontColour, const Size size1 = Size(100, 100), const Vector location = Vector(100, 100), const int fontPointSize = 20)
 {
 	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Text Constructed(%p)", this);
 
 	path = fontPath;
 	text = fontText;
-	rect = fontRect;
+	position = location;
+	size = size1;
 	colour = fontColour;
 	pointSize = fontPointSize;
 

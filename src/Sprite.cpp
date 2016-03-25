@@ -1,7 +1,3 @@
-#include <iostream>
-#include <SDL.h>
-#include <SDL_image.h>
-#include "Drawable.h"
 #include "Sprite.h"
 
 Sprite::Sprite(SDL_Renderer* ren, const std::string imagePath)
@@ -23,7 +19,7 @@ Sprite::Sprite(SDL_Renderer* ren, const std::string imagePath)
 
 Sprite::Sprite(SDL_Renderer * ren, const std::string imagePath, SDL_Rect spriteRect) : Sprite(ren, imagePath)
 {
-	rect = spriteRect;
+	//rect = spriteRect;
 }
 
 Sprite::Sprite(const Sprite& sprite) {
