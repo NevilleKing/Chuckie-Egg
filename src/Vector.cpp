@@ -14,12 +14,14 @@ Vector::Vector(float x1, float y1)
 	y = y1;
 }
 
-Vector& Vector::operator*(float other)
+Vector Vector::operator*(float other)
 {
-	x *= other;
-	y *= other;
+	Vector v = Vector(x, y);
 
-	return *this;
+	v.x *= other;
+	v.y *= other;
+
+	return v;
 }
 
 Vector& Vector::operator+=(const Vector& other)

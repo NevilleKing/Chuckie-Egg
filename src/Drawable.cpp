@@ -30,5 +30,6 @@ void Drawable::render(SDL_Renderer* ren)
 		SDL_RenderCopy(ren, texture, NULL, NULL);
 	else // otherwise use the rectangle
 		SDL_RenderCopy(ren, texture, NULL, &rect);
+	
 
 }

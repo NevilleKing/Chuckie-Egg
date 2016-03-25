@@ -159,7 +159,7 @@ int main( int argc, char* args[] )
 	}
 
 	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/sun.png", Vector(), Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
-	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(10,0), Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
+	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(20,0), Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
 
 
 	prevTime = Clock::now();
