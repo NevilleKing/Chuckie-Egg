@@ -41,6 +41,11 @@ typedef std::chrono::steady_clock::time_point TimePoint;
 TimePoint prevTime;
 // END TEMP
 
+float toSeconds(float nanoseconds)
+{
+	return nanoseconds / 1000000000;
+}
+
 void handleInput()
 {
 	//Event-based input handling
@@ -84,11 +89,16 @@ void handleInput()
 	}
 }
 // end::handleInput[]
-std::string a = "a";
+
 // tag::updateSimulation[]
 void updateSimulation(double simLength = 0.02) //update simulation with an amount of time to simulate for (in seconds)
 {
-  //CHANGE ME
+	// Time since last frame
+	auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
+	prevTime = Clock::now();
+
+	for (auto const& spr : sprites)
+		spr.second->Update(toSeconds(currTime));
 }
 
 void render()
@@ -102,11 +112,6 @@ void render()
 
 		//Update the screen
 		SDL_RenderPresent(ren);
-
-		// Time since last frame
-		auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
-		std::cout << "Render Time: " << currTime << std::endl;
-		prevTime = Clock::now();
 }
 
 void cleanExit(int returnValue)
@@ -153,8 +158,8 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/sun.png", 0, Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
-	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", 0, Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
+	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/sun.png", Vector(), Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
+	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(10,0), Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
 
 
 	prevTime = Clock::now();

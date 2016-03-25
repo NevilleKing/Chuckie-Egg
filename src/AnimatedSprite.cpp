@@ -2,7 +2,7 @@
 
 
 
-AnimatedSprite::AnimatedSprite(SDL_Renderer* ren, std::string imagePath, float velocity1 = 0, Vector location = Vector(100,100), Size size1 = Size(100,100)) : Sprite(ren, imagePath, location, size1)
+AnimatedSprite::AnimatedSprite(SDL_Renderer* ren, std::string imagePath, Vector velocity1 = Vector(), Vector location = Vector(100,100), Size size1 = Size(100,100)) : Sprite(ren, imagePath, location, size1)
 {
 	velocity = velocity1;
 }
@@ -10,4 +10,9 @@ AnimatedSprite::AnimatedSprite(SDL_Renderer* ren, std::string imagePath, float v
 
 AnimatedSprite::~AnimatedSprite()
 {
+}
+
+void AnimatedSprite::Update(float time)
+{
+	position += velocity * time;
 }

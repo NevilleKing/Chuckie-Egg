@@ -8,5 +8,8 @@ public:
 
 	float x;
 	float y;
+
+	Vector& operator*(float other);
+	Vector& Vector::operator+=(const Vector& other);
 };
 
