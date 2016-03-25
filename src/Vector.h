@@ -9,7 +9,11 @@ public:
 	float x;
 	float y;
 
-	Vector operator*(float other);
+	Vector operator*(float other) const;
+	Vector operator-(const Vector& other) const;
 	Vector& Vector::operator+=(const Vector& other);
+	Vector Vector::operator/(const Vector& other) const;
+
+	Vector pow1();
 };
 

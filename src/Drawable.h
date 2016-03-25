@@ -9,6 +9,8 @@
 class Drawable
 {
 public:
+	Vector getPosition() { return position; };
+
 	void render(SDL_Renderer* ren);
 protected:
 	SDL_Texture* texture = NULL;

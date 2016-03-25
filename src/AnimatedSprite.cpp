@@ -14,5 +14,6 @@ AnimatedSprite::~AnimatedSprite()
 
 void AnimatedSprite::Update(float time)
 {
+	velocity += acceleration * time;
 	position += velocity * time;
 }

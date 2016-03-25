@@ -9,6 +9,7 @@
 #include <random>
 #include <time.h>
 #include <chrono>
+#include <math.h>
 
 #ifdef _WIN32 // compiling on windows
 #include <SDL.h>
@@ -93,6 +94,9 @@ void handleInput()
 // tag::updateSimulation[]
 void updateSimulation(double simLength = 0.02) //update simulation with an amount of time to simulate for (in seconds)
 {
+	sprites["earth"]->acceleration = Vector(1,1) / (sprites["earth"]->getPosition() - sprites["sun"]->getPosition()).pow1();
+	
+
 	// Time since last frame
 	auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
 	prevTime = Clock::now();
@@ -159,7 +163,7 @@ int main( int argc, char* args[] )
 	}
 
 	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/sun.png", Vector(), Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
-	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(20,0), Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
+	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(10,0), Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
 
 
 	prevTime = Clock::now();

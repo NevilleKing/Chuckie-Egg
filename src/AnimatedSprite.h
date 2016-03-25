@@ -16,6 +16,9 @@ public:
 	Vector getVelocity() { return velocity; };
 
 	void Update(float time);
+
+	Vector acceleration;
+
 private: 
 	Vector velocity;
 };
