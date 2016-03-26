@@ -24,6 +24,16 @@ Vector Vector::operator*(float other) const
 	return v;
 }
 
+Vector Vector::operator*(const Vector& other) const
+{
+	Vector v = Vector(x, y);
+
+	v.x *= other.x;
+	v.y *= other.y;
+
+	return v;
+}
+
 Vector Vector::operator-(const Vector& other) const
 {
 	Vector v = Vector(x, y);
@@ -40,6 +50,26 @@ Vector Vector::operator/(const Vector& other) const
 
 	v.x /= other.x;
 	v.y /= other.y;
+
+	return v;
+}
+
+Vector Vector::operator+(const Vector& other) const
+{
+	Vector v = Vector(x, y);
+
+	v.x += other.x;
+	v.y += other.y;
+
+	return v;
+}
+
+Vector Vector::operator/(float other) const
+{
+	Vector v = Vector(x, y);
+
+	v.x /= other;
+	v.y /= other;
 
 	return v;
 }

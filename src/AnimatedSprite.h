@@ -19,7 +19,7 @@ public:
 
 	Vector acceleration;
 
-private: 
 	Vector velocity;
+private: 
 };
 
