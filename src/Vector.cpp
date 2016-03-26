@@ -28,8 +28,8 @@ Vector Vector::operator-(const Vector& other) const
 {
 	Vector v = Vector(x, y);
 
-	v.x - other.x;
-	v.y - other.y;
+	v.x -= other.x;
+	v.y -= other.y;
 
 	return v;
 }
@@ -38,8 +38,8 @@ Vector Vector::operator/(const Vector& other) const
 {
 	Vector v = Vector(x, y);
 
-	v.x / other.x;
-	v.y / other.y;
+	v.x /= other.x;
+	v.y /= other.y;
 
 	return v;
 }
