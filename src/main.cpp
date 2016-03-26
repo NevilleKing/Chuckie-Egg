@@ -98,10 +98,13 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
 	prevTime = Clock::now();
 
+	// acceleration of 1 / square of distance between earth and sun
 	sprites["earth"]->acceleration = Vector(1,1) / (sprites["earth"]->getPosition() - sprites["sun"]->getPosition()).pow1();
 
+	// direction of sun from earth
 	Vector direction = sprites["earth"]->getPosition() - sprites["sun"]->getPosition();
 
+	// set the velocity to move towards the sun
 	sprites["earth"]->velocity = sprites["earth"]->velocity - (direction * toSeconds(currTime));
 
 	for (auto const& spr : sprites)
@@ -166,7 +169,7 @@ int main( int argc, char* args[] )
 	}
 
 	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/sun.png", Vector(), Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
-	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(100,0), Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
+	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(0,0), Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
 
 
 	prevTime = Clock::now();
