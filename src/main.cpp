@@ -94,16 +94,15 @@ void handleInput()
 // tag::updateSimulation[]
 void updateSimulation(double simLength = 0.02) //update simulation with an amount of time to simulate for (in seconds)
 {
+	// Time since last frame
+	auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
+	prevTime = Clock::now();
 
 	sprites["earth"]->acceleration = Vector(1,1) / (sprites["earth"]->getPosition() - sprites["sun"]->getPosition()).pow1();
 
 	Vector direction = sprites["earth"]->getPosition() - sprites["sun"]->getPosition();
 
-	sprites["earth"]->velocity = sprites["earth"]->velocity - (direction / 100);
-
-	// Time since last frame
-	auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
-	prevTime = Clock::now();
+	sprites["earth"]->velocity = sprites["earth"]->velocity - (direction * toSeconds(currTime));
 
 	for (auto const& spr : sprites)
 		spr.second->Update(toSeconds(currTime));
