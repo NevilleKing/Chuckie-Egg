@@ -10,6 +10,7 @@ class Drawable
 {
 public:
 	Vector getPosition() { return position; };
+	Size getSize() { return size; };
 
 	void render(SDL_Renderer* ren);
 protected:

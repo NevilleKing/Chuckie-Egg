@@ -100,6 +100,11 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 
 	for (auto const& spr : sprites)
 		spr.second->Update(toSeconds(currTime));
+
+	if (sprites["sun"]->isColliding(*sprites["earth"]))
+		std::cout << "Colliding" << std::endl;
+	else
+		std::cout << "Not Colliding" << std::endl;
 }
 
 void render()
@@ -160,7 +165,7 @@ int main( int argc, char* args[] )
 	}
 
 	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/sun.png", Vector(), Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
-	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(0, 20), Vector((600 / 2) - 25, (600 / 2) - 200), Size(50, 50))));
+	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(20, 20), Vector((600 / 2) - 200, (600 / 2) - 200), Size(50, 50))));
 
 
 	prevTime = Clock::now();

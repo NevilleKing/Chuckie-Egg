@@ -28,3 +28,26 @@ Sprite::~Sprite()
 {
 	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Sprite Destructed(%p)", this);
 }
+
+bool Sprite::isColliding(Sprite& other)
+{
+	// check if the other box is inside this box
+
+	// X Axis
+	float otherMinMaxX[2] = { other.getPosition().x, other.getPosition().x + other.getSize().width };
+	float thisMinMaxX[2] = { getPosition().x, getPosition().x + getSize().width };
+
+	if (!(otherMinMaxX[0] >= thisMinMaxX[0] && otherMinMaxX[0] <= thisMinMaxX[1] ||
+		otherMinMaxX[1] <= thisMinMaxX[1] && otherMinMaxX[1] >= thisMinMaxX[0]))
+		return false;
+
+	// Y Axis
+	float otherMinMaxY[2] = { other.getPosition().y, other.getPosition().y + other.getSize().height };
+	float thisMinMaxY[2] = { getPosition().y, getPosition().y + getSize().height };
+
+	if (!(otherMinMaxY[0] >= thisMinMaxY[0] && otherMinMaxY[0] <= thisMinMaxY[1] ||
+		otherMinMaxY[1] <= thisMinMaxY[1] && otherMinMaxY[1] >= thisMinMaxY[0]))
+		return false;
+
+	return true;
+}
