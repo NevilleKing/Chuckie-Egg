@@ -88,6 +88,7 @@ void handleInput()
 					break;
 				case SDLK_o:
 					Mix_HaltMusic();
+					break;
 				case SDLK_BACKSPACE:
 					std::cout << Mix_PlayChannel(-1, sfx[0], 0) << std::endl;
 					break;
