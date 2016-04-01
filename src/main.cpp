@@ -114,10 +114,13 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	for (auto const& spr : sprites)
 		spr.second->Update(toSeconds(currTime));
 
+	Audio::Set_SFX_Panning_Based_On_Position(SFX, sprites["earth"]->getPosition(), 600);
+
 	if (sprites["sun"]->isColliding(*sprites["earth"]))
 		std::cout << "Colliding" << std::endl;
 	else
 		std::cout << "Not Colliding" << std::endl;
+
 }
 
 void render()
@@ -178,10 +181,7 @@ int main( int argc, char* args[] )
 	}
 
 	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/sun.png", Vector(), Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
-	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(20, 20), Vector((600 / 2) - 200, (600 / 2) - 200), Size(50, 50))));
-
-
-	prevTime = Clock::now();
+	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(40, 0), Vector(0, 300), Size(50, 50))));
 
 	Audio::init();
 
@@ -189,7 +189,7 @@ int main( int argc, char* args[] )
 
 	SFX = Audio::Fade_In_SFX("YaySound", 10.0f);
 
-	Audio::Set_SFX_Panning(SFX, 255, 0);
+	prevTime = Clock::now();
 
 	while (!done) //loop until done flag is set)
 	{

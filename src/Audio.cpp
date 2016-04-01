@@ -293,3 +293,10 @@ bool Audio::Set_SFX_Panning(int channel, int left, int right)
 
 	return true;
 }
+
+bool Audio::Set_SFX_Panning_Based_On_Position(int channel, Vector position, float winwidth)
+{
+	int right = (position.x / winwidth) * 254.0f;
+
+	return Set_SFX_Panning(channel, 254 - right, right);
+}
