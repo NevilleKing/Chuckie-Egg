@@ -22,6 +22,7 @@ public:
 	static bool Set_SFX_Volume(int volume, std::string label);
 	static int Fade_In_SFX(std::string label, float seconds);
 	static bool Fade_Out_SFX(int channel, float seconds);
+	static bool Set_SFX_Panning(int channel, int left, int right);
 private:
 	static bool _isInit;
 	static Mix_Music* _music;

@@ -188,6 +188,8 @@ int main( int argc, char* args[] )
 
 	SFX = Audio::Fade_In_SFX("YaySound", 10.0f);
 
+	Audio::Set_SFX_Panning(SFX, 255, 0);
+
 	while (!done) //loop until done flag is set)
 	{
 		handleInput(); // this should ONLY SET VARIABLES

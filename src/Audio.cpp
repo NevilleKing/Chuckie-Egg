@@ -272,3 +272,24 @@ bool Audio::Fade_Out_SFX(int channel, float seconds)
 
 	return true;
 }
+
+bool Audio::Set_SFX_Panning(int channel, int left, int right)
+{
+	if (!_isInit)
+	{
+		init_Error();
+		return false;
+	}
+
+	// check if the channel is playing
+	if (!Mix_Playing(channel))
+	{
+		char error[] = "Setting SFX Panning: Channel isn't playing";
+		SDL_LogError(SDL_LOG_PRIORITY_ERROR, error);
+		return false;
+	}
+
+	Mix_SetPanning(channel, left, right);
+
+	return true;
+}
