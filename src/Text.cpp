@@ -1,13 +1,13 @@
-#include <iostream>
-#include <SDL.h>
-#include <SDL_ttf.h>
 #include "Text.h"
 
-Text::Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect, const SDL_Color fontColour, const int fontPointSize)
+Text::Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Color fontColour, const Size size1 = Size(100, 100), const Vector location = Vector(100, 100), const int fontPointSize = 20)
 {
+	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Text Constructed(%p)", this);
+
 	path = fontPath;
 	text = fontText;
-	rect = fontRect;
+	position = location;
+	size = size1;
 	colour = fontColour;
 	pointSize = fontPointSize;
 
@@ -33,17 +33,14 @@ void Text::initFont(SDL_Renderer* ren)
 	SDL_FreeSurface(surface);
 }
 
-Text::~Text()
+Text::Text(const Text & t)
 {
-	if (texture != nullptr)
-	{
-		SDL_DestroyTexture(texture);
-	}
+	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Text Constructed(%p) - Copied from(%p)", this, t);
 }
 
-void Text::render(SDL_Renderer* ren)
+Text::~Text()
 {
-	SDL_RenderCopy(ren, texture, NULL, &rect);
+	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Text Destructed(%p)", this);
 }
 
 void Text::ChangeText(const std::string newFontText, SDL_Renderer* ren)

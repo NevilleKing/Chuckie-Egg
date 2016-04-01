@@ -3,7 +3,13 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <memory>
+#include <map>
 
+#include <random>
+#include <time.h>
+#include <chrono>
+#include <math.h>
 
 #ifdef _WIN32 // compiling on windows
 #include <SDL.h>
@@ -17,23 +23,31 @@
 
 // custom classes
 #include "Text.h"
+#include "AnimatedSprite.h"
+#include "Size.h"
+#include "Vector.h"
 #include "Audio.h"
 
 std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
-SDL_Surface *surface; //pointer to the SDL_Surface
-SDL_Texture *tex; //pointer to the SDL_Texture
 
-std::vector<Text*> messages;
+std::map<std::string, std::unique_ptr<AnimatedSprite>> sprites; // maps std::string => sprite class. Can be called: sprites['name']
 
 bool done = false;
 
-// TEMP
-bool changeText = false;
+typedef std::chrono::high_resolution_clock Clock;
+typedef std::chrono::steady_clock::time_point TimePoint;
 
+// TEMP
+TimePoint prevTime;
 int SFX;
 // END TEMP
+
+float toSeconds(float nanoseconds)
+{
+	return nanoseconds / 1000000000;
+}
 
 void handleInput()
 {
@@ -70,8 +84,7 @@ void handleInput()
 				{
 					//hit escape to exit
 				case SDLK_ESCAPE: done = true; break;
-				case SDLK_f: changeText = true; break;
-				case SDLK_d: delete messages[0]; messages.erase(messages.begin()); break;
+
 				case SDLK_p:
 					Audio::Pause_Play_Music();
 					break;
@@ -90,19 +103,21 @@ void handleInput()
 	}
 }
 // end::handleInput[]
-std::string a = "a";
+
 // tag::updateSimulation[]
 void updateSimulation(double simLength = 0.02) //update simulation with an amount of time to simulate for (in seconds)
 {
-  //CHANGE ME
+	// Time since last frame
+	auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
+	prevTime = Clock::now();
 
-	if (changeText)
-	{
-		changeText = false;
-		messages[0]->ChangeText(a, ren);
-		messages[0]->ChangeFont("./assets/Hack-Regular.ttf", ren);
-		a += "a";
-	}
+	for (auto const& spr : sprites)
+		spr.second->Update(toSeconds(currTime));
+
+	if (sprites["sun"]->isColliding(*sprites["earth"]))
+		std::cout << "Colliding" << std::endl;
+	else
+		std::cout << "Not Colliding" << std::endl;
 }
 
 void render()
@@ -111,11 +126,8 @@ void render()
 		SDL_RenderClear(ren);
 
 		//Draw the texture
-		SDL_RenderCopy(ren, tex, NULL, NULL);
-
-		//Draw the text
-		for (auto msg : messages)
-			msg->render(ren);
+		for (auto const& spr : sprites)
+			spr.second->render(ren); // .first is the key, .second is the data
 
 		//Update the screen
 		SDL_RenderPresent(ren);
@@ -123,7 +135,6 @@ void render()
 
 void cleanExit(int returnValue)
 {
-	if (tex != nullptr) SDL_DestroyTexture(tex);
 	if (ren != nullptr) SDL_DestroyRenderer(ren);
 	if (win != nullptr) SDL_DestroyWindow(win);
 	SDL_Quit();
@@ -133,6 +144,8 @@ void cleanExit(int returnValue)
 // based on http://www.willusher.io/sdl2%20tutorials/2013/08/17/lesson-1-hello-world/
 int main( int argc, char* args[] )
 {
+	srand(time(NULL));
+
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
@@ -158,29 +171,17 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	std::string imagePath = "./assets/Opengl-logo.svg.png";
-	surface = IMG_Load(imagePath.c_str());
-	if (surface == nullptr){
-		std::cout << "SDL IMG_Load Error: " << SDL_GetError() << std::endl;
-		cleanExit(1);
-	}
-
-	tex = SDL_CreateTextureFromSurface(ren, surface);
-	SDL_FreeSurface(surface);
-	if (tex == nullptr){
-		std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
-		cleanExit(1);
-	}
-
 	if( TTF_Init() == -1 )
 	{
 		std::cout << "TTF_Init Failed: " << TTF_GetError() << std::endl;
 		cleanExit(1);
 	}
 
-	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "HELLO!!!!!!!", { 100,100,200,200 }, { 125,255,20 }, 150));
-	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50));
-	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30));
+	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/sun.png", Vector(), Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
+	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(20, 20), Vector((600 / 2) - 200, (600 / 2) - 200), Size(50, 50))));
+
+
+	prevTime = Clock::now();
 
 	Audio::init();
 
@@ -198,9 +199,10 @@ int main( int argc, char* args[] )
 
 		render(); // this should render the world state according to VARIABLES
 
-		SDL_Delay(20); // unless vsync is on??
+		//SDL_Delay(20); // unless vsync is on??
 	}
 
 	cleanExit(0);
 	return 0;
 }
+

@@ -1,28 +1,26 @@
 #pragma once
-class Text
+
+#include "Drawable.h"
+
+#include <iostream>
+#include <SDL.h>
+#include <SDL_ttf.h>
+#include "Vector.h"
+#include "Size.h"
+
+class Text : public Drawable
 {
 public:
 	// main constructor
-	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect, const SDL_Color fontColour, const int fontPointSize);
+	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Color fontColour, const Size size1, const Vector location, const int fontPointSize);
 
-	// constructor overloads
-	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect, const SDL_Color fontColour) : Text(ren, fontPath, fontText, fontRect, fontColour, 96) {};
-	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText, const SDL_Rect fontRect) : Text(ren, fontPath, fontText, fontRect, { 255, 255, 255 }) {};
-	Text(SDL_Renderer* ren, const std::string fontPath, const std::string fontText) : Text(ren, fontPath, fontText, { 0, 0, 100, 100 }) {};
-
+	Text(const Text& t);
 	~Text();
-
-
-	void render(SDL_Renderer* ren);
 
 	void ChangeText(const std::string newFontText, SDL_Renderer* ren);
 	void ChangeFont(const std::string newFontPath, SDL_Renderer* ren);
 
 private:
-	SDL_Texture* texture = NULL;
-	SDL_Rect rect;
-
-	std::string path;
 	std::string text;
 	SDL_Color colour;
 	int pointSize;
