@@ -118,7 +118,6 @@ void render()
 
 void cleanExit(int returnValue)
 {
-	Audio::Free_Memory();
 	if (tex != nullptr) SDL_DestroyTexture(tex);
 	if (ren != nullptr) SDL_DestroyRenderer(ren);
 	if (win != nullptr) SDL_DestroyWindow(win);

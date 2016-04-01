@@ -13,7 +13,6 @@ public:
 	static bool init();
 	static bool Load_Music(std::string path);
 	static bool Load_SFX(std::string path, std::string label);
-	static void Free_Memory();
 	static bool Start_Music();
 	static bool Pause_Music();
 	static bool Resume_Music();
@@ -23,6 +22,6 @@ public:
 private:
 	static bool _isInit;
 	static Mix_Music* _music;
-	static std::map<std::string, std::unique_ptr<Mix_Chunk>> _sfx;
+	static std::map<std::string, Mix_Chunk*> _sfx;
 };
 

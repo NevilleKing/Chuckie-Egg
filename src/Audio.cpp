@@ -1,8 +1,9 @@
 #include "Audio.h"
 
+// static variables
 bool Audio::_isInit = false;
 Mix_Music* Audio::_music;
-std::map<std::string, std::unique_ptr<Mix_Chunk>> Audio::_sfx;
+std::map<std::string, Mix_Chunk*> Audio::_sfx;
 
 void Audio::init_Error()
 {
@@ -32,6 +33,10 @@ bool Audio::Load_Music(std::string path)
 		init_Error();
 		return false;
 	}
+
+	// delete music if it already exists
+	if (_music != nullptr)
+		Mix_FreeMusic(_music);
 
 	_music = Mix_LoadMUS(path.c_str());
 	if (_music == nullptr)
@@ -66,14 +71,9 @@ bool Audio::Load_SFX(std::string path, std::string label)
 		return false;
 	}
 
-	_sfx[label] = std::unique_ptr<Mix_Chunk>(newSFX);
+	_sfx[label] = newSFX;
 
 	return true;
-}
-
-void Audio::Free_Memory()
-{
-	if (_music != nullptr) Mix_FreeMusic(_music);
 }
 
 bool Audio::Start_Music()
@@ -209,7 +209,7 @@ bool Audio::Play_SFX(std::string label)
 		return false;
 	}
 
-	Mix_PlayChannel(-1, &(*_sfx[label]), 0);
+	Mix_PlayChannel(-1, _sfx[label], 0);
 
 	return true;
 }
