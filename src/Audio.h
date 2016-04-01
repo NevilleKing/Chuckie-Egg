@@ -1,9 +1,9 @@
 #pragma once
 
-#include <map>
-#include <memory>
 #include <SDL.h>
 #include <SDL_mixer.h>
+#include <map>
+#include <memory>
 #include <string>
 
 class Audio
@@ -22,7 +22,7 @@ public:
 	static bool Play_SFX(std::string label);
 private:
 	static bool _isInit;
-	static Mix_Music *_music;
+	static Mix_Music* _music;
 	static std::map<std::string, std::unique_ptr<Mix_Chunk>> _sfx;
 };
 

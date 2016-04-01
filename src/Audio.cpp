@@ -1,6 +1,8 @@
 #include "Audio.h"
 
 bool Audio::_isInit = false;
+Mix_Music* Audio::_music;
+std::map<std::string, std::unique_ptr<Mix_Chunk>> Audio::_sfx;
 
 void Audio::init_Error()
 {
