@@ -9,16 +9,15 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <SDL_mixer.h>
 #else // NOT compiling on windows
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_mixer.h>
 #endif
 
 // custom classes
 #include "Text.h"
+#include "Audio.h"
 
 std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
@@ -32,8 +31,6 @@ bool done = false;
 
 // TEMP
 bool changeText = false;
-Mix_Music* music;
-std::vector<Mix_Chunk*> sfx;
 // END TEMP
 
 void handleInput()
@@ -74,23 +71,13 @@ void handleInput()
 				case SDLK_f: changeText = true; break;
 				case SDLK_d: delete messages[0]; messages.erase(messages.begin()); break;
 				case SDLK_p:
-					if (Mix_PlayingMusic())
-					{
-						if (Mix_PausedMusic() == 0)
-							Mix_PauseMusic();
-						else
-							Mix_ResumeMusic();
-					}
-					else
-					{
-						Mix_PlayMusic(music, -1);
-					}
+					Audio::Pause_Play_Music();
 					break;
 				case SDLK_o:
-					Mix_HaltMusic();
+					Audio::Stop_Music();
 					break;
 				case SDLK_BACKSPACE:
-					std::cout << Mix_PlayChannel(-1, sfx[0], 0) << std::endl;
+					Audio::Play_SFX("YaySound");
 					break;
 				}
 			break;
@@ -131,7 +118,7 @@ void render()
 
 void cleanExit(int returnValue)
 {
-	if (music != nullptr) Mix_FreeMusic(music);
+	Audio::Free_Memory();
 	if (tex != nullptr) SDL_DestroyTexture(tex);
 	if (ren != nullptr) SDL_DestroyRenderer(ren);
 	if (win != nullptr) SDL_DestroyWindow(win);
@@ -191,26 +178,13 @@ int main( int argc, char* args[] )
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "2nd Message", { 300,300,150,50 }, { 255,255,255 }, 50));
 	messages.push_back(new Text(ren, "./assets/Script-MT-Bold.ttf", "Hello World", { 200,100,200,50 }, { 255,0,20 }, 30));
 
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1)
-	{
-		std::cout << "OpenAudio Failed : " << Mix_GetError() << std::endl;
-		cleanExit(1);
-	}
+	Audio::init();
 
-	music = Mix_LoadMUS("./assets/music1.mp3");
-	if (music == nullptr)
-	{
-		std::cout << "Loading Music Failed: " << Mix_GetError() << std::endl;
-		cleanExit(1);
-	}
+	Audio::Load_Music("./assets/music1.mp3");
 
-	sfx.push_back(Mix_LoadWAV("./assets/sfx1.wav"));
-	if (sfx[0] == nullptr)
-	{
-		std::cout << "SFX Audio Loading Failed: " << Mix_GetError() << std::endl;
-	}
+	Audio::Load_SFX("./assets/sfx1.wav", "YaySound");
 
-	Mix_PlayMusic(music, -1);
+	Audio::Start_Music();
 
 	while (!done) //loop until done flag is set)
 	{
