@@ -42,6 +42,7 @@ typedef std::chrono::steady_clock::time_point TimePoint;
 // TEMP
 TimePoint prevTime;
 int SFX;
+bool movingRight = true;
 // END TEMP
 
 float toSeconds(float nanoseconds)
@@ -115,6 +116,23 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 		spr.second->Update(toSeconds(currTime));
 
 	Audio::Set_SFX_Panning_Based_On_Position(SFX, sprites["earth"]->getPosition(), 600);
+
+	if (movingRight)
+	{
+		if (sprites["earth"]->getPosition().x >= 600)
+		{
+			sprites["earth"]->setVelocity(Vector(-40, 0));
+			movingRight = false;
+		}
+	}
+	else
+	{
+		if (sprites["earth"]->getPosition().x <= 0)
+		{
+			sprites["earth"]->setVelocity(Vector(40, 0));
+			movingRight = true;
+		}
+	}
 
 	if (sprites["sun"]->isColliding(*sprites["earth"]))
 		std::cout << "Colliding" << std::endl;
