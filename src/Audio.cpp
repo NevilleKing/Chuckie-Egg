@@ -64,7 +64,7 @@ bool Audio::Load_SFX(std::string path, std::string label)
 		return false;
 	}
 
-	auto newSFX = Mix_LoadWAV("./assets/sfx1.wav");
+	auto newSFX = Mix_LoadWAV(path.c_str());
 	if (newSFX == nullptr)
 	{
 		SDL_LogError(SDL_LOG_PRIORITY_ERROR, (char("Loading SFX Failed : ") + Mix_GetError()));
@@ -193,7 +193,26 @@ bool Audio::Stop_Music()
 	return true;
 }
 
-bool Audio::Play_SFX(std::string label)
+int Audio::Play_SFX(std::string label)
+{
+	if (!_isInit)
+	{
+		init_Error();
+		return -1;
+	}
+
+	// check if the label doesn't exist
+	if (_sfx.find(label) == _sfx.end())
+	{
+		char error[] = "Playing SFX Failed: SFX Doesn't Exist";
+		SDL_LogError(SDL_LOG_PRIORITY_ERROR, error);
+		return -1;
+	}
+
+	return Mix_PlayChannel(-1, _sfx[label], 0);
+}
+
+bool Audio::Set_SFX_Volume(int volume, std::string label)
 {
 	if (!_isInit)
 	{
@@ -209,17 +228,17 @@ bool Audio::Play_SFX(std::string label)
 		return false;
 	}
 
-	Mix_PlayChannel(-1, _sfx[label], 0);
+	Mix_VolumeChunk(_sfx[label], volume);
 
 	return true;
 }
 
-bool Audio::Set_SFX_Volume(int volume, std::string label)
+int Audio::Fade_In_SFX(std::string label, float seconds)
 {
 	if (!_isInit)
 	{
 		init_Error();
-		return false;
+		return -1;
 	}
 
 	// check if the label doesn't exist
@@ -227,10 +246,29 @@ bool Audio::Set_SFX_Volume(int volume, std::string label)
 	{
 		char error[] = "Setting Volume of SFX Failed: SFX Doesn't Exist";
 		SDL_LogError(SDL_LOG_PRIORITY_ERROR, error);
+		return -1;
+	}
+
+	return Mix_FadeInChannel(-1, _sfx[label], 0, seconds * 1000);
+}
+
+bool Audio::Fade_Out_SFX(int channel, float seconds)
+{
+	if (!_isInit)
+	{
+		init_Error();
 		return false;
 	}
 
-	Mix_VolumeChunk(_sfx[label], volume);
+	// check if the channel is playing
+	if (!Mix_Playing(channel))
+	{
+		char error[] = "Stopping SFX Failed: Channel isn't playing";
+		SDL_LogError(SDL_LOG_PRIORITY_ERROR, error);
+		return false;
+	}
+
+	Mix_FadeOutChannel(channel, seconds * 1000);
 
 	return true;
 }

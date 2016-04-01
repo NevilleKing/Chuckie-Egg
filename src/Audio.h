@@ -18,8 +18,10 @@ public:
 	static bool Resume_Music();
 	static bool Pause_Play_Music();
 	static bool Stop_Music();
-	static bool Play_SFX(std::string label);
+	static int Play_SFX(std::string label);
 	static bool Set_SFX_Volume(int volume, std::string label);
+	static int Fade_In_SFX(std::string label, float seconds);
+	static bool Fade_Out_SFX(int channel, float seconds);
 private:
 	static bool _isInit;
 	static Mix_Music* _music;

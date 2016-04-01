@@ -31,6 +31,8 @@ bool done = false;
 
 // TEMP
 bool changeText = false;
+
+int SFX;
 // END TEMP
 
 void handleInput()
@@ -78,6 +80,9 @@ void handleInput()
 					break;
 				case SDLK_BACKSPACE:
 					Audio::Play_SFX("YaySound");
+					break;
+				case SDLK_b:
+					Audio::Fade_Out_SFX(SFX, 10.0f);
 					break;
 				}
 			break;
@@ -179,13 +184,9 @@ int main( int argc, char* args[] )
 
 	Audio::init();
 
-	Audio::Load_Music("./assets/music1.mp3");
+	Audio::Load_SFX("./assets/music1.mp3", "YaySound");
 
-	Audio::Load_SFX("./assets/sfx1.wav", "YaySound");
-
-	Audio::Set_SFX_Volume(20, "YaySound");
-
-	Audio::Start_Music();
+	SFX = Audio::Fade_In_SFX("YaySound", 10.0f);
 
 	while (!done) //loop until done flag is set)
 	{
