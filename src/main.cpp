@@ -183,6 +183,8 @@ int main( int argc, char* args[] )
 
 	Audio::Load_SFX("./assets/sfx1.wav", "YaySound");
 
+	Audio::Set_SFX_Volume(20, "YaySound");
+
 	Audio::Start_Music();
 
 	while (!done) //loop until done flag is set)

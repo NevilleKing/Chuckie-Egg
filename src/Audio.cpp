@@ -213,3 +213,24 @@ bool Audio::Play_SFX(std::string label)
 
 	return true;
 }
+
+bool Audio::Set_SFX_Volume(int volume, std::string label)
+{
+	if (!_isInit)
+	{
+		init_Error();
+		return false;
+	}
+
+	// check if the label doesn't exist
+	if (_sfx.find(label) == _sfx.end())
+	{
+		char error[] = "Setting Volume of SFX Failed: SFX Doesn't Exist";
+		SDL_LogError(SDL_LOG_PRIORITY_ERROR, error);
+		return false;
+	}
+
+	Mix_VolumeChunk(_sfx[label], volume);
+
+	return true;
+}
