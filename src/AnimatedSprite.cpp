@@ -1,16 +1,21 @@
 #include "AnimatedSprite.h"
 
 typedef nlohmann::json json;
+typedef std::chrono::high_resolution_clock Clock;
+typedef std::chrono::steady_clock::time_point TimePoint;
 
 AnimatedSprite::AnimatedSprite(SDL_Renderer* ren, std::string imagePath, Vector velocity1, Vector location, Size size1) : Sprite(ren, imagePath, location, size1)
 {
 	velocity = velocity1;
+
+	last_animation_step == Clock::now();
 }
 
 AnimatedSprite::AnimatedSprite(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, Vector velocity1, Vector location, Size size1) : Sprite(ren, imagePath, location, size1)
 {
 	velocity = velocity1;
 	importFromJSON(JSONPath);
+	last_animation_step == Clock::now();
 }
 
 AnimatedSprite::~AnimatedSprite()
@@ -23,10 +28,17 @@ void AnimatedSprite::Update(float time)
 	position += velocity * time;
 
 	// update animation
-	currentFrame++;
-	if (currentFrame == maxFrames)
-		currentFrame = 0;
-
+	if (j != nullptr)
+	{
+		// limit animation
+		if (std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - last_animation_step).count() > animation_speed)
+		{
+			currentFrame++;
+			if (currentFrame == maxFrames)
+				currentFrame = 0;
+			last_animation_step = Clock::now();
+		}
+	}
 }
 
 bool AnimatedSprite::importFromJSON(std::string path)
@@ -64,6 +76,11 @@ bool AnimatedSprite::importFromJSON(std::string path)
 
 		maxFrames++;
 	}
+
+	if (j.count("info") == 0 || j["info"].count("speed") == 0)
+		return false;
+
+	animation_speed = float(j["info"]["speed"]) * 1000000000.0f;
 
 	return true;
 	

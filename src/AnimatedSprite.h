@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <string>
 #include <vector>
+#include <chrono>
 
 #include "Sprite.h"
 #include "json.hpp"
@@ -34,5 +35,9 @@ private:
 	nlohmann::json j;
 	int currentFrame = 0;
 	int maxFrames = 0;
+
+	std::chrono::steady_clock::time_point last_animation_step;
+
+	int animation_speed = 0; // in nano seconds
 };
 
