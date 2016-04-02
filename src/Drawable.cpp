@@ -3,10 +3,6 @@
 Drawable::Drawable()
 {
 	texture = NULL;
-	rect.w = 0;
-	rect.h = 0;
-	rect.x = 0;
-	rect.y = 0;
 	position = Vector();
 	size = Size();
 }
@@ -21,6 +17,7 @@ Drawable::~Drawable()
 void Drawable::render(SDL_Renderer* ren)
 {
 	// set the positions of the rectangle for rendering
+	SDL_Rect rect;
 	rect.x = position.x;
 	rect.y = position.y;
 	rect.w = size.width;

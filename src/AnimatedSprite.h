@@ -1,16 +1,21 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
 #include <SDL.h>
 #include <string>
 #include <vector>
 
 #include "Sprite.h"
+#include "json.hpp"
+
 class AnimatedSprite :
 	public Sprite
 {
 public:
-	AnimatedSprite(SDL_Renderer* ren, std::string imagePath, Vector velocity1, Vector location, Size size1, const bool blank = false);
+	AnimatedSprite(SDL_Renderer* ren, std::string imagePath, Vector velocity1 = Vector(), Vector location = Vector(100, 100), Size size1 = Size(100, 100));
+	AnimatedSprite(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, Vector velocity1 = Vector(), Vector location = Vector(100, 100), Size size1 = Size(100, 100));
+
 	~AnimatedSprite();
 
 	void setVelocity(Vector newVelocity) { velocity = newVelocity; };
@@ -21,8 +26,12 @@ public:
 	Vector acceleration;
 
 	Vector velocity;
+
+	void render(SDL_Renderer* ren);
 private: 
-	std::vector<Sprite*> _sprites;
-	void importFromJSON(std::string path);
+	bool importFromJSON(std::string path);
+	
+	nlohmann::json j;
+	int currentFrame = 0;
 };
 

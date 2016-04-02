@@ -22,8 +22,6 @@ protected:
 
 	Drawable();
 	~Drawable();
-
 private:
-	SDL_Rect rect;
 };
 

@@ -201,11 +201,13 @@ int main( int argc, char* args[] )
 	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/sun.png", Vector(), Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
 	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/earth.png", Vector(40, 0), Vector(0, 300), Size(50, 50))));
 
-	Audio::init();
+	//Audio::init();
 
-	Audio::Load_SFX("./assets/music1.mp3", "YaySound");
+	//Audio::Load_SFX("./assets/music1.mp3", "YaySound");
 
-	SFX = Audio::Fade_In_SFX("YaySound", 10.0f);
+	//SFX = Audio::Fade_In_SFX("YaySound", 10.0f);
+
+	sprites["man"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/guy_walking.png", "./assets/walking.json")));
 
 	prevTime = Clock::now();
 

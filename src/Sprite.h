@@ -12,7 +12,7 @@
 class Sprite : public Drawable
 {
 public:
-	Sprite(SDL_Renderer* ren, const std::string imagePath, const Vector location = Vector(100,100), const Size size1 = Size(100,100), const bool blank = false);
+	Sprite(SDL_Renderer* ren, const std::string imagePath, const Vector location = Vector(100,100), const Size size1 = Size(100,100));
 	~Sprite();
 	bool isColliding(Sprite & other);
 	Sprite(const Sprite& sprite);
