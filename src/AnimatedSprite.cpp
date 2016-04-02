@@ -21,6 +21,12 @@ void AnimatedSprite::Update(float time)
 {
 	//velocity += acceleration * time;
 	position += velocity * time;
+
+	// update animation
+	currentFrame++;
+	if (currentFrame == maxFrames)
+		currentFrame = 0;
+
 }
 
 bool AnimatedSprite::importFromJSON(std::string path)
@@ -55,6 +61,8 @@ bool AnimatedSprite::importFromJSON(std::string path)
 		{
 			return false;
 		}
+
+		maxFrames++;
 	}
 
 	return true;

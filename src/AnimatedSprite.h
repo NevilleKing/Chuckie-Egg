@@ -33,5 +33,6 @@ private:
 	
 	nlohmann::json j;
 	int currentFrame = 0;
+	int maxFrames = 0;
 };
 
