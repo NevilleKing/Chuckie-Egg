@@ -91,10 +91,6 @@ void AnimatedSprite::render(SDL_Renderer* ren)
 	// set the positions of the rectangle for rendering
 	// destination rect
 	SDL_Rect rect;
-	rect.x = position.x - (size.width / 2);
-	rect.y = position.y - (size.height / 2);
-	rect.w = size.width;
-	rect.h = size.height;
 
 	// src rect
 	SDL_Rect src_rect = { 0,0,0,0 };
@@ -105,6 +101,18 @@ void AnimatedSprite::render(SDL_Renderer* ren)
 		src_rect.y = j["frames"][frame]["y"];
 		src_rect.w = j["frames"][frame]["width"];
 		src_rect.h = j["frames"][frame]["height"];
+
+		rect.w = j["frames"][frame]["width"];
+		rect.h = j["frames"][frame]["height"];
+		rect.x = position.x - (float(j["frames"][frame]["width"]) / 2);
+		rect.y = position.y - (float(j["frames"][frame]["height"]) / 2);
+	}
+	else
+	{
+		rect.x = position.x - (size.width / 2);
+		rect.y = position.y - (size.height / 2);
+		rect.w = size.width;
+		rect.h = size.height;
 	}
 	// if the width and height are zero the texture must be the full image
 	if (src_rect.h == 0 && src_rect.w == 0)
