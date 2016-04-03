@@ -18,8 +18,8 @@ void Drawable::render(SDL_Renderer* ren)
 {
 	// set the positions of the rectangle for rendering
 	SDL_Rect rect;
-	rect.x = position.x;
-	rect.y = position.y;
+	rect.x = position.x - (size.width / 2);
+	rect.y = position.y - (size.height / 2);
 	rect.w = size.width;
 	rect.h = size.height;
 	// if the width and height are zero the texture must be full screen

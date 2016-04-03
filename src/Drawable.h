@@ -17,7 +17,7 @@ protected:
 	SDL_Texture* texture = NULL;
 	std::string path;
 
-	Vector position;
+	Vector position; // in centre of image
 	Size size;
 
 	Drawable();

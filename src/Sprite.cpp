@@ -34,16 +34,16 @@ bool Sprite::isColliding(Sprite& other)
 	// check if the other box is inside this box
 
 	// X Axis
-	float otherMinMaxX[2] = { other.getPosition().x, other.getPosition().x + other.getSize().width };
-	float thisMinMaxX[2] = { getPosition().x, getPosition().x + getSize().width };
+	float otherMinMaxX[2] = { other.getPosition().x - other.getSize().width / 2, other.getPosition().x + other.getSize().width / 2 };
+	float thisMinMaxX[2] = { getPosition().x - getSize().width / 2, getPosition().x + getSize().width / 2 };
 
 	if (!(otherMinMaxX[0] >= thisMinMaxX[0] && otherMinMaxX[0] <= thisMinMaxX[1] ||
 		otherMinMaxX[1] <= thisMinMaxX[1] && otherMinMaxX[1] >= thisMinMaxX[0]))
 		return false;
 
 	// Y Axis
-	float otherMinMaxY[2] = { other.getPosition().y, other.getPosition().y + other.getSize().height };
-	float thisMinMaxY[2] = { getPosition().y, getPosition().y + getSize().height };
+	float otherMinMaxY[2] = { other.getPosition().y - other.getSize().height / 2, other.getPosition().y + other.getSize().height / 2 };
+	float thisMinMaxY[2] = { getPosition().y - getSize().height / 2, getPosition().y + getSize().height / 2 };
 
 	if (!(otherMinMaxY[0] >= thisMinMaxY[0] && otherMinMaxY[0] <= thisMinMaxY[1] ||
 		otherMinMaxY[1] <= thisMinMaxY[1] && otherMinMaxY[1] >= thisMinMaxY[0]))
