@@ -207,7 +207,7 @@ int main( int argc, char* args[] )
 
 	//SFX = Audio::Fade_In_SFX("YaySound", 10.0f);
 
-	sprites["man"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/guy_walking.png", "./assets/walking.json")));
+	sprites["man"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/walking.jpg", "./assets/walking.json")));
 
 	prevTime = Clock::now();
 
