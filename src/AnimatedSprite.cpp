@@ -1,19 +1,21 @@
 #include "AnimatedSprite.h"
 
+#define GRAVITY 100
+
 typedef nlohmann::json json;
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::steady_clock::time_point TimePoint;
 
 AnimatedSprite::AnimatedSprite(SDL_Renderer* ren, std::string imagePath, Vector velocity1, Vector location, Size size1) : Sprite(ren, imagePath, location, size1)
 {
-	velocity = velocity1;
+	_velocity = velocity1;
 
 	last_animation_step == Clock::now();
 }
 
 AnimatedSprite::AnimatedSprite(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, Vector velocity1, Vector location, Size size1) : Sprite(ren, imagePath, location, size1)
 {
-	velocity = velocity1;
+	_velocity = velocity1;
 	importFromJSON(JSONPath);
 	last_animation_step == Clock::now();
 }
@@ -24,8 +26,11 @@ AnimatedSprite::~AnimatedSprite()
 
 void AnimatedSprite::Update(float time)
 {
-	//velocity += acceleration * time;
-	position += velocity * time;
+	// update acceleration
+	//_acceleration += Vector(0, GRAVITY * time);
+
+	_velocity += _acceleration * time;
+	position += _velocity * time;
 
 	// update animation
 	if (j != nullptr)

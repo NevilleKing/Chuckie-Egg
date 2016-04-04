@@ -13,6 +13,7 @@ public:
 	Vector operator*(const Vector & other) const;
 	Vector operator-(const Vector& other) const;
 	Vector& Vector::operator+=(const Vector& other);
+	Vector & operator-=(const Vector & other);
 	Vector Vector::operator/(const Vector& other) const;
 
 	Vector operator+(const Vector & other) const;

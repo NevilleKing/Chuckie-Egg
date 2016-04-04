@@ -27,12 +27,15 @@
 #include "Size.h"
 #include "Vector.h"
 #include "Audio.h"
+#include "Player.h"
 
 std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 
 std::map<std::string, std::unique_ptr<AnimatedSprite>> sprites; // maps std::string => sprite class. Can be called: sprites['name']
+
+std::unique_ptr<Player> player;
 
 bool done = false;
 
@@ -85,18 +88,8 @@ void handleInput()
 				{
 					//hit escape to exit
 				case SDLK_ESCAPE: done = true; break;
-
-				case SDLK_p:
-					Audio::Pause_Play_Music();
-					break;
-				case SDLK_o:
-					Audio::Stop_Music();
-					break;
-				case SDLK_BACKSPACE:
-					Audio::Play_SFX("YaySound");
-					break;
-				case SDLK_b:
-					Audio::Fade_Out_SFX(SFX, 10.0f);
+				case SDLK_SPACE: 
+					player->Jump();
 					break;
 				}
 			break;
@@ -139,6 +132,9 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	else
 		std::cout << "Not Colliding" << std::endl;
 
+	player->Update(toSeconds(currTime));
+
+	Vector x = player->getAcceleration();
 }
 
 void render()
@@ -149,6 +145,8 @@ void render()
 		//Draw the texture
 		for (auto const& spr : sprites)
 			spr.second->render(ren); // .first is the key, .second is the data
+
+		player->render(ren);
 
 		//Update the screen
 		SDL_RenderPresent(ren);
@@ -207,7 +205,7 @@ int main( int argc, char* args[] )
 
 	//SFX = Audio::Fade_In_SFX("YaySound", 10.0f);
 
-	sprites["man"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/p1_walk.png", "./assets/walking.json")));
+	player = (std::unique_ptr<Player>(new Player (ren, "./assets/p1_walk.png", "./assets/walking.json", Vector(), Vector(300,300))));
 
 	prevTime = Clock::now();
 

@@ -82,6 +82,14 @@ Vector& Vector::operator+=(const Vector& other)
 	return *this;
 }
 
+Vector& Vector::operator-=(const Vector& other)
+{
+	this->x -= other.x;
+	this->y -= other.y;
+
+	return *this;
+}
+
 Vector Vector::pow1()
 {
 	x *= x;

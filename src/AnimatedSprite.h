@@ -19,14 +19,13 @@ public:
 
 	~AnimatedSprite();
 
-	void setVelocity(Vector newVelocity) { velocity = newVelocity; };
-	Vector getVelocity() { return velocity; };
+	void setVelocity(Vector newVelocity) { _velocity = newVelocity; };
+	Vector getVelocity() { return _velocity; };
+
+	void setAcceleration (Vector newAcceleration) { _acceleration = newAcceleration; };
+	Vector getAcceleration() { return _acceleration; };
 
 	void Update(float time);
-
-	Vector acceleration;
-
-	Vector velocity;
 
 	void render(SDL_Renderer* ren);
 private: 
@@ -39,5 +38,8 @@ private:
 	std::chrono::steady_clock::time_point last_animation_step;
 
 	int animation_speed = 0; // in nano seconds
+
+	Vector _velocity;
+	Vector _acceleration;
 };
 
