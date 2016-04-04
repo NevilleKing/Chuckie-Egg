@@ -19,6 +19,8 @@ public:
 	void MoveLeft();
 	void MoveRight();
 
+	void setOnGround();
+
 private:
 	bool _isJumping = false;
 	bool _onGround = true;

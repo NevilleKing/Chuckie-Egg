@@ -34,3 +34,8 @@ void Player::MoveRight()
 
 	}
 }
+
+void Player::setOnGround()
+{
+	_freezeY = true;
+}

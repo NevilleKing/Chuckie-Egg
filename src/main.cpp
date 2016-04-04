@@ -37,6 +37,8 @@ std::map<std::string, std::unique_ptr<AnimatedSprite>> sprites; // maps std::str
 
 std::unique_ptr<Player> player;
 
+std::vector<std::unique_ptr<Sprite>> level;
+
 bool done = false;
 
 typedef std::chrono::high_resolution_clock Clock;
@@ -134,7 +136,11 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 
 	player->Update(toSeconds(currTime));
 
-	Vector x = player->getAcceleration();
+	for (int i = 0; i < level.size(); i++)
+	{
+		if (level[i]->isColliding(*player))
+			player->setOnGround();
+	}
 }
 
 void render()
@@ -145,6 +151,10 @@ void render()
 		//Draw the texture
 		for (auto const& spr : sprites)
 			spr.second->render(ren); // .first is the key, .second is the data
+
+		//Draw the texture
+		for (auto const& spr : level)
+			spr->render(ren); // .first is the key, .second is the data
 
 		player->render(ren);
 
@@ -206,6 +216,8 @@ int main( int argc, char* args[] )
 	//SFX = Audio::Fade_In_SFX("YaySound", 10.0f);
 
 	player = (std::unique_ptr<Player>(new Player (ren, "./assets/p1_walk.png", "./assets/walking.json", Vector(), Vector(300,300))));
+
+	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(200, 500), Size(500, 50))));
 
 	prevTime = Clock::now();
 

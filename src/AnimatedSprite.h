@@ -41,5 +41,8 @@ private:
 
 	Vector _velocity;
 	Vector _acceleration;
+
+protected:
+	bool _freezeY = false;
 };
 

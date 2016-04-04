@@ -27,7 +27,13 @@ AnimatedSprite::~AnimatedSprite()
 void AnimatedSprite::Update(float time)
 {
 	// update acceleration
-	//_acceleration += Vector(0, GRAVITY * time);
+	_acceleration += Vector(0, GRAVITY * time);
+
+	if (_freezeY)
+	{
+		_acceleration.y = 0;
+		_velocity.y = 0;
+	}
 
 	_velocity += _acceleration * time;
 	position += _velocity * time;
