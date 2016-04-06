@@ -22,9 +22,6 @@ public:
 	void setVelocity(Vector newVelocity) { _velocity = newVelocity; };
 	Vector getVelocity() { return _velocity; };
 
-	void setAcceleration (Vector newAcceleration) { _acceleration = newAcceleration; };
-	Vector getAcceleration() { return _acceleration; };
-
 	void Update(float time);
 
 	void render(SDL_Renderer* ren);
@@ -40,7 +37,6 @@ private:
 	int animation_speed = 0; // in nano seconds
 
 	Vector _velocity;
-	Vector _acceleration;
 
 protected:
 	bool _freezeY = false;

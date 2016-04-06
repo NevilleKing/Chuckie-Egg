@@ -14,8 +14,8 @@ void Player::Jump()
 	{
 		_isJumping = true;
 		_onGround = false;
-		setVelocity(Vector());
-		setAcceleration(Vector(0, -100));
+		_freezeY = false;
+		setVelocity(Vector(0, -100));
 	}
 }
 
@@ -23,7 +23,8 @@ void Player::MoveLeft()
 {
 	if (!_isJumping) // when jumping no movement can occur
 	{
-
+		std::cout << "Called" << std::endl;
+		setVelocity(Vector(-100, 0));
 	}
 }
 
@@ -31,7 +32,7 @@ void Player::MoveRight()
 {
 	if (!_isJumping) // when jumping no movement can occur
 	{
-
+		setVelocity(Vector(100, 0));
 	}
 }
 

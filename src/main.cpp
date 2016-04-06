@@ -94,6 +94,18 @@ void handleInput()
 					player->Jump();
 					break;
 				}
+
+
+			switch (event.key.keysym.sym)
+			{
+				case SDLK_LEFT:
+					std::cout << "LEFT KEY PRESSED" << std::endl;
+					player->MoveLeft();
+					break;
+				case SDLK_RIGHT:
+					player->MoveRight();
+					break;
+			}
 			break;
 		}
 	}
@@ -109,30 +121,6 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 
 	for (auto const& spr : sprites)
 		spr.second->Update(toSeconds(currTime));
-
-	Audio::Set_SFX_Panning_Based_On_Position(SFX, sprites["earth"]->getPosition(), 600);
-
-	if (movingRight)
-	{
-		if (sprites["earth"]->getPosition().x >= 600)
-		{
-			sprites["earth"]->setVelocity(Vector(-40, 0));
-			movingRight = false;
-		}
-	}
-	else
-	{
-		if (sprites["earth"]->getPosition().x <= 0)
-		{
-			sprites["earth"]->setVelocity(Vector(40, 0));
-			movingRight = true;
-		}
-	}
-
-	if (sprites["sun"]->isColliding(*sprites["earth"]))
-		std::cout << "Colliding" << std::endl;
-	else
-		std::cout << "Not Colliding" << std::endl;
 
 	player->Update(toSeconds(currTime));
 
@@ -205,9 +193,6 @@ int main( int argc, char* args[] )
 		std::cout << "TTF_Init Failed: " << TTF_GetError() << std::endl;
 		cleanExit(1);
 	}
-
-	sprites["sun"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/box.png", Vector(), Vector((600 / 2) - 50,(600 / 2) - 50), Size(100,100))));
-	sprites["earth"] = (std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/box.png", Vector(40, 0), Vector(0, 300), Size(50, 50))));
 
 	//Audio::init();
 
