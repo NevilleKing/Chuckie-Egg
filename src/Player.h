@@ -32,5 +32,7 @@ public:
 private:
 	bool _isJumping = false;
 	PlayerState _state = IDLE;
+
+	short _state2 = 0;
 };
 

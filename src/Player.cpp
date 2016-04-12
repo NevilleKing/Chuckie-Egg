@@ -24,6 +24,8 @@ void Player::MoveLeft()
 	{
 		if (_state == MOVING_RIGHT) _state = IDLE;
 		else _state = MOVING_LEFT;
+
+		_state2 -= 1;
 	}
 }
 
@@ -33,17 +35,21 @@ void Player::MoveRight()
 	{
 		if (_state == MOVING_LEFT) _state = IDLE;
 		else _state = MOVING_RIGHT;
+
+		_state2 += 1;
 	}
 }
 
 void Player::StopMovingLeft()
 {
 	if (_state == MOVING_LEFT) _state = IDLE;
+	_state2 += 1;
 }
 
 void Player::StopMovingRight()
 {
 	if (_state == MOVING_RIGHT) _state = IDLE;
+	_state2 -= 1;
 }
 
 void Player::setOnGround()
@@ -53,7 +59,7 @@ void Player::setOnGround()
 
 void Player::Update(float time) 
 {
-	setVelocity(Vector(100 * _state, 0));
+	setVelocity(Vector(100 * _state2, 0));
 
 	this->AnimatedSprite::Update(time);
 }
