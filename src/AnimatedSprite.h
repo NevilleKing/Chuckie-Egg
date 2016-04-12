@@ -37,8 +37,5 @@ private:
 	int animation_speed = 0; // in nano seconds
 
 	Vector _velocity;
-
-protected:
-	bool _freezeY = false;
 };
 

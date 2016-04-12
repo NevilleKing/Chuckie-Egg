@@ -25,13 +25,8 @@ public:
 
 	void Update(float time);
 
-	void setOnGround();
-
-	enum PlayerState { IDLE = 0, MOVING_LEFT = -1, MOVING_RIGHT = 1 };
-
 private:
 	bool _isJumping = false;
-	PlayerState _state = IDLE;
 
 	short _state2 = 0;
 };

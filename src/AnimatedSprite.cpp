@@ -1,8 +1,5 @@
 #include "AnimatedSprite.h"
 
-#define GRAVITY 100
-#define FRICTION 250
-
 typedef nlohmann::json json;
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::steady_clock::time_point TimePoint;
@@ -27,17 +24,6 @@ AnimatedSprite::~AnimatedSprite()
 
 void AnimatedSprite::Update(float time)
 {
-	// gravity
-	if (!_freezeY)
-		_velocity.y = GRAVITY;
-	else
-	{
-		_velocity.y = 0;
-		_freezeY = false;
-	}
-
-	std::cout << _velocity.x << std::endl;
-
 	position += _velocity * time;
 
 	// update animation
