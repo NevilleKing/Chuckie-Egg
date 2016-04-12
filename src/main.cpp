@@ -92,20 +92,25 @@ void handleInput()
 				case SDLK_ESCAPE: done = true; break;
 				case SDLK_SPACE: 
 					player->Jump();
-					break;
-				}
-
-
-			switch (event.key.keysym.sym)
-			{
 				case SDLK_LEFT:
-					std::cout << "LEFT KEY PRESSED" << std::endl;
 					player->MoveLeft();
 					break;
 				case SDLK_RIGHT:
 					player->MoveRight();
 					break;
-			}
+				}
+			break;
+		case SDL_KEYUP:
+			if (!event.key.repeat)
+				switch (event.key.keysym.sym)
+				{
+				case SDLK_LEFT:
+					player->StopMovingLeft();
+					break;
+				case SDLK_RIGHT:
+					player->StopMovingRight();
+					break;
+				}
 			break;
 		}
 	}

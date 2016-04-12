@@ -19,10 +19,18 @@ public:
 	void MoveLeft();
 	void MoveRight();
 
+	void StopMovingLeft();
+
+	void StopMovingRight();
+
+	void Update(float time);
+
 	void setOnGround();
+
+	enum PlayerState { IDLE = 0, MOVING_LEFT = -1, MOVING_RIGHT = 1 };
 
 private:
 	bool _isJumping = false;
-	bool _onGround = true;
+	PlayerState _state = IDLE;
 };
 

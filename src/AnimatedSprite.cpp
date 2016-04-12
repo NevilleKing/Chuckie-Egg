@@ -38,13 +38,6 @@ void AnimatedSprite::Update(float time)
 
 	std::cout << _velocity.x << std::endl;
 
-	// friction
-	if (_velocity.x > 0)
-		_velocity.x -= FRICTION * time;
-
-	if (_velocity.x < 0)
-		_velocity.x += FRICTION * time;
-
 	position += _velocity * time;
 
 	// update animation
