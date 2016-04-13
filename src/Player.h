@@ -6,6 +6,7 @@
 
 #include <SDL.h>
 #include "Vector.h"
+#include <memory>
 #include "Size.h"
 
 class Player :
@@ -23,11 +24,9 @@ public:
 
 	void StopMovingRight();
 
-	void Update(float time);
+	void Update(float time, const std::vector<std::unique_ptr<Sprite>> &level);
 
 	void setOnGround();
-
-	void setOffGround();
 
 	enum MoveState {LEFT = -1, IDLE = 0, RIGHT = 1};
 
@@ -37,5 +36,7 @@ private:
 	MoveState _state = IDLE;
 	MoveState _afterJump = IDLE;
 	float _yVelocity = 0;
+
+	void UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level);
 };
 

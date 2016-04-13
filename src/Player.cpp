@@ -80,7 +80,16 @@ void Player::setOnGround()
 	}
 }
 
-void Player::Update(float time) 
+void Player::UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level)
+{
+	for (int i = 0; i < level.size(); i++)
+	{
+		if (level[i]->isColliding(*this))
+			this->setOnGround();
+	}
+}
+
+void Player::Update(float time, const std::vector<std::unique_ptr<Sprite>> &level)
 {
 	if (!_isOnGround)
 	{
@@ -99,4 +108,6 @@ void Player::Update(float time)
 
 	// call base class Update function
 	this->AnimatedSprite::Update(time);
+
+	UpdateCollisions(level);
 }

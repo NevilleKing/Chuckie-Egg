@@ -128,13 +128,7 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	for (auto const& spr : sprites)
 		spr.second->Update(toSeconds(currTime));
 
-	player->Update(toSeconds(currTime));
-
-	for (int i = 0; i < level.size(); i++)
-	{
-		if (level[i]->isColliding(*player))
-			player->setOnGround();
-	}
+	player->Update(toSeconds(currTime), level);
 }
 
 void render()
@@ -208,11 +202,9 @@ int main( int argc, char* args[] )
 
 	player = (std::unique_ptr<Player>(new Player(ren, "./assets/p1_walk.png", "./assets/walking.json", Vector(), Vector(500, 0), Size(50, 50))));
 
-	player2 = (std::unique_ptr<Player>(new Player (ren, "./assets/test2.png", "./assets/walking.json", Vector(), player->getPosition() + Vector(0, player->getSize().height/2), Size(2,2))));
-
 	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 900), Size(1500, 25))));
 
-	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/test.png", level[0]->getPosition() - Vector(0, level[0]->getSize().height / 2), Size(2, 2))));
+	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 800), Size(200, 25))));
 
 	prevTime = Clock::now();
 
