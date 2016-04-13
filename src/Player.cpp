@@ -46,6 +46,11 @@ void Player::StopMovingRight()
 	_state2 -= 1;
 }
 
+void Player::setOnGround()
+{
+	_freezeY = true;
+}
+
 void Player::Update(float time) 
 {
 	float yvel = GRAVITY;

@@ -25,6 +25,8 @@ public:
 
 	void Update(float time);
 
+	void setOnGround();
+
 private:
 	bool _isJumping = false;
 
