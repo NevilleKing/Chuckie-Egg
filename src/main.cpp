@@ -177,7 +177,7 @@ int main( int argc, char* args[] )
 	std::cout << "SDL initialised OK!\n";
 
 	//create window
-	win = SDL_CreateWindow("SDL Hello World!", 100, 100, 600, 600, SDL_WINDOW_SHOWN);
+	win = SDL_CreateWindow("Chuckie Egg", 100, 100, 1300, 1000, SDL_WINDOW_SHOWN);
 
 	//error handling
 	if (win == nullptr)
@@ -206,9 +206,9 @@ int main( int argc, char* args[] )
 
 	//SFX = Audio::Fade_In_SFX("YaySound", 10.0f);
 
-	player = (std::unique_ptr<Player>(new Player (ren, "./assets/p1_walk.png", "./assets/walking.json", Vector(), Vector(300,300), Size(100,100))));
+	player = (std::unique_ptr<Player>(new Player (ren, "./assets/p1_walk.png", "./assets/walking.json", Vector(), Vector(1000,800), Size(50,50))));
 
-	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(200, 500), Size(500, 50))));
+	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 900), Size(1500, 25))));
 
 	prevTime = Clock::now();
 
