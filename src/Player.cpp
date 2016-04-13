@@ -85,7 +85,10 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level)
 	for (int i = 0; i < level.size(); i++)
 	{
 		if (level[i]->isColliding(*this))
+		{
 			this->setOnGround();
+			if (i == 1) std::cout << checkCollisionDirection(*level[1]) << std::endl;
+		}
 	}
 }
 

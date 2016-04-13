@@ -4,6 +4,7 @@ class Size
 public:
 	Size();
 	Size(float width1, float height1);
+	Size operator/(float other) const;
 	~Size();
 
 	float width;

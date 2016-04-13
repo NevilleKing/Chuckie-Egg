@@ -51,3 +51,28 @@ bool Sprite::isColliding(Sprite& other)
 
 	return true;
 }
+
+// Returns a direction based on where the other object is in relation to this one (the objects don't have to be colliding)
+Sprite::collisionDirection Sprite::checkCollisionDirection(Sprite& other)
+{
+	Vector otherPos = other.getPosition();
+	Vector thisPos = this->getPosition();
+
+	Size otherSize = other.getSize() / 2;
+	Size thisSize = this->getSize() / 2;
+
+	// get overlap of 2 objects
+	if (thisPos.y + thisSize.height > otherPos.y - otherSize.height)
+		return Sprite::collisionDirection::DOWN;
+
+	if (thisPos.y - thisSize.height < otherPos.y + otherSize.height)
+		return Sprite::collisionDirection::UP;
+
+	if (thisPos.x + thisSize.width > otherPos.x - otherSize.width)
+		return Sprite::collisionDirection::RIGHT;
+
+	if (thisPos.x - thisSize.width < otherPos.x + otherSize.width)
+		return Sprite::collisionDirection::LEFT;
+
+	return Sprite::collisionDirection::NO_COLLISION;
+}
