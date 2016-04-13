@@ -27,6 +27,8 @@ public:
 
 	void setOnGround();
 
+	void setOffGround();
+
 	enum MoveState {LEFT = -1, IDLE = 0, RIGHT = 1};
 
 private:

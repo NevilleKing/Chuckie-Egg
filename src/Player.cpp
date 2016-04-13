@@ -92,6 +92,7 @@ void Player::Update(float time)
 	else
 	{
 		_yVelocity = 0;
+		_isOnGround = false;
 	}
 
 	setVelocity(Vector(MOVE_SPEED * _state, _yVelocity));
