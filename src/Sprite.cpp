@@ -62,11 +62,11 @@ Sprite::collisionDirection Sprite::checkCollisionDirection(Sprite& other)
 	Size thisSize = this->getSize() / 2;
 
 	// get overlap of 2 objects
-	if (thisPos.y + thisSize.height > otherPos.y - otherSize.height)
-		return Sprite::collisionDirection::DOWN;
+	if (thisPos.y + thisSize.height > otherPos.y - otherSize.height && (thisPos.x + thisSize.width < otherPos.x - otherSize.width || thisPos.x - thisSize.width > otherPos.x + otherSize.width))
+		return Sprite::collisionDirection::UP;
 
 	if (thisPos.y - thisSize.height < otherPos.y + otherSize.height)
-		return Sprite::collisionDirection::UP;
+		return Sprite::collisionDirection::DOWN;
 
 	if (thisPos.x + thisSize.width > otherPos.x - otherSize.width)
 		return Sprite::collisionDirection::RIGHT;
