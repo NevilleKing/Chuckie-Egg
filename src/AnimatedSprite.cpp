@@ -105,8 +105,8 @@ void AnimatedSprite::render(SDL_Renderer* ren)
 		rect.h = j["frames"][frame]["height"];*/
 		rect.w = size.width;
 		rect.h = size.height;
-		rect.x = position.x - (float(j["frames"][frame]["width"]) / 2);
-		rect.y = position.y - (float(j["frames"][frame]["height"]) / 2);
+		rect.x = position.x - /*(float(j["frames"][frame]["width"]) / 2) -*/ (size.width / 2);
+		rect.y = position.y - /*(float(j["frames"][frame]["height"]) / 2) -*/ (size.height / 2);
 	}
 	else
 	{
