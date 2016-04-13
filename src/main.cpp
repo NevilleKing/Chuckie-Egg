@@ -92,6 +92,7 @@ void handleInput()
 				case SDLK_ESCAPE: done = true; break;
 				case SDLK_SPACE: 
 					player->Jump();
+					break;
 				case SDLK_LEFT:
 					player->MoveLeft();
 					break;

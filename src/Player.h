@@ -27,9 +27,13 @@ public:
 
 	void setOnGround();
 
+	enum MoveState {LEFT = -1, IDLE = 0, RIGHT = 1};
+
 private:
 	bool _isJumping = false;
-
-	short _state2 = 0;
+	bool _isOnGround = false;
+	MoveState _state = IDLE;
+	MoveState _afterJump = IDLE;
+	float _yVelocity = 0;
 };
 

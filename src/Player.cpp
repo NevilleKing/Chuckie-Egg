@@ -1,7 +1,7 @@
 #include "Player.h"
 
-#define MOVE_SPEED 100
-#define GRAVITY 100
+#define MOVE_SPEED 200
+#define GRAVITY 150
 
 Player::Player(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, Vector velocity1, Vector location, Size size1) : AnimatedSprite(ren, imagePath, JSONPath, velocity1, location, size1)
 {
@@ -15,8 +15,10 @@ void Player::Jump()
 {
 	if (!_isJumping)
 	{
+		_afterJump = _state;
 		_isJumping = true;
-		setVelocity(Vector(0, -100));
+		_isOnGround = false;
+		_yVelocity = -100;
 	}
 }
 
@@ -24,7 +26,11 @@ void Player::MoveLeft()
 {
 	if (!_isJumping) // when jumping no movement can occur
 	{
-		_state2 -= 1;
+		_state = LEFT;
+	}
+	else
+	{
+		_afterJump = LEFT;
 	}
 }
 
@@ -32,30 +38,63 @@ void Player::MoveRight()
 {
 	if (!_isJumping) // when jumping no movement can occur
 	{
-		_state2 += 1;
+		_state = RIGHT;
+	}
+	else
+	{
+		_afterJump = RIGHT;
 	}
 }
 
 void Player::StopMovingLeft()
 {
-	_state2 += 1;
+	if (!_isJumping) // when jumping no movement can occur
+	{
+		if (_state == LEFT) _state = IDLE;
+	}
+	else
+	{
+		if (_afterJump == LEFT)  _afterJump = IDLE;
+	}
 }
 
 void Player::StopMovingRight()
 {
-	_state2 -= 1;
+	if (!_isJumping) // when jumping no movement can occur
+	{
+		if (_state == RIGHT)  _state = IDLE;
+	}
+	else
+	{
+		if (_afterJump == RIGHT)  _afterJump = IDLE;
+	}
 }
 
 void Player::setOnGround()
 {
-	_freezeY = true;
+	_isOnGround = true;
+	if (_isJumping)
+	{
+		_state = _afterJump; // reset state just in case player was jumping left or right
+		_isJumping = false;
+	}
 }
 
 void Player::Update(float time) 
 {
-	float yvel = GRAVITY;
+	if (!_isOnGround)
+	{
+		if (_yVelocity < GRAVITY)
+			_yVelocity += GRAVITY * time;
+		else
+			_yVelocity = GRAVITY;
+	}
+	else
+	{
+		_yVelocity = 0;
+	}
 
-	setVelocity(Vector(MOVE_SPEED * _state2, yvel));
+	setVelocity(Vector(MOVE_SPEED * _state, _yVelocity));
 
 	// call base class Update function
 	this->AnimatedSprite::Update(time);
