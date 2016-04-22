@@ -80,7 +80,7 @@ Sprite::collisionDirection Sprite::checkCollisionDirection(Sprite& other)
 		return Sprite::collisionDirection::DOWN;
 	}
 
-	// top points ----------------------------------------------------------------------------------------
+	// top points ------------------------------------------------------------------------------------------
 
 	// top of player
 	thisPoints[0] = Vector(thisPosition.x - thisSize.width, thisPosition.y - thisSize.height);
@@ -96,6 +96,21 @@ Sprite::collisionDirection Sprite::checkCollisionDirection(Sprite& other)
 		(thisPoints[0].y > otherPoints[0].y && thisPoints[0].y < otherPoints[1].y + otherSize.height * 2))
 	{
 		return Sprite::collisionDirection::UP;
+	}
+
+	// left points -----------------------------------------------------------------------------------------
+
+	// we know there is a collision so we now only need to check x axis
+
+	// left of player
+	thisPoints[0] = Vector(thisPosition.x - thisSize.width, 0);
+
+	// right of level
+	otherPoints[0] = Vector(otherPosition.x + otherSize.width, 0);
+
+	if (thisPoints[0].x < otherPoints[0].x && thisPoints[0].x > otherPoints[0].x - otherSize.width * 2)
+	{
+		return Sprite::collisionDirection::LEFT;
 	}
 
 	//Vector otherPos = other.getPosition();
