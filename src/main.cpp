@@ -171,7 +171,7 @@ int main( int argc, char* args[] )
 	std::cout << "SDL initialised OK!\n";
 
 	//create window
-	win = SDL_CreateWindow("Chuckie Egg", 100, 100, 1300, 1000, SDL_WINDOW_SHOWN);
+	win = SDL_CreateWindow("Chuckie Egg", 100, 100, 1300, 600, SDL_WINDOW_SHOWN);
 
 	//error handling
 	if (win == nullptr)
@@ -202,9 +202,9 @@ int main( int argc, char* args[] )
 
 	player = (std::unique_ptr<Player>(new Player(ren, "./assets/p1_walk.png", "./assets/walking.json", Vector(), Vector(500, 0), Size(50, 50))));
 
-	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 900), Size(1500, 25))));
+	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 500), Size(1500, 25))));
 
-	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 800), Size(200, 200))));
+	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 400), Size(200, 150))));
 
 	prevTime = Clock::now();
 
