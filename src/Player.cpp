@@ -135,10 +135,18 @@ void Player::Update(float time, const std::vector<std::unique_ptr<Sprite>> &leve
 {
 	if (!_isOnGround)
 	{
-		if (_yVelocity < GRAVITY)
-			_yVelocity += GRAVITY * time;
+		if (_isJumping)
+		{
+			if (_yVelocity < GRAVITY)
+				_yVelocity += GRAVITY * time;
+			else
+				_yVelocity = GRAVITY;
+		}
 		else
+		{
 			_yVelocity = GRAVITY;
+		}
+		if (!_isJumping) _state = IDLE;
 	}
 	else
 	{
