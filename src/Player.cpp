@@ -86,7 +86,7 @@ void Player::setOnGround()
 	}
 }
 
-void Player::UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize)
+void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
 	// check level collisions
 	for (int i = 0; i < level.size(); i++)
@@ -137,7 +137,7 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level,
 	}
 }
 
-void Player::Update(float time, const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize)
+void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
 	if (!_isOnGround)
 	{

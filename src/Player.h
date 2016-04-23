@@ -8,6 +8,7 @@
 #include "Vector.h"
 #include <memory>
 #include "Size.h"
+#include "LevelPiece.h"
 
 class Player :
 	public AnimatedSprite
@@ -24,7 +25,7 @@ public:
 
 	void StopMovingRight();
 
-	void Update(float time, const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize);
+	void Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 
 
 	void setOnGround();
@@ -39,7 +40,7 @@ private:
 	MoveState _afterState = IDLE;
 	float _yVelocity = 0;
 
-	void UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize);
+	void UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 
 	void changeState(Player::MoveState newState, bool flip = true);
 };

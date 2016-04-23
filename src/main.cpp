@@ -28,6 +28,7 @@
 #include "Vector.h"
 #include "Audio.h"
 #include "Player.h"
+#include "LevelPiece.h"
 
 std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
@@ -37,7 +38,7 @@ std::map<std::string, std::unique_ptr<AnimatedSprite>> sprites; // maps std::str
 
 std::unique_ptr<Player> player;
 
-std::vector<std::unique_ptr<Sprite>> level;
+std::vector<std::unique_ptr<LevelPiece>> level;
 
 bool done = false;
 
@@ -204,9 +205,11 @@ int main( int argc, char* args[] )
 
 	player = (std::unique_ptr<Player>(new Player(ren, "./assets/player.png", "./assets/walking.json", Vector(), Vector(550, 0), Size(50, 50))));
 
-	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/platform.png", Vector(650, 500), Size(1500, 25))));
+	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/platform.png", Vector(650, 500), Size(1500, 25), LevelPiece::TileType::DEFAULT)));
 
-	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 400), Size(200, 150))));
+	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/box.png", Vector(650, 400), Size(200, 150), LevelPiece::TileType::DEFAULT)));
+
+	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/ladder.png", Vector(900, 400), Size(50, 150), LevelPiece::TileType::LADDER)));
 
 	prevTime = Clock::now();
 
