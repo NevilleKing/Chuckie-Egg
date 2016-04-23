@@ -97,8 +97,13 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level)
 				break;
 			case Sprite::collisionDirection::LEFT:
 				if (_isJumping) _state = RIGHT;
-				else if (getVelocity().x < 0)
-					//dd
+				else if (_state == LEFT)
+					_state = IDLE;
+				break;
+			case Sprite::collisionDirection::RIGHT:
+				if (_isJumping) _state = LEFT;
+				else if (_state == RIGHT)
+					_state = IDLE;
 				break;
 			}
 		}
