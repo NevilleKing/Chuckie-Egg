@@ -39,6 +39,7 @@ void Player::MoveRight()
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
 		_state = RIGHT;
+		changeAnimationCycle("WALK");
 	}
 	else
 	{
@@ -50,7 +51,11 @@ void Player::StopMovingLeft()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
-		if (_state == LEFT) _state = IDLE;
+		if (_state == LEFT)
+		{
+			_state = IDLE;
+			changeAnimationCycle("IDLE");
+		}
 	}
 	else
 	{
@@ -62,7 +67,11 @@ void Player::StopMovingRight()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
-		if (_state == RIGHT)  _state = IDLE;
+		if (_state == RIGHT) 
+		{
+			_state = IDLE;
+			changeAnimationCycle("IDLE");
+		}
 	}
 	else
 	{
@@ -153,7 +162,8 @@ void Player::Update(float time, const std::vector<std::unique_ptr<Sprite>> &leve
 			if (!_isFalling) _afterState = _state;
 			_isFalling = true;
 		}
-		if (!_isJumping) _state = IDLE;
+		if (!_isJumping) 
+			_state = IDLE;
 	}
 	else
 	{

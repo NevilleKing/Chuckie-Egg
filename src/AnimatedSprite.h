@@ -27,20 +27,24 @@ public:
 	void Update(float time);
 
 	void render(SDL_Renderer* ren);
+protected:
+
+	bool changeAnimationCycle(std::string newAnimationCycle);
+
 private: 
 	bool importFromJSON(std::string path);
 
 	int countChildren(nlohmann::basic_json<> element);
 	
 	nlohmann::json j;
-	int currentFrame = 0;
-	int maxFrames = 0;
+	int _currentFrame = 0;
+	int _maxFrames = 0;
 
 	std::chrono::steady_clock::time_point last_animation_step;
 
-	int animation_speed = 0; // in nano seconds
+	int _animation_speed = 0; // in nano seconds
 
-	std::string animationCycle = "IDLE"; // for storing what cycle the animation is at (e.g. walk, idle, jump, etc.)
+	std::string _animationCycle = "IDLE"; // for storing what cycle the animation is at (e.g. walk, idle, jump, etc.)
 
 	Vector _velocity;
 };

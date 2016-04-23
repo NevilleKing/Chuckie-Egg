@@ -31,11 +31,11 @@ void AnimatedSprite::Update(float time)
 	if (j != nullptr)
 	{
 		// limit animation
-		if (std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - last_animation_step).count() > animation_speed)
+		if (std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - last_animation_step).count() > _animation_speed)
 		{
-			currentFrame++;
-			if (currentFrame == maxFrames)
-				currentFrame = 0;
+			_currentFrame++;
+			if (_currentFrame == _maxFrames)
+				_currentFrame = 0;
 			last_animation_step = Clock::now();
 		}
 	}
@@ -82,12 +82,12 @@ bool AnimatedSprite::importFromJSON(std::string path)
 	if (j["frames"].count("IDLE") == 0)
 		return false;
 
-	maxFrames = countChildren(j["frames"]["IDLE"]);
+	_maxFrames = countChildren(j["frames"]["IDLE"]);
 
 	if (j.count("info") == 0 || j["info"].count("speed") == 0)
 		return false;
 
-	animation_speed = float(j["info"]["speed"]) * 1000000000.0f;
+	_animation_speed = float(j["info"]["speed"]) * 1000000000.0f;
 
 	return true;
 	
@@ -97,7 +97,7 @@ int AnimatedSprite::countChildren(nlohmann::basic_json<> element)
 {
 	int frames = 0;
 	// loop through to get the 
-	for (auto& e : j["frames"]["IDLE"])
+	for (auto& e : element)
 	{
 		frames++;
 	}
@@ -115,11 +115,11 @@ void AnimatedSprite::render(SDL_Renderer* ren)
 	SDL_Rect src_rect = { 0,0,0,0 };
 	if (j != nullptr)
 	{
-		std::string frame = "f" + std::to_string(currentFrame);
-		src_rect.x = j["frames"][animationCycle][frame]["x"];
-		src_rect.y = j["frames"][animationCycle][frame]["y"];
-		src_rect.w = j["frames"][animationCycle][frame]["width"];
-		src_rect.h = j["frames"][animationCycle][frame]["height"];
+		std::string frame = "f" + std::to_string(_currentFrame);
+		src_rect.x = j["frames"][_animationCycle][frame]["x"];
+		src_rect.y = j["frames"][_animationCycle][frame]["y"];
+		src_rect.w = j["frames"][_animationCycle][frame]["width"];
+		src_rect.h = j["frames"][_animationCycle][frame]["height"];
 
 		/*rect.w = j["frames"][frame]["width"];
 		rect.h = j["frames"][frame]["height"];*/
@@ -141,4 +141,17 @@ void AnimatedSprite::render(SDL_Renderer* ren)
 	else // otherwise use the rectangle
 		SDL_RenderCopy(ren, texture, &src_rect, &rect);
 
+}
+
+bool AnimatedSprite::changeAnimationCycle(std::string newAnimationCycle)
+{
+	if (j["frames"].count(newAnimationCycle) == 1)
+	{
+		_animationCycle = newAnimationCycle;
+		_currentFrame = 0;
+		_maxFrames = countChildren(j["frames"][_animationCycle]);
+		return true;
+	}
+
+	return false;
 }
