@@ -93,23 +93,31 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &le
 	{
 		if (level[i]->isColliding(*this))
 		{
-			switch (this->checkCollisionDirection(*level[i]))
+			switch (level[i]->getType())
 			{
-			case Sprite::collisionDirection::DOWN:
-				this->setOnGround();
+			case LevelPiece::TileType::LADDER:
+
 				break;
-			case Sprite::collisionDirection::UP:
-				if (_yVelocity < 0) _yVelocity = 0;
-				break;
-			case Sprite::collisionDirection::LEFT:
-				if (_isJumping) changeState(RIGHT, false);
-				else if (_state == LEFT)
-					changeState(IDLE);
-				break;
-			case Sprite::collisionDirection::RIGHT:
-				if (_isJumping) changeState(LEFT, false);
-				else if (_state == RIGHT)
-					changeState(IDLE);
+			default:
+				switch (this->checkCollisionDirection(*level[i]))
+				{
+				case Sprite::collisionDirection::DOWN:
+					this->setOnGround();
+					break;
+				case Sprite::collisionDirection::UP:
+					if (_yVelocity < 0) _yVelocity = 0;
+					break;
+				case Sprite::collisionDirection::LEFT:
+					if (_isJumping) changeState(RIGHT, false);
+					else if (_state == LEFT)
+						changeState(IDLE);
+					break;
+				case Sprite::collisionDirection::RIGHT:
+					if (_isJumping) changeState(LEFT, false);
+					else if (_state == RIGHT)
+						changeState(IDLE);
+					break;
+				}
 				break;
 			}
 		}
