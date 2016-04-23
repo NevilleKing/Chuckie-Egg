@@ -29,6 +29,8 @@ public:
 	void render(SDL_Renderer* ren);
 private: 
 	bool importFromJSON(std::string path);
+
+	int countChildren(nlohmann::basic_json<> element);
 	
 	nlohmann::json j;
 	int currentFrame = 0;
@@ -37,6 +39,8 @@ private:
 	std::chrono::steady_clock::time_point last_animation_step;
 
 	int animation_speed = 0; // in nano seconds
+
+	std::string animationCycle = "IDLE"; // for storing what cycle the animation is at (e.g. walk, idle, jump, etc.)
 
 	Vector _velocity;
 };

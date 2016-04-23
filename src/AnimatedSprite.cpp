@@ -14,7 +14,8 @@ AnimatedSprite::AnimatedSprite(SDL_Renderer* ren, std::string imagePath, Vector 
 AnimatedSprite::AnimatedSprite(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, Vector velocity1, Vector location, Size size1) : Sprite(ren, imagePath, location, size1)
 {
 	_velocity = velocity1;
-	importFromJSON(JSONPath);
+	if (!importFromJSON(JSONPath)) 
+		j = nullptr;
 	last_animation_step == Clock::now();
 }
 
@@ -58,23 +59,30 @@ bool AnimatedSprite::importFromJSON(std::string path)
 	j = json::parse(string_json);
 
 	// for each frame
-	for (auto& element : j["frames"])
+	for (auto& e : j["frames"])
 	{
-		if (element.count("x") == 0 || element.count("y") == 0 ||
-			element.count("width") == 0 || element.count("height") == 0)
+		for (auto& element : e)
 		{
-			return false;
-		}
+			if (element.count("x") == 0 || element.count("y") == 0 ||
+				element.count("width") == 0 || element.count("height") == 0)
+			{
+				return false;
+			}
 
-		// check to see if all values are there and correct
-		if (!element["x"].is_number() || !element["y"].is_number() ||
-			!element["width"].is_number() || !element["height"].is_number())
-		{
-			return false;
+			// check to see if all values are there and correct
+			if (!element["x"].is_number() || !element["y"].is_number() ||
+				!element["width"].is_number() || !element["height"].is_number())
+			{
+				return false;
+			}
 		}
-
-		maxFrames++;
 	}
+
+	// check for idle animation state
+	if (j["frames"].count("IDLE") == 0)
+		return false;
+
+	maxFrames = countChildren(j["frames"]["IDLE"]);
 
 	if (j.count("info") == 0 || j["info"].count("speed") == 0)
 		return false;
@@ -83,6 +91,18 @@ bool AnimatedSprite::importFromJSON(std::string path)
 
 	return true;
 	
+}
+
+int AnimatedSprite::countChildren(nlohmann::basic_json<> element)
+{
+	int frames = 0;
+	// loop through to get the 
+	for (auto& e : j["frames"]["IDLE"])
+	{
+		frames++;
+	}
+
+	return frames;
 }
 
 void AnimatedSprite::render(SDL_Renderer* ren)
@@ -96,10 +116,10 @@ void AnimatedSprite::render(SDL_Renderer* ren)
 	if (j != nullptr)
 	{
 		std::string frame = "f" + std::to_string(currentFrame);
-		src_rect.x = j["frames"][frame]["x"];
-		src_rect.y = j["frames"][frame]["y"];
-		src_rect.w = j["frames"][frame]["width"];
-		src_rect.h = j["frames"][frame]["height"];
+		src_rect.x = j["frames"][animationCycle][frame]["x"];
+		src_rect.y = j["frames"][animationCycle][frame]["y"];
+		src_rect.w = j["frames"][animationCycle][frame]["width"];
+		src_rect.h = j["frames"][animationCycle][frame]["height"];
 
 		/*rect.w = j["frames"][frame]["width"];
 		rect.h = j["frames"][frame]["height"];*/
