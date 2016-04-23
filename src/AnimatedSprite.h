@@ -20,6 +20,8 @@ public:
 	~AnimatedSprite();
 
 	void setVelocity(Vector newVelocity) { _velocity = newVelocity; };
+	void setVelocityX(float XVelocity) { _velocity = Vector(XVelocity, _velocity.y); };
+	void setVelocityY(float YVelocity) { _velocity = Vector(_velocity.x, YVelocity); };
 	Vector getVelocity() { return _velocity; };
 
 	void Update(float time);

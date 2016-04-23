@@ -204,7 +204,7 @@ int main( int argc, char* args[] )
 
 	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 500), Size(1500, 25))));
 
-	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 350), Size(200, 150))));
+	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 400), Size(200, 150))));
 
 	prevTime = Clock::now();
 
