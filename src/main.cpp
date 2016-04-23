@@ -202,9 +202,9 @@ int main( int argc, char* args[] )
 
 	//SFX = Audio::Fade_In_SFX("YaySound", 10.0f);
 
-	player = (std::unique_ptr<Player>(new Player(ren, "./assets/p1_walk.png", "./assets/walking.json", Vector(), Vector(550, 0), Size(50, 50))));
+	player = (std::unique_ptr<Player>(new Player(ren, "./assets/player.png", "./assets/walking.json", Vector(), Vector(550, 0), Size(50, 50))));
 
-	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 500), Size(1500, 25))));
+	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/platform.png", Vector(650, 500), Size(1500, 25))));
 
 	level.push_back(std::unique_ptr<Sprite>(new Sprite(ren, "./assets/box.png", Vector(650, 400), Size(200, 150))));
 
