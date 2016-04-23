@@ -22,6 +22,16 @@ Size Size::operator/(float other) const
 	return v;
 }
 
+Size Size::operator-(const Size& other) const
+{
+	Size v = Size(width, height);
+
+	v.width -= other.width;
+	v.height -= other.height;
+
+	return v;
+}
+
 
 Size::~Size()
 {
