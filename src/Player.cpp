@@ -15,7 +15,7 @@ void Player::Jump()
 {
 	if (!_isJumping)
 	{
-		_afterJump = _state;
+		_afterState = _state;
 		_isJumping = true;
 		_isOnGround = false;
 		_yVelocity = -100;
@@ -24,49 +24,49 @@ void Player::Jump()
 
 void Player::MoveLeft()
 {
-	if (!_isJumping) // when jumping no movement can occur
+	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
 		_state = LEFT;
 	}
 	else
 	{
-		_afterJump = LEFT;
+		_afterState = LEFT;
 	}
 }
 
 void Player::MoveRight()
 {
-	if (!_isJumping) // when jumping no movement can occur
+	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
 		_state = RIGHT;
 	}
 	else
 	{
-		_afterJump = RIGHT;
+		_afterState = RIGHT;
 	}
 }
 
 void Player::StopMovingLeft()
 {
-	if (!_isJumping) // when jumping no movement can occur
+	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
 		if (_state == LEFT) _state = IDLE;
 	}
 	else
 	{
-		if (_afterJump == LEFT)  _afterJump = IDLE;
+		if (_afterState == LEFT)  _afterState = IDLE;
 	}
 }
 
 void Player::StopMovingRight()
 {
-	if (!_isJumping) // when jumping no movement can occur
+	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
 		if (_state == RIGHT)  _state = IDLE;
 	}
 	else
 	{
-		if (_afterJump == RIGHT)  _afterJump = IDLE;
+		if (_afterState == RIGHT)  _afterState = IDLE;
 	}
 }
 
@@ -75,8 +75,13 @@ void Player::setOnGround()
 	_isOnGround = true;
 	if (_isJumping)
 	{
-		_state = _afterJump; // reset state just in case player was jumping left or right
+		_state = _afterState; // reset state just in case player was jumping left or right
 		_isJumping = false;
+	}
+	if (_isFalling)
+	{
+		_state = _afterState;
+		_isFalling = false;
 	}
 }
 
@@ -145,6 +150,8 @@ void Player::Update(float time, const std::vector<std::unique_ptr<Sprite>> &leve
 		else
 		{
 			_yVelocity = GRAVITY;
+			if (!_isFalling) _afterState = _state;
+			_isFalling = true;
 		}
 		if (!_isJumping) _state = IDLE;
 	}

@@ -32,9 +32,10 @@ public:
 
 private:
 	bool _isJumping = false;
+	bool _isFalling = false;
 	bool _isOnGround = false;
 	MoveState _state = IDLE;
-	MoveState _afterJump = IDLE;
+	MoveState _afterState = IDLE;
 	float _yVelocity = 0;
 
 	void UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize);
