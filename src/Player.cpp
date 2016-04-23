@@ -80,13 +80,13 @@ void Player::setOnGround()
 	}
 }
 
-void Player::UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level)
+void Player::UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize)
 {
+	// check level collisions
 	for (int i = 0; i < level.size(); i++)
 	{
 		if (level[i]->isColliding(*this))
 		{
-			if (i==1) std::cout << this->checkCollisionDirection(*level[i]) << std::endl;
 			switch (this->checkCollisionDirection(*level[i]))
 			{
 			case Sprite::collisionDirection::DOWN:
@@ -108,9 +108,30 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level)
 			}
 		}
 	}
+
+	// check collisions with window
+	float minX = this->getPosition().x - (this->getSize().width / 2);
+	float maxX = this->getPosition().x + (this->getSize().width / 2);
+	float minY = this->getPosition().y + (this->getSize().height / 2);
+	float maxY = this->getPosition().y - (this->getSize().height / 2);
+
+	// left
+	if (minX < 0)
+	{
+		if (_isJumping) _state = RIGHT;
+		else if (_state == LEFT)
+			_state = IDLE;
+	}
+	// right
+	else if (maxX > windowSize.width)
+	{
+		if (_isJumping) _state = LEFT;
+		else if (_state == RIGHT)
+			_state = IDLE;
+	}
 }
 
-void Player::Update(float time, const std::vector<std::unique_ptr<Sprite>> &level)
+void Player::Update(float time, const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize)
 {
 	if (!_isOnGround)
 	{
@@ -130,5 +151,5 @@ void Player::Update(float time, const std::vector<std::unique_ptr<Sprite>> &leve
 	// call base class Update function
 	this->AnimatedSprite::Update(time);
 
-	UpdateCollisions(level);
+	UpdateCollisions(level, windowSize);
 }

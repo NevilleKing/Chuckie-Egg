@@ -24,7 +24,7 @@ public:
 
 	void StopMovingRight();
 
-	void Update(float time, const std::vector<std::unique_ptr<Sprite>> &level);
+	void Update(float time, const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize);
 
 	void setOnGround();
 
@@ -37,6 +37,6 @@ private:
 	MoveState _afterJump = IDLE;
 	float _yVelocity = 0;
 
-	void UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level);
+	void UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize);
 };
 

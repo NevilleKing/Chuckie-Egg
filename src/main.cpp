@@ -44,6 +44,8 @@ bool done = false;
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::steady_clock::time_point TimePoint;
 
+Size windowSize = Size(1300, 600);
+
 // TEMP
 TimePoint prevTime;
 int SFX;
@@ -128,7 +130,7 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	for (auto const& spr : sprites)
 		spr.second->Update(toSeconds(currTime));
 
-	player->Update(toSeconds(currTime), level);
+	player->Update(toSeconds(currTime), level, windowSize);
 }
 
 void render()
@@ -171,7 +173,7 @@ int main( int argc, char* args[] )
 	std::cout << "SDL initialised OK!\n";
 
 	//create window
-	win = SDL_CreateWindow("Chuckie Egg", 100, 100, 1300, 600, SDL_WINDOW_SHOWN);
+	win = SDL_CreateWindow("Chuckie Egg", 100, 100, windowSize.width, windowSize.height, SDL_WINDOW_SHOWN);
 
 	//error handling
 	if (win == nullptr)
