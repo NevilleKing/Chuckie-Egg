@@ -31,6 +31,8 @@ protected:
 
 	bool changeAnimationCycle(std::string newAnimationCycle);
 
+	void flipAnimation(bool right);
+
 private: 
 	bool importFromJSON(std::string path);
 
@@ -47,5 +49,7 @@ private:
 	std::string _animationCycle = "IDLE"; // for storing what cycle the animation is at (e.g. walk, idle, jump, etc.)
 
 	Vector _velocity;
+
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
 };
 

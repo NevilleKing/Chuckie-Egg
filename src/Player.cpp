@@ -26,7 +26,7 @@ void Player::MoveLeft()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
-		_state = LEFT;
+		changeState(LEFT);
 	}
 	else
 	{
@@ -38,8 +38,7 @@ void Player::MoveRight()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
-		_state = RIGHT;
-		changeAnimationCycle("WALK");
+		changeState(RIGHT);
 	}
 	else
 	{
@@ -51,11 +50,8 @@ void Player::StopMovingLeft()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
-		if (_state == LEFT)
-		{
-			_state = IDLE;
-			changeAnimationCycle("IDLE");
-		}
+		if (_state == LEFT) changeState(IDLE);
+
 	}
 	else
 	{
@@ -67,11 +63,7 @@ void Player::StopMovingRight()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
-		if (_state == RIGHT) 
-		{
-			_state = IDLE;
-			changeAnimationCycle("IDLE");
-		}
+		if (_state == RIGHT) changeState(IDLE);
 	}
 	else
 	{
@@ -84,12 +76,12 @@ void Player::setOnGround()
 	_isOnGround = true;
 	if (_isJumping)
 	{
-		_state = _afterState; // reset state just in case player was jumping left or right
+		changeState(_afterState); // reset state just in case player was jumping left or right
 		_isJumping = false;
 	}
 	if (_isFalling)
 	{
-		_state = _afterState;
+		changeState(_afterState);
 		_isFalling = false;
 	}
 }
@@ -110,14 +102,14 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level,
 				if (_yVelocity < 0) _yVelocity = 0;
 				break;
 			case Sprite::collisionDirection::LEFT:
-				if (_isJumping) _state = RIGHT;
+				if (_isJumping) changeState(RIGHT, false);
 				else if (_state == LEFT)
-					_state = IDLE;
+					changeState(IDLE);
 				break;
 			case Sprite::collisionDirection::RIGHT:
-				if (_isJumping) _state = LEFT;
+				if (_isJumping) changeState(LEFT, false);
 				else if (_state == RIGHT)
-					_state = IDLE;
+					changeState(IDLE);
 				break;
 			}
 		}
@@ -132,16 +124,16 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level,
 	// left
 	if (minX < 0)
 	{
-		if (_isJumping) _state = RIGHT;
+		if (_isJumping) changeState(RIGHT, false);
 		else if (_state == LEFT)
-			_state = IDLE;
+			changeState(IDLE);
 	}
 	// right
 	else if (maxX > windowSize.width)
 	{
-		if (_isJumping) _state = LEFT;
+		if (_isJumping) changeState(LEFT, false);
 		else if (_state == RIGHT)
-			_state = IDLE;
+			changeState(IDLE);
 	}
 }
 
@@ -163,7 +155,7 @@ void Player::Update(float time, const std::vector<std::unique_ptr<Sprite>> &leve
 			_isFalling = true;
 		}
 		if (!_isJumping) 
-			_state = IDLE;
+			changeState(IDLE);
 	}
 	else
 	{
@@ -177,4 +169,23 @@ void Player::Update(float time, const std::vector<std::unique_ptr<Sprite>> &leve
 	this->AnimatedSprite::Update(time);
 
 	UpdateCollisions(level, windowSize);
+}
+
+void Player::changeState(Player::MoveState newState, bool flip)
+{
+	_state = newState;
+	switch (_state)
+	{
+	case Player::LEFT:
+		changeAnimationCycle("WALK");
+		if (flip) flipAnimation(false);
+		break;
+	case Player::IDLE:
+		if (flip) changeAnimationCycle("IDLE");
+		break;
+	case Player::RIGHT:
+		changeAnimationCycle("WALK");
+		if (flip) flipAnimation(true);
+		break;
+	}
 }

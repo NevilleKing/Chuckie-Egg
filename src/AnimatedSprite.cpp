@@ -137,9 +137,9 @@ void AnimatedSprite::render(SDL_Renderer* ren)
 	}
 	// if the width and height are zero the texture must be the full image
 	if (src_rect.h == 0 && src_rect.w == 0)
-		SDL_RenderCopy(ren, texture, NULL, &rect);
+		SDL_RenderCopyEx(ren, texture, NULL, &rect, 0, NULL, flip);
 	else // otherwise use the rectangle
-		SDL_RenderCopy(ren, texture, &src_rect, &rect);
+		SDL_RenderCopyEx(ren, texture, &src_rect, &rect, 0, NULL, flip);
 
 }
 
@@ -154,4 +154,12 @@ bool AnimatedSprite::changeAnimationCycle(std::string newAnimationCycle)
 	}
 
 	return false;
+}
+
+void AnimatedSprite::flipAnimation(bool right)
+{
+	if (right)
+		flip = SDL_FLIP_NONE;
+	else
+		flip = SDL_FLIP_HORIZONTAL;
 }

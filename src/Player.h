@@ -26,6 +26,7 @@ public:
 
 	void Update(float time, const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize);
 
+
 	void setOnGround();
 
 	enum MoveState {LEFT = -1, IDLE = 0, RIGHT = 1};
@@ -39,5 +40,7 @@ private:
 	float _yVelocity = 0;
 
 	void UpdateCollisions(const std::vector<std::unique_ptr<Sprite>> &level, Size windowSize);
+
+	void changeState(Player::MoveState newState, bool flip = true);
 };
 
