@@ -93,12 +93,14 @@ void Player::StopMovingDown()
 
 void Player::setOnGround()
 {
-	_isOnGround = true;
-	if (_isJumping)
+	if (_isJumping && _yVelocity > 0)
 	{
 		changeState(_afterState); // reset state just in case player was jumping left or right
 		_isJumping = false;
 	}
+	else
+		_isOnGround = true;
+
 	if (_isFalling)
 	{
 		changeState(_afterState);
@@ -167,6 +169,8 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &le
 
 void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
+	UpdateCollisions(level, windowSize);
+
 	_xVelocity = _state;
 	if (!_isOnGround)
 	{
@@ -183,12 +187,12 @@ void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &
 			if (!_isFalling) _afterState = _state;
 			_isFalling = true;
 		}
-		if (!_isJumping) 
+		if (!_isJumping)
 			changeState(IDLE);
 	}
 	else
 	{
-		_yVelocity = 0;
+		if (_yVelocity > 0) _yVelocity = 0;
 	}
 
 	if (_isOnLadder && (!_isJumping || _ladderState != IDLE))
@@ -198,7 +202,7 @@ void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &
 		_yVelocity = MOVE_SPEED * _ladderState;
 		if (_isOnGround && _yVelocity > 0) _yVelocity = 0;
 	}
-	
+
 
 	// reset variables
 	_isOnLadder = false;
@@ -208,8 +212,6 @@ void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &
 
 	// call base class Update function
 	this->AnimatedSprite::Update(time);
-
-	UpdateCollisions(level, windowSize);
 }
 
 void Player::changeState(Player::MoveState newState, bool flip)
