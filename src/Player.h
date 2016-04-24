@@ -20,25 +20,31 @@ public:
 	void Jump();
 	void MoveLeft();
 	void MoveRight();
+	void MoveUp();
+	void MoveDown();
 
 	void StopMovingLeft();
-
 	void StopMovingRight();
+	void StopMovingUp();
+	void StopMovingDown();
 
 	void Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 
 
 	void setOnGround();
 
-	enum MoveState {LEFT = -1, IDLE = 0, RIGHT = 1};
+	enum MoveState {LEFT = -1, IDLE = 0, RIGHT = 1, UP = -1, DOWN = 1};
 
 private:
 	bool _isJumping = false;
 	bool _isFalling = false;
 	bool _isOnGround = false;
+	bool _isOnLadder = false;
 	MoveState _state = IDLE;
+	MoveState _ladderState = IDLE;
 	MoveState _afterState = IDLE;
 	float _yVelocity = 0;
+	float _xVelocity = 0;
 
 	void UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 

@@ -102,6 +102,12 @@ void handleInput()
 				case SDLK_RIGHT:
 					player->MoveRight();
 					break;
+				case SDLK_UP:
+					player->MoveUp();
+					break;
+				case SDLK_DOWN:
+					player->MoveDown();
+					break;
 				}
 			break;
 		case SDL_KEYUP:
@@ -113,6 +119,12 @@ void handleInput()
 					break;
 				case SDLK_RIGHT:
 					player->StopMovingRight();
+					break;
+				case SDLK_UP:
+					player->StopMovingUp();
+					break;
+				case SDLK_DOWN:
+					player->StopMovingDown();
 					break;
 				}
 			break;

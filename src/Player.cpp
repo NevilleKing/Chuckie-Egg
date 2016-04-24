@@ -46,6 +46,16 @@ void Player::MoveRight()
 	}
 }
 
+void Player::MoveUp()
+{
+	_ladderState = UP;
+}
+
+void Player::MoveDown()
+{
+	_ladderState = DOWN;
+}
+
 void Player::StopMovingLeft()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
@@ -69,6 +79,16 @@ void Player::StopMovingRight()
 	{
 		if (_afterState == RIGHT)  _afterState = IDLE;
 	}
+}
+
+void Player::StopMovingUp()
+{
+	if (_ladderState == UP) _ladderState = IDLE;
+}
+
+void Player::StopMovingDown()
+{
+	if (_ladderState == DOWN) _ladderState = IDLE;
 }
 
 void Player::setOnGround()
@@ -96,7 +116,7 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &le
 			switch (level[i]->getType())
 			{
 			case LevelPiece::TileType::LADDER:
-
+				_isOnLadder = true;
 				break;
 			default:
 				switch (this->checkCollisionDirection(*level[i]))
@@ -147,6 +167,7 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &le
 
 void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
+	_xVelocity = _state;
 	if (!_isOnGround)
 	{
 		if (_isJumping)
@@ -171,7 +192,13 @@ void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &
 		_isOnGround = false;
 	}
 
-	setVelocity(Vector(MOVE_SPEED * _state, _yVelocity));
+	if (_isOnLadder)
+	{
+		_yVelocity = MOVE_SPEED * _ladderState;
+		_isOnLadder = false;
+	}
+
+	setVelocity(Vector(MOVE_SPEED * _xVelocity, _yVelocity));
 
 	// call base class Update function
 	this->AnimatedSprite::Update(time);
