@@ -189,14 +189,19 @@ void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &
 	else
 	{
 		_yVelocity = 0;
-		_isOnGround = false;
 	}
 
-	if (_isOnLadder)
+	if (_isOnLadder && (!_isJumping || _ladderState != IDLE))
 	{
+		_isJumping = false;
+		_afterState = IDLE;
 		_yVelocity = MOVE_SPEED * _ladderState;
-		_isOnLadder = false;
+		if (_isOnGround && _yVelocity > 0) _yVelocity = 0;
 	}
+
+	// reset variables
+	_isOnLadder = false;
+	_isOnGround = false;
 
 	setVelocity(Vector(MOVE_SPEED * _xVelocity, _yVelocity));
 
