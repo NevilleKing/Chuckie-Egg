@@ -15,7 +15,13 @@ void Player::Jump()
 {
 	if (!_isJumping)
 	{
-		_afterState = _state;
+		if (_isOnLadder)
+		{
+			changeState(_afterState);
+			_afterState = IDLE;
+		}
+		else
+			_afterState = _state;
 		_isJumping = true;
 		_isOnGround = false;
 		_yVelocity = -100;
@@ -110,6 +116,10 @@ void Player::setOnGround()
 
 void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
+	// reset variables
+	_isOnLadder = false;
+	_isOnGround = false;
+
 	// check level collisions
 	for (int i = 0; i < level.size(); i++)
 	{
@@ -169,6 +179,8 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &le
 
 void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
+	std::cout << _afterState << std::endl;
+
 	UpdateCollisions(level, windowSize);
 
 	_xVelocity = _state;
@@ -198,15 +210,10 @@ void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &
 	if (_isOnLadder && (!_isJumping || _ladderState != IDLE))
 	{
 		_isJumping = false;
-		_afterState = IDLE;
+		if (_isJumping) _afterState = IDLE;
 		_yVelocity = MOVE_SPEED * _ladderState;
 		if (_isOnGround && _yVelocity > 0) _yVelocity = 0;
 	}
-
-
-	// reset variables
-	_isOnLadder = false;
-	_isOnGround = false;
 
 	setVelocity(Vector(MOVE_SPEED * _xVelocity, _yVelocity));
 
