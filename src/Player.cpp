@@ -48,12 +48,12 @@ void Player::MoveRight()
 
 void Player::MoveUp()
 {
-	_ladderState = UP;
+	changeLadderState(UP);
 }
 
 void Player::MoveDown()
 {
-	_ladderState = DOWN;
+	changeLadderState(DOWN);
 }
 
 void Player::StopMovingLeft()
@@ -83,12 +83,12 @@ void Player::StopMovingRight()
 
 void Player::StopMovingUp()
 {
-	if (_ladderState == UP) _ladderState = IDLE;
+	if (_ladderState == UP) changeLadderState(IDLE);
 }
 
 void Player::StopMovingDown()
 {
-	if (_ladderState == DOWN) _ladderState = IDLE;
+	if (_ladderState == DOWN) changeLadderState(IDLE);
 }
 
 void Player::setOnGround()
@@ -198,6 +198,7 @@ void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &
 		_yVelocity = MOVE_SPEED * _ladderState;
 		if (_isOnGround && _yVelocity > 0) _yVelocity = 0;
 	}
+	
 
 	// reset variables
 	_isOnLadder = false;
@@ -216,16 +217,30 @@ void Player::changeState(Player::MoveState newState, bool flip)
 	_state = newState;
 	switch (_state)
 	{
-	case Player::LEFT:
+	case LEFT:
 		changeAnimationCycle("WALK");
 		if (flip) flipAnimation(false);
 		break;
-	case Player::IDLE:
+	case IDLE:
 		if (flip) changeAnimationCycle("IDLE");
 		break;
-	case Player::RIGHT:
+	case RIGHT:
 		changeAnimationCycle("WALK");
 		if (flip) flipAnimation(true);
+	}
+}
+
+void Player::changeLadderState(Player::MoveState newState)
+{
+	_ladderState = newState;
+	switch (_ladderState)
+	{
+	case UP:
+	case DOWN:
+		changeAnimationCycle("LADDER");
+		break;
+	case IDLE:
+		changeAnimationCycle("LADDER_IDLE");
 		break;
 	}
 }

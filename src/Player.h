@@ -49,5 +49,6 @@ private:
 	void UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 
 	void changeState(Player::MoveState newState, bool flip = true);
+	void changeLadderState(Player::MoveState newState);
 };
 
