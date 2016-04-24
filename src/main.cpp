@@ -46,6 +46,7 @@ typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::steady_clock::time_point TimePoint;
 
 Size windowSize = Size(1300, 600);
+Vector windowPosition = Vector(50, 50);
 
 // TEMP
 TimePoint prevTime;
@@ -186,7 +187,7 @@ int main( int argc, char* args[] )
 	std::cout << "SDL initialised OK!\n";
 
 	//create window
-	win = SDL_CreateWindow("Chuckie Egg", 100, 100, windowSize.width, windowSize.height, SDL_WINDOW_SHOWN);
+	win = SDL_CreateWindow("Chuckie Egg", windowPosition.x, windowPosition.y, windowSize.width, windowSize.height, SDL_WINDOW_SHOWN);
 
 	//error handling
 	if (win == nullptr)

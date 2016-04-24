@@ -215,6 +215,7 @@ void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &
 		if (_isJumping) _afterState = IDLE;
 		_yVelocity = MOVE_SPEED * _ladderState;
 		if (_isOnGround && _yVelocity > 0) _yVelocity = 0;
+		if (_isOnGround && _ladderState == DOWN) changeLadderState(IDLE);
 	}
 
 	setVelocity(Vector(MOVE_SPEED * _xVelocity, _yVelocity));
