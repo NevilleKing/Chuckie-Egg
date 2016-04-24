@@ -109,7 +109,7 @@ void Player::setOnGround()
 
 	if (_isFalling)
 	{
-		changeState(_afterState);
+		if (!_isOnLadder) changeState(_afterState);
 		_isFalling = false;
 	}
 }
@@ -134,7 +134,7 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &le
 				switch (this->checkCollisionDirection(*level[i]))
 				{
 				case Sprite::collisionDirection::DOWN:
-					this->setOnGround();
+					_isOnGround = true;
 					break;
 				case Sprite::collisionDirection::UP:
 					if (_yVelocity < 0) _yVelocity = 0;
@@ -154,6 +154,8 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &le
 			}
 		}
 	}
+
+	if (_isOnGround) this->setOnGround();
 
 	// check collisions with window
 	float minX = this->getPosition().x - (this->getSize().width / 2);
@@ -179,8 +181,6 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &le
 
 void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
-	std::cout << _afterState << std::endl;
-
 	UpdateCollisions(level, windowSize);
 
 	_xVelocity = _state;
@@ -199,8 +199,10 @@ void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &
 			if (!_isFalling) _afterState = _state;
 			_isFalling = true;
 		}
-		if (!_isJumping)
+		if (!_isJumping && !_isOnLadder)
 			changeState(IDLE);
+		else if (_isOnLadder && _ladderState != IDLE)
+			_state = IDLE;
 	}
 	else
 	{
