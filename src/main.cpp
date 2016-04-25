@@ -155,6 +155,9 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
 	prevTime = Clock::now();
 
+	if (_isPaused)
+		currTime = 0;
+
 	player->Update(toSeconds(currTime), levelMap->level, windowSize);
 }
 
