@@ -256,9 +256,21 @@ int main( int argc, char* args[] )
 	texts["SCORE"] = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
 
 	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
-	prevTime = Clock::now();
 
 	levelMap = std::unique_ptr<TileMap>(new TileMap("./assets/level1.txt", ren, addScore));
+
+	if (!Audio::init())
+	{
+		std::cout << "Issue loading Audio" << std::endl;
+	}
+	else
+	{
+		Audio::Load_SFX("./assets/audio/bgMusic.mp3", "Music");
+
+		Audio::Fade_In_SFX("Music", 5.0f);
+	}
+
+	prevTime = Clock::now();
 
 	while (!done) //loop until done flag is set)
 	{
