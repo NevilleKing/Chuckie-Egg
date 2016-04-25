@@ -29,6 +29,7 @@
 #include "Audio.h"
 #include "Player.h"
 #include "LevelPiece.h"
+#include "TileMap.h"
 
 std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
@@ -38,14 +39,14 @@ std::map<std::string, std::unique_ptr<AnimatedSprite>> sprites; // maps std::str
 
 std::unique_ptr<Player> player;
 
-std::vector<std::unique_ptr<LevelPiece>> level;
+std::unique_ptr<TileMap> levelMap;
 
 bool done = false;
 
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::steady_clock::time_point TimePoint;
 
-Size windowSize = Size(1300, 600);
+Size windowSize = Size(1300, 594);
 Vector windowPosition = Vector(50, 50);
 
 // TEMP
@@ -153,7 +154,7 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	for (auto const& spr : sprites)
 		spr.second->Update(toSeconds(currTime));
 
-	player->Update(toSeconds(currTime), level, windowSize);
+	player->Update(toSeconds(currTime), levelMap->level, windowSize);
 }
 
 void render()
@@ -166,7 +167,7 @@ void render()
 			spr.second->render(ren); // .first is the key, .second is the data
 
 		//Draw the texture
-		for (auto const& spr : level)
+		for (auto const& spr : levelMap->level)
 			spr->render(ren); // .first is the key, .second is the data
 
 		//Draw the texture
@@ -233,22 +234,24 @@ int main( int argc, char* args[] )
 
 	player = (std::unique_ptr<Player>(new Player(ren, "./assets/player.png", "./assets/walking.json", Vector(), Vector(550, 0), Size(50, 50))));
 
-	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/platform.png", Vector(650, 500), Size(1500, 25), LevelPiece::TileType::DEFAULT)));
+	//level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/platform.png", Vector(650, 500), Size(1500, 25), LevelPiece::TileType::DEFAULT)));
 
-	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/box.png", Vector(650, 400), Size(200, 150), LevelPiece::TileType::DEFAULT)));
+	//level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/box.png", Vector(650, 400), Size(200, 150), LevelPiece::TileType::DEFAULT)));
 
-	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/ladder.png", Vector(900, 400), Size(50, 150), LevelPiece::TileType::LADDER)));
-	
-	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/egg.png", Vector(200, 450), Size(20, 20), LevelPiece::TileType::EGG)));
-	level.back()->addScoreCallback(addScore);
+	//level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/ladder.png", Vector(900, 400), Size(50, 150), LevelPiece::TileType::LADDER)));
+	//
+	//level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/egg.png", Vector(200, 450), Size(20, 20), LevelPiece::TileType::EGG)));
+	//level.back()->addScoreCallback(addScore);
 
-	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/food.png", Vector(1000, 475), Size(20,20), LevelPiece::TileType::FOOD)));
-	level.back()->addScoreCallback(addScore);
+	//level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/food.png", Vector(1000, 475), Size(20,20), LevelPiece::TileType::FOOD)));
+	//level.back()->addScoreCallback(addScore);
 
 	texts.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
 
 	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
 	prevTime = Clock::now();
+
+	levelMap = std::unique_ptr<TileMap>(new TileMap("./assets/level1.txt", ren, addScore));
 
 	while (!done) //loop until done flag is set)
 	{
