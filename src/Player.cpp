@@ -141,6 +141,8 @@ void Player::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, S
 				switch (this->checkCollisionDirection(*level[i]))
 				{
 				case Sprite::collisionDirection::DOWN:
+					if (this->position.y + this->size.height / 2 > level[i]->getPosition().y - level[i]->getSize().height / 2)     // just in case the player is stuck inside the floor (player will reset to above
+						this->position.y = (level[i]->getPosition().y - level[i]->getSize().height / 2) - (this->size.height / 2); // the floor to stop collisions with the right & left of other objects)
 					_isOnGround = true;
 					break;
 				case Sprite::collisionDirection::UP:
