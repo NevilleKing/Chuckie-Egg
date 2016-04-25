@@ -35,8 +35,6 @@ std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 
-std::map<std::string, std::unique_ptr<AnimatedSprite>> sprites; // maps std::string => sprite class. Can be called: sprites['name']
-
 std::unique_ptr<Player> player;
 
 std::unique_ptr<TileMap> levelMap;
@@ -49,9 +47,11 @@ typedef std::chrono::steady_clock::time_point TimePoint;
 Size windowSize = Size(1300, 594);
 Vector windowPosition = Vector(50, 50);
 
+bool _isPaused = false;
+
 // TEMP
 TimePoint prevTime;
-std::vector<std::unique_ptr<Text>> texts;
+std::map<std::string, std::unique_ptr<Text>> texts;
 int score = 0;
 std::unique_ptr<Text> scoreTxt;
 // END TEMP
@@ -105,20 +105,22 @@ void handleInput()
 					//hit escape to exit
 				case SDLK_ESCAPE: done = true; break;
 				case SDLK_SPACE: 
-					player->Jump();
+					if (!_isPaused) player->Jump();
 					break;
 				case SDLK_LEFT:
-					player->MoveLeft();
+					if (!_isPaused) player->MoveLeft();
 					break;
 				case SDLK_RIGHT:
-					player->MoveRight();
+					if (!_isPaused) player->MoveRight();
 					break;
 				case SDLK_UP:
-					player->MoveUp();
+					if (!_isPaused) player->MoveUp();
 					break;
 				case SDLK_DOWN:
-					player->MoveDown();
+					if (!_isPaused) player->MoveDown();
 					break;
+				case SDLK_p:
+					_isPaused = !_isPaused; // toggle pause
 				}
 			break;
 		case SDL_KEYUP:
@@ -126,16 +128,16 @@ void handleInput()
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_LEFT:
-					player->StopMovingLeft();
+					if (!_isPaused) player->StopMovingLeft();
 					break;
 				case SDLK_RIGHT:
-					player->StopMovingRight();
+					if (!_isPaused) player->StopMovingRight();
 					break;
 				case SDLK_UP:
-					player->StopMovingUp();
+					if (!_isPaused) player->StopMovingUp();
 					break;
 				case SDLK_DOWN:
-					player->StopMovingDown();
+					if (!_isPaused) player->StopMovingDown();
 					break;
 				}
 			break;
@@ -151,35 +153,40 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
 	prevTime = Clock::now();
 
-	for (auto const& spr : sprites)
-		spr.second->Update(toSeconds(currTime));
-
 	player->Update(toSeconds(currTime), levelMap->level, windowSize);
 }
 
 void render()
 {
-		//First clear the renderer
-		SDL_RenderClear(ren);
+	// check pause state
+	if (_isPaused)
+	{
+		if (texts.find("PAUSE") == texts.end())
+			texts["PAUSE"] = std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "PAUSED", { 255,255,255 }, Size(250, 100), Vector(windowSize.width/2, windowSize.height/2), 150)); // create pause text in middle of screen
+	}
+	else
+	{
+		if (texts.find("PAUSE") != texts.end())
+			texts.erase("PAUSE");
+	}
 
-		//Draw the texture
-		for (auto const& spr : sprites)
-			spr.second->render(ren); // .first is the key, .second is the data
+	//First clear the renderer
+	SDL_RenderClear(ren);
 
-		//Draw the texture
-		for (auto const& spr : levelMap->level)
-			spr->render(ren); // .first is the key, .second is the data
+	//Draw the level on screen
+	for (auto const& spr : levelMap->level)
+		spr->render(ren);
 
-		//Draw the texture
-		for (auto const& spr : texts)
-			spr->render(ren); // .first is the key, .second is the data
+	//Draw the text on screen
+	for (auto const& spr : texts)
+		spr.second->render(ren);
 
-		player->render(ren);
+	player->render(ren);
 
-		scoreTxt->render(ren);
+	scoreTxt->render(ren);
 
-		//Update the screen
-		SDL_RenderPresent(ren);
+	//Update the screen
+	SDL_RenderPresent(ren);
 }
 
 void cleanExit(int returnValue)
@@ -246,7 +253,7 @@ int main( int argc, char* args[] )
 	//level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/food.png", Vector(1000, 475), Size(20,20), LevelPiece::TileType::FOOD)));
 	//level.back()->addScoreCallback(addScore);
 
-	texts.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
+	texts["SCORE"] = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
 
 	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
 	prevTime = Clock::now();
