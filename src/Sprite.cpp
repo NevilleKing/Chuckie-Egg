@@ -33,12 +33,15 @@ bool Sprite::isColliding(Sprite& other)
 {
 	// check if the other box is inside this box
 
+	Vector thisPosition = this->getPosition();
+
 	// X Axis
 	float otherMinMaxX[2] = { other.getPosition().x - other.getSize().width / 2, other.getPosition().x + other.getSize().width / 2 };
 	float thisMinMaxX[2] = { getPosition().x - getSize().width / 2, getPosition().x + getSize().width / 2 };
 
 	if (!(otherMinMaxX[0] >= thisMinMaxX[0] && otherMinMaxX[0] <= thisMinMaxX[1] ||
-		otherMinMaxX[1] <= thisMinMaxX[1] && otherMinMaxX[1] >= thisMinMaxX[0]))
+		  otherMinMaxX[1] <= thisMinMaxX[1] && otherMinMaxX[1] >= thisMinMaxX[0] ||
+		  otherMinMaxX[0] <= thisPosition.x && otherMinMaxX[1] >= thisPosition.x ))
 		return false;
 
 	// Y Axis
@@ -46,7 +49,8 @@ bool Sprite::isColliding(Sprite& other)
 	float thisMinMaxY[2] = { getPosition().y - getSize().height / 2, getPosition().y + getSize().height / 2 };
 
 	if (!(otherMinMaxY[0] >= thisMinMaxY[0] && otherMinMaxY[0] <= thisMinMaxY[1] ||
-		otherMinMaxY[1] <= thisMinMaxY[1] && otherMinMaxY[1] >= thisMinMaxY[0]))
+		  otherMinMaxY[1] <= thisMinMaxY[1] && otherMinMaxY[1] >= thisMinMaxY[0] ||
+		  otherMinMaxY[0] <= thisPosition.y && otherMinMaxY[1] >= thisPosition.y ))
 		return false;
 
 	return true;

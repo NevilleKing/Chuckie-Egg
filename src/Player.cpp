@@ -18,7 +18,6 @@ void Player::Jump()
 		if (_isOnLadder)
 		{
 			changeState(_afterState);
-			_afterState = IDLE;
 		}
 		else
 			_afterState = _state;
@@ -114,7 +113,7 @@ void Player::setOnGround()
 	}
 }
 
-void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
+void Player::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
 	// reset variables
 	_isOnLadder = false;
@@ -129,6 +128,9 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &le
 			{
 			case LevelPiece::TileType::LADDER:
 				_isOnLadder = true;
+				break;
+			case LevelPiece::TileType::EGG:
+				level.erase(level.begin() + i);
 				break;
 			default:
 				switch (this->checkCollisionDirection(*level[i]))
@@ -179,7 +181,7 @@ void Player::UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &le
 	}
 }
 
-void Player::Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
+void Player::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
 	UpdateCollisions(level, windowSize);
 

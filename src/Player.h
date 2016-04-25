@@ -28,7 +28,7 @@ public:
 	void StopMovingUp();
 	void StopMovingDown();
 
-	void Update(float time, const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
+	void Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 
 
 	void setOnGround();
@@ -46,7 +46,7 @@ private:
 	float _yVelocity = 0;
 	float _xVelocity = 0;
 
-	void UpdateCollisions(const std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
+	void UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 
 	void changeState(Player::MoveState newState, bool flip = true);
 	void changeLadderState(Player::MoveState newState);
