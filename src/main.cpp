@@ -226,6 +226,7 @@ int main( int argc, char* args[] )
 	
 	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/egg.png", Vector(200, 450), Size(20, 20), LevelPiece::TileType::EGG)));
 
+	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/food.png", Vector(1000, 475), Size(20,20), LevelPiece::TileType::FOOD)));
 
 	prevTime = Clock::now();
 

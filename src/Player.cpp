@@ -132,6 +132,9 @@ void Player::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, S
 			case LevelPiece::TileType::EGG:
 				level.erase(level.begin() + i);
 				break;
+			case LevelPiece::TileType::FOOD:
+				level.erase(level.begin() + i);
+				break;
 			default:
 				switch (this->checkCollisionDirection(*level[i]))
 				{
