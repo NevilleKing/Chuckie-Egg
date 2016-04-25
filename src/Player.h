@@ -47,6 +47,9 @@ private:
 	float _yVelocity = 0;
 	float _xVelocity = 0;
 
+	bool _walkingPlaying = false;
+	int _walkingChannel = 0;
+
 	void UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 
 	void changeState(Player::MoveState newState, bool flip = true);

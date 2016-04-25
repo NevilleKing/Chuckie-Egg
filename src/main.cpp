@@ -267,7 +267,9 @@ int main( int argc, char* args[] )
 	{
 		Audio::Load_SFX("./assets/audio/bgMusic.mp3", "Music");
 		Audio::Load_SFX("./assets/audio/pickups.wav", "Pickup");
+		Audio::Load_SFX("./assets/audio/walk.wav", "Walk");
 
+		Audio::Set_SFX_Volume(30, "Music");
 		Audio::Fade_In_SFX("Music", 5.0f);
 	}
 

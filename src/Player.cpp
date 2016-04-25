@@ -229,6 +229,28 @@ void Player::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level,
 		if (_isOnGround && _ladderState == DOWN) changeLadderState(IDLE);
 	}
 
+	// Audio
+	if (_state != IDLE && !_isJumping)
+	{
+		if (!_walkingPlaying)
+		{
+			_walkingChannel = Audio::Play_SFX_Looping("Walk", -1);
+			_walkingPlaying = true;
+		}
+		else
+		{
+			Audio::Set_SFX_Panning_Based_On_Position(_walkingChannel, this->position, windowSize.width);
+		}
+	}
+	else
+	{
+		if (_walkingPlaying)
+		{
+			Audio::Stop_SFX(_walkingChannel);
+			_walkingPlaying = false;
+		}
+	}
+
 	setVelocity(Vector(MOVE_SPEED * _xVelocity, _yVelocity));
 
 	// call base class Update function

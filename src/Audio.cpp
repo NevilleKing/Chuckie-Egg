@@ -212,6 +212,28 @@ int Audio::Play_SFX(std::string label)
 	return Mix_PlayChannel(-1, _sfx[label], 0);
 }
 
+int Audio::Play_SFX_Looping(std::string label, int loops)
+{
+	if (!_isInit)
+	{
+		init_Error();
+		return -1;
+	}
+
+	if (loops < -1)
+		return -1;
+
+	// check if the label doesn't exist
+	if (_sfx.find(label) == _sfx.end())
+	{
+		char error[] = "Playing SFX Failed: SFX Doesn't Exist";
+		SDL_LogError(SDL_LOG_PRIORITY_ERROR, error);
+		return -1;
+	}
+
+	return Mix_PlayChannel(-1, _sfx[label], loops);
+}
+
 bool Audio::Set_SFX_Volume(int volume, std::string label)
 {
 	if (!_isInit)
@@ -304,4 +326,25 @@ bool Audio::Set_SFX_Panning_Based_On_Position(int channel, Vector position, floa
 		right = 254;
 
 	return Set_SFX_Panning(channel, 254 - right, right);
+}
+
+bool Audio::Stop_SFX(int channel)
+{
+	if (!_isInit)
+	{
+		init_Error();
+		return false;
+	}
+
+	// check if the channel is playing
+	if (!Mix_Playing(channel))
+	{
+		char error[] = "Stopping SFX: Channel isn't playing";
+		SDL_LogError(SDL_LOG_PRIORITY_ERROR, error);
+		return false;
+	}
+
+	Mix_HaltChannel(channel);
+
+	return true;
 }
