@@ -47,6 +47,9 @@ typedef std::chrono::steady_clock::time_point TimePoint;
 Size windowSize = Size(1300, 594);
 Vector windowPosition = Vector(50, 50);
 
+int minMaxVolume[2] = { 0, 128 };
+int currentVolume = 128;
+
 bool _isPaused = false;
 
 int musicChannel = 0;
@@ -69,6 +72,14 @@ void addScore(int scoreToAdd)
 	std::stringstream ss;
 	ss << std::setw(6) << std::setfill('0') << score;
 	scoreTxt->ChangeText(ss.str(), ren);
+}
+
+void updateVolume(int valueToChange)
+{
+	if ((currentVolume + valueToChange) < minMaxVolume[0] || (currentVolume + valueToChange) > minMaxVolume[1])
+		return;
+	currentVolume += valueToChange;
+	Audio::Set_All_SFX_Volumes(currentVolume);
 }
 
 void handleInput()
@@ -123,7 +134,18 @@ void handleInput()
 					break;
 				case SDLK_p:
 					_isPaused = !_isPaused; // toggle pause
+					break;
 				}
+
+			switch (event.key.keysym.sym)
+			{
+				case SDLK_EQUALS:
+					updateVolume(2);
+					break;
+				case SDLK_MINUS:
+					updateVolume(-2);
+					break;
+			}
 			break;
 		case SDL_KEYUP:
 			if (!event.key.repeat)
@@ -280,7 +302,6 @@ int main( int argc, char* args[] )
 		Audio::Load_SFX("./assets/audio/pickups.wav", "Pickup");
 		Audio::Load_SFX("./assets/audio/walk.wav", "Walk");
 
-		Audio::Set_SFX_Volume(30, "Music");
 		musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 	}
 

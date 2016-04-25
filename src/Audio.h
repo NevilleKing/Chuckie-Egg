@@ -24,6 +24,7 @@ public:
 	static bool Pause_SFX(int channel);
 	static bool Resume_SFX(int channel);
 	static bool Set_SFX_Volume(int volume, std::string label);
+	static bool Set_All_SFX_Volumes(int volume);
 	static int Fade_In_SFX(std::string label, float seconds);
 	static int Fade_In_SFX_And_Loop(std::string label, float seconds, int loops);
 	static bool Fade_Out_SFX(int channel, float seconds);

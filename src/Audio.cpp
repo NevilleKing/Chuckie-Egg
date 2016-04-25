@@ -281,6 +281,19 @@ bool Audio::Set_SFX_Volume(int volume, std::string label)
 	return true;
 }
 
+bool Audio::Set_All_SFX_Volumes(int volume)
+{
+	if (!_isInit)
+	{
+		init_Error();
+		return false;
+	}
+
+	Mix_Volume(-1, volume);
+
+	return true;
+}
+
 int Audio::Fade_In_SFX(std::string label, float seconds)
 {
 	if (!_isInit)
