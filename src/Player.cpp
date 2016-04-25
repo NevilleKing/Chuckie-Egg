@@ -13,7 +13,7 @@ Player::~Player()
 
 void Player::Jump()
 {
-	if (!_isJumping)
+	if (!_isJumping && (_isOnLadder || !_isFalling))
 	{
 		if (_isOnLadder)
 		{
