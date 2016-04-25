@@ -50,13 +50,22 @@ Vector windowPosition = Vector(50, 50);
 
 // TEMP
 TimePoint prevTime;
-int SFX;
-bool movingRight = true;
+std::vector<std::unique_ptr<Text>> texts;
+int score = 0;
+std::unique_ptr<Text> scoreTxt;
 // END TEMP
 
 float toSeconds(float nanoseconds)
 {
 	return nanoseconds / 1000000000;
+}
+
+void addScore(int scoreToAdd)
+{
+	score += scoreToAdd;
+	std::stringstream ss;
+	ss << std::setw(6) << std::setfill('0') << score;
+	scoreTxt->ChangeText(ss.str(), ren);
 }
 
 void handleInput()
@@ -109,6 +118,9 @@ void handleInput()
 				case SDLK_DOWN:
 					player->MoveDown();
 					break;
+				case SDLK_1:
+					addScore(50);
+					break;
 				}
 			break;
 		case SDL_KEYUP:
@@ -160,7 +172,13 @@ void render()
 		for (auto const& spr : level)
 			spr->render(ren); // .first is the key, .second is the data
 
+		//Draw the texture
+		for (auto const& spr : texts)
+			spr->render(ren); // .first is the key, .second is the data
+
 		player->render(ren);
+
+		scoreTxt->render(ren);
 
 		//Update the screen
 		SDL_RenderPresent(ren);
@@ -228,6 +246,9 @@ int main( int argc, char* args[] )
 
 	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/food.png", Vector(1000, 475), Size(20,20), LevelPiece::TileType::FOOD)));
 
+	texts.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
+
+	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
 	prevTime = Clock::now();
 
 	while (!done) //loop until done flag is set)
