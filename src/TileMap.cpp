@@ -56,11 +56,11 @@ void TileMap::readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreC
 				level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/ladder.png", Vector(SPRITE_WIDTH * j + (SPRITE_WIDTH / 2), SPRITE_HEIGHT * i + (SPRITE_HEIGHT / 2)), Size(SPRITE_WIDTH, SPRITE_HEIGHT), LevelPiece::LADDER)));
 				break;
 			case 3: // egg
-				level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/egg.png", Vector(SPRITE_WIDTH * j + (SPRITE_WIDTH / 2), SPRITE_HEIGHT * i + (SPRITE_HEIGHT / 2)), Size(SPRITE_WIDTH, SPRITE_HEIGHT), LevelPiece::EGG)));
+				level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/egg.png", Vector(SPRITE_WIDTH * j + (SPRITE_WIDTH / 2), SPRITE_HEIGHT * i + (SPRITE_HEIGHT / 2)), Size(40, 20), LevelPiece::EGG)));
 				level.back()->addScoreCallback(scoreCallback);
 				break;
 			case 4: // grain
-				level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/food.png", Vector(SPRITE_WIDTH * j + (SPRITE_WIDTH / 2), SPRITE_HEIGHT * i + (SPRITE_HEIGHT / 2)), Size(SPRITE_WIDTH, SPRITE_HEIGHT), LevelPiece::FOOD)));
+				level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/food.png", Vector(SPRITE_WIDTH * j + (SPRITE_WIDTH / 2), SPRITE_HEIGHT * i + (SPRITE_HEIGHT / 2)), Size(60, 15), LevelPiece::FOOD)));
 				level.back()->addScoreCallback(scoreCallback);
 				break;
 			}
