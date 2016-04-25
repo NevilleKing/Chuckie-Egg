@@ -270,7 +270,7 @@ int main( int argc, char* args[] )
 		Audio::Load_SFX("./assets/audio/walk.wav", "Walk");
 
 		Audio::Set_SFX_Volume(30, "Music");
-		Audio::Fade_In_SFX("Music", 5.0f);
+		Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 	}
 
 	prevTime = Clock::now();

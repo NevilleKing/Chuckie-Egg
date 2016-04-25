@@ -274,6 +274,25 @@ int Audio::Fade_In_SFX(std::string label, float seconds)
 	return Mix_FadeInChannel(-1, _sfx[label], 0, seconds * 1000);
 }
 
+int Audio::Fade_In_SFX_And_Loop(std::string label, float seconds, int loops)
+{
+	if (!_isInit)
+	{
+		init_Error();
+		return -1;
+	}
+
+	// check if the label doesn't exist
+	if (_sfx.find(label) == _sfx.end())
+	{
+		char error[] = "Setting Volume of SFX Failed: SFX Doesn't Exist";
+		SDL_LogError(SDL_LOG_PRIORITY_ERROR, error);
+		return -1;
+	}
+
+	return Mix_FadeInChannel(-1, _sfx[label], loops, seconds * 1000);
+}
+
 bool Audio::Fade_Out_SFX(int channel, float seconds)
 {
 	if (!_isInit)

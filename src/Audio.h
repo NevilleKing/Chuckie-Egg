@@ -23,6 +23,7 @@ public:
 	static int Play_SFX_Looping(std::string label, int loops);
 	static bool Set_SFX_Volume(int volume, std::string label);
 	static int Fade_In_SFX(std::string label, float seconds);
+	static int Fade_In_SFX_And_Loop(std::string label, float seconds, int loops);
 	static bool Fade_Out_SFX(int channel, float seconds);
 	static bool Set_SFX_Panning(int channel, int left, int right);
 	static bool Set_SFX_Panning_Based_On_Position(int channel, Vector position, float winwidth);
