@@ -9,6 +9,7 @@
 #include <memory>
 #include "Size.h"
 #include "LevelPiece.h"
+#include "Audio.h"
 
 class Player :
 	public AnimatedSprite

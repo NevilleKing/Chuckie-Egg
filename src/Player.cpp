@@ -132,10 +132,12 @@ void Player::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, S
 			case LevelPiece::TileType::EGG:
 				level[i]->releaseScore();
 				level.erase(level.begin() + i);
+				Audio::Play_SFX("Pickup");
 				break;
 			case LevelPiece::TileType::FOOD:
 				level[i]->releaseScore();
 				level.erase(level.begin() + i);
+				Audio::Play_SFX("Pickup");
 				break;
 			default:
 				switch (this->checkCollisionDirection(*level[i]))
