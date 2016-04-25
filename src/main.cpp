@@ -118,9 +118,6 @@ void handleInput()
 				case SDLK_DOWN:
 					player->MoveDown();
 					break;
-				case SDLK_1:
-					addScore(50);
-					break;
 				}
 			break;
 		case SDL_KEYUP:
@@ -243,8 +240,10 @@ int main( int argc, char* args[] )
 	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/ladder.png", Vector(900, 400), Size(50, 150), LevelPiece::TileType::LADDER)));
 	
 	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/egg.png", Vector(200, 450), Size(20, 20), LevelPiece::TileType::EGG)));
+	level.back()->addScoreCallback(addScore);
 
 	level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/food.png", Vector(1000, 475), Size(20,20), LevelPiece::TileType::FOOD)));
+	level.back()->addScoreCallback(addScore);
 
 	texts.push_back(std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
 

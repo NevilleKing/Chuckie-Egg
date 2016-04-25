@@ -130,9 +130,11 @@ void Player::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, S
 				_isOnLadder = true;
 				break;
 			case LevelPiece::TileType::EGG:
+				level[i]->releaseScore();
 				level.erase(level.begin() + i);
 				break;
 			case LevelPiece::TileType::FOOD:
+				level[i]->releaseScore();
 				level.erase(level.begin() + i);
 				break;
 			default:
