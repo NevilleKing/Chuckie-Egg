@@ -49,6 +49,8 @@ Vector windowPosition = Vector(50, 50);
 
 bool _isPaused = false;
 
+int musicChannel = 0;
+
 // TEMP
 TimePoint prevTime;
 std::map<std::string, std::unique_ptr<Text>> texts;
@@ -162,12 +164,18 @@ void render()
 	if (_isPaused)
 	{
 		if (texts.find("PAUSE") == texts.end())
-			texts["PAUSE"] = std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "PAUSED", { 255,255,255 }, Size(250, 100), Vector(windowSize.width/2, windowSize.height/2), 150)); // create pause text in middle of screen
+		{
+			texts["PAUSE"] = std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "PAUSED", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2), 150)); // create pause text in middle of screen
+			Audio::Pause_SFX(musicChannel);
+		}
 	}
 	else
 	{
 		if (texts.find("PAUSE") != texts.end())
+		{
 			texts.erase("PAUSE");
+			Audio::Resume_SFX(musicChannel);
+		}
 	}
 
 	//First clear the renderer
@@ -270,7 +278,7 @@ int main( int argc, char* args[] )
 		Audio::Load_SFX("./assets/audio/walk.wav", "Walk");
 
 		Audio::Set_SFX_Volume(30, "Music");
-		Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
+		musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 	}
 
 	prevTime = Clock::now();

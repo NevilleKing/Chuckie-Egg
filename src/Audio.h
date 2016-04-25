@@ -21,6 +21,8 @@ public:
 	static bool Stop_Music();
 	static int Play_SFX(std::string label);
 	static int Play_SFX_Looping(std::string label, int loops);
+	static bool Pause_SFX(int channel);
+	static bool Resume_SFX(int channel);
 	static bool Set_SFX_Volume(int volume, std::string label);
 	static int Fade_In_SFX(std::string label, float seconds);
 	static int Fade_In_SFX_And_Loop(std::string label, float seconds, int loops);

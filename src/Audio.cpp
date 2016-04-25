@@ -234,6 +234,32 @@ int Audio::Play_SFX_Looping(std::string label, int loops)
 	return Mix_PlayChannel(-1, _sfx[label], loops);
 }
 
+bool Audio::Pause_SFX(int channel)
+{
+	if (!_isInit)
+	{
+		init_Error();
+		return false;
+	}
+
+	Mix_Pause(channel);
+
+	return true;
+}
+
+bool Audio::Resume_SFX(int channel)
+{
+	if (!_isInit)
+	{
+		init_Error();
+		return false;
+	}
+
+	Mix_Resume(channel);
+
+	return true;
+}
+
 bool Audio::Set_SFX_Volume(int volume, std::string label)
 {
 	if (!_isInit)
