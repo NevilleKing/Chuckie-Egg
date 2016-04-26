@@ -49,6 +49,8 @@ private:
 
 	bool _walkingPlaying = false;
 	int _walkingChannel = 0;
+	bool _ladderClimbPlaying = false;
+	int _ladderClimbChannel = 0;
 
 	void UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 

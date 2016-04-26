@@ -24,6 +24,7 @@ void Player::Jump()
 		_isJumping = true;
 		_isOnGround = false;
 		_yVelocity = -100;
+		Audio::Play_SFX("Jump");
 	}
 }
 
@@ -248,6 +249,27 @@ void Player::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level,
 		{
 			Audio::Stop_SFX(_walkingChannel);
 			_walkingPlaying = false;
+		}
+	}
+
+	if (_ladderState != IDLE && _isOnLadder)
+	{
+		if (!_ladderClimbPlaying)
+		{
+			_ladderClimbChannel = Audio::Play_SFX_Looping("LadderClimb", -1);
+			_ladderClimbPlaying = true;
+		}
+		else
+		{
+			Audio::Set_SFX_Panning_Based_On_Position(_ladderClimbChannel, this->position, windowSize.width);
+		}
+	}
+	else
+	{
+		if (_ladderClimbPlaying)
+		{
+			Audio::Stop_SFX(_ladderClimbChannel);
+			_ladderClimbPlaying = false;
 		}
 	}
 
