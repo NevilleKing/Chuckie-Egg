@@ -165,6 +165,14 @@ void handleInput()
 					break;
 				}
 			break;
+		case SDL_WINDOWEVENT:
+			switch (event.window.event)
+			{
+			case SDL_WINDOWEVENT_MOVED: // handle window move event
+				std::cout << "Window Move" << std::endl;
+				prevTime = Clock::now(); // make sure that animation doesn't keep going when has been moved
+				break;
+			}
 		}
 	}
 }
