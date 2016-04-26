@@ -14,7 +14,7 @@ void Menu::renderMenu(SDL_Renderer * ren)
 		txt.first->render(ren);
 }
 
-void Menu::addText(Text* txtToAdd, void(*callbackFunction)(void))
+void Menu::addText(Text* txtToAdd, void(*callbackFunction)(const Text*))
 {
 	_text[std::unique_ptr<Text>(txtToAdd)] = callbackFunction;
 }
@@ -31,7 +31,8 @@ void Menu::clickMenuItem(Vector mousePos)
 			mousePos.y > textPosition.y - textSize.height &&
 			mousePos.y < textPosition.y + textSize.height)
 		{
-			txt.second(); // make a call to the callback function
+			txt.second(txt.first.get()); // make a call to the callback function
+			return;
 		}
 	}
 }

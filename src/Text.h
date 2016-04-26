@@ -19,6 +19,7 @@ public:
 
 	void ChangeText(const std::string newFontText, SDL_Renderer* ren);
 	void ChangeFont(const std::string newFontPath, SDL_Renderer* ren);
+	const std::string GetText() const { return text; };
 
 private:
 	std::string text;

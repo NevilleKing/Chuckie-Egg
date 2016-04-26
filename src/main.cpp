@@ -86,9 +86,9 @@ void updateVolume(int valueToChange)
 	Audio::Set_All_SFX_Volumes(currentVolume);
 }
 
-void MenuCallback()
+void MenuCallback(const Text* myText)
 {
-	std::cout << "Menu item clicked" << std::endl;
+	std::cout << "Menu item clicked: " << myText->GetText() << std::endl;
 }
 
 void handleInput()

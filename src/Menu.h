@@ -17,11 +17,11 @@ public:
 
 	void renderMenu(SDL_Renderer* ren);
 
-	void addText(Text* txtToAdd, void(*callbackFunction)(void));
+	void addText(Text* txtToAdd, void(*callbackFunction)(const Text*));
 
 	void clickMenuItem(Vector mousePos);
 
 private:
-	std::map<std::unique_ptr<Text>, void(*)(void)> _text;
+	std::map<std::unique_ptr<Text>, void(*)(const Text*)> _text;
 };
 
