@@ -30,6 +30,7 @@
 #include "Player.h"
 #include "LevelPiece.h"
 #include "TileMap.h"
+#include "Menu.h"
 
 std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
@@ -54,6 +55,8 @@ bool _isPaused = false;
 bool _windowed = true;
 
 int musicChannel = 0;
+
+Menu* menu;
 
 // TEMP
 TimePoint prevTime;
@@ -81,6 +84,11 @@ void updateVolume(int valueToChange)
 		return;
 	currentVolume += valueToChange;
 	Audio::Set_All_SFX_Volumes(currentVolume);
+}
+
+void MenuCallback()
+{
+	std::cout << "Menu item clicked" << std::endl;
 }
 
 void handleInput()
@@ -180,6 +188,16 @@ void handleInput()
 			break;
 		case SDL_WINDOWEVENT:
 			prevTime = Clock::now(); // make sure that animation doesn't keep going when has been moved
+		case SDL_MOUSEBUTTONUP:
+			if (event.button.button == SDL_BUTTON_LEFT)
+			{
+				std::cout << event.button.x << " " << event.button.y << std::endl;
+				if (menu != nullptr)
+				{
+					menu->clickMenuItem(Vector(event.button.x, event.button.y));
+				}
+			}
+			break;
 		}
 	}
 }
@@ -206,17 +224,19 @@ void render()
 	// check pause state
 	if (_isPaused)
 	{
-		if (texts.find("PAUSE") == texts.end())
+		if (menu == nullptr)
 		{
-			texts["PAUSE"] = std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "PAUSED", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2), 150)); // create pause text in middle of screen
+			menu = new Menu();
+			menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", "PAUSED", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2), 150), MenuCallback); // create pause text in middle of screen
 			Audio::Pause_SFX(musicChannel);
 		}
 	}
 	else
 	{
-		if (texts.find("PAUSE") != texts.end())
+		if (menu != nullptr)
 		{
-			texts.erase("PAUSE");
+			delete menu;
+			menu = nullptr;
 			Audio::Resume_SFX(musicChannel);
 		}
 	}
@@ -233,6 +253,9 @@ void render()
 	//Draw the text on screen
 	for (auto const& spr : texts)
 		spr.second->render(ren);
+
+	if (menu != nullptr)
+		menu->renderMenu(ren);
 
 	player->render(ren);
 
