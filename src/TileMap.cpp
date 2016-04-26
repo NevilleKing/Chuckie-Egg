@@ -65,5 +65,10 @@ void TileMap::readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreC
 				break;
 			}
 		}
+
+		// add bird in top left corner
+		level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/cage.png", Vector(70, 130), Size(140, 160), LevelPiece::BIG_BIRD)));
+		level_animated.push_back(std::unique_ptr<AnimatedSprite>(new AnimatedSprite(ren, "./assets/bird.png", "./assets/bird.json", Vector(), level.back()->getPosition() + Vector(0, 10), Size(100, 80))));
+		level_animated.back()->changeAnimationCycle("CHIRP"); // start animation
 	}
 }

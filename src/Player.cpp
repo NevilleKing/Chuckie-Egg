@@ -127,6 +127,9 @@ void Player::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, S
 		{
 			switch (level[i]->getType())
 			{
+			case LevelPiece::TileType::BIG_BIRD:
+				// no collision
+				break;
 			case LevelPiece::TileType::LADDER:
 				_isOnLadder = true;
 				break;

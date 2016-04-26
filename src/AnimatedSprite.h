@@ -27,9 +27,10 @@ public:
 	void Update(float time);
 
 	void render(SDL_Renderer* ren);
-protected:
 
 	bool changeAnimationCycle(std::string newAnimationCycle);
+protected:
+
 
 	void flipAnimation(bool right);
 

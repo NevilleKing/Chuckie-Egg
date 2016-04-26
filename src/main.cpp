@@ -196,6 +196,9 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 		currTime = 0;
 
 	player->Update(toSeconds(currTime), levelMap->level, windowSize);
+
+	for (auto const& spr : levelMap->level_animated)
+		spr->Update(currTime);
 }
 
 void render()
@@ -223,6 +226,8 @@ void render()
 
 	//Draw the level on screen
 	for (auto const& spr : levelMap->level)
+		spr->render(ren);
+	for (auto const& spr : levelMap->level_animated)
 		spr->render(ren);
 
 	//Draw the text on screen
