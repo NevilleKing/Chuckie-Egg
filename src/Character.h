@@ -11,12 +11,12 @@
 #include "LevelPiece.h"
 #include "Audio.h"
 
-class Player :
+class Character :
 	public AnimatedSprite
 {
 public:
-	Player(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, Vector velocity1 = Vector(), Vector location = Vector(100, 100), Size size1 = Size(100, 100));
-	~Player();
+	Character(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, Vector velocity1 = Vector(), Vector location = Vector(100, 100), Size size1 = Size(100, 100));
+	~Character();
 
 	void Jump();
 	void MoveLeft();
@@ -54,7 +54,7 @@ private:
 
 	void UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 
-	void changeState(Player::MoveState newState, bool flip = true);
-	void changeLadderState(Player::MoveState newState);
+	void changeState(Character::MoveState newState, bool flip = true);
+	void changeLadderState(Character::MoveState newState);
 };
 

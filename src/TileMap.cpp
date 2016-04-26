@@ -3,10 +3,6 @@
 #define SPRITE_WIDTH 65
 #define SPRITE_HEIGHT 22
 
-#define LEVEL_WIDTH 20
-#define LEVEL_HEIGHT 27
-
-
 TileMap::TileMap(std::string levelFile, SDL_Renderer* ren, void(*scoreCallback)(int))
 {
 	readFromFile(levelFile, ren, scoreCallback);
@@ -20,7 +16,6 @@ TileMap::~TileMap()
 void TileMap::readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreCallback)(int))
 {
 	// For default each level piece is 65 wide and 22 high
-	int levelIntMap[LEVEL_HEIGHT][LEVEL_WIDTH];
 
 	// read in level file
 	std::ifstream file;

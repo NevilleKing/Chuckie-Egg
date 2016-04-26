@@ -11,6 +11,9 @@
 #include "LevelPiece.h"
 #include "AnimatedSprite.h"
 
+#define LEVEL_WIDTH 20
+#define LEVEL_HEIGHT 27
+
 class TileMap
 {
 public:
@@ -19,6 +22,7 @@ public:
 
 	std::vector<std::unique_ptr<LevelPiece>> level;
 	std::vector<std::unique_ptr<AnimatedSprite>> level_animated;
+	int levelIntMap[LEVEL_HEIGHT][LEVEL_WIDTH];
 private:
 	void readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreCallback)(int));
 };

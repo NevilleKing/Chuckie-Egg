@@ -1,17 +1,17 @@
-#include "Player.h"
+#include "Character.h"
 
 #define MOVE_SPEED 200
 #define GRAVITY 150
 
-Player::Player(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, Vector velocity1, Vector location, Size size1) : AnimatedSprite(ren, imagePath, JSONPath, velocity1, location, size1)
+Character::Character(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, Vector velocity1, Vector location, Size size1) : AnimatedSprite(ren, imagePath, JSONPath, velocity1, location, size1)
 {
 }
 
-Player::~Player()
+Character::~Character()
 {
 }
 
-void Player::Jump()
+void Character::Jump()
 {
 	if (!_isJumping && (_isOnLadder || !_isFalling))
 	{
@@ -28,7 +28,7 @@ void Player::Jump()
 	}
 }
 
-void Player::MoveLeft()
+void Character::MoveLeft()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
@@ -40,7 +40,7 @@ void Player::MoveLeft()
 	}
 }
 
-void Player::MoveRight()
+void Character::MoveRight()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
@@ -52,17 +52,17 @@ void Player::MoveRight()
 	}
 }
 
-void Player::MoveUp()
+void Character::MoveUp()
 {
 	changeLadderState(UP);
 }
 
-void Player::MoveDown()
+void Character::MoveDown()
 {
 	changeLadderState(DOWN);
 }
 
-void Player::StopMovingLeft()
+void Character::StopMovingLeft()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
@@ -75,7 +75,7 @@ void Player::StopMovingLeft()
 	}
 }
 
-void Player::StopMovingRight()
+void Character::StopMovingRight()
 {
 	if (!_isJumping && !_isFalling) // when jumping no movement can occur
 	{
@@ -87,17 +87,17 @@ void Player::StopMovingRight()
 	}
 }
 
-void Player::StopMovingUp()
+void Character::StopMovingUp()
 {
 	if (_ladderState == UP) changeLadderState(IDLE);
 }
 
-void Player::StopMovingDown()
+void Character::StopMovingDown()
 {
 	if (_ladderState == DOWN) changeLadderState(IDLE);
 }
 
-void Player::setOnGround()
+void Character::setOnGround()
 {
 	if (_isJumping && _yVelocity > 0)
 	{
@@ -114,7 +114,7 @@ void Player::setOnGround()
 	}
 }
 
-void Player::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
+void Character::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
 	// reset variables
 	_isOnLadder = false;
@@ -194,7 +194,7 @@ void Player::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, S
 	}
 }
 
-void Player::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
+void Character::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
 {
 	UpdateCollisions(level, windowSize);
 
@@ -282,7 +282,7 @@ void Player::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level,
 	this->AnimatedSprite::Update(time);
 }
 
-void Player::changeState(Player::MoveState newState, bool flip)
+void Character::changeState(Character::MoveState newState, bool flip)
 {
 	_state = newState;
 	switch (_state)
@@ -300,7 +300,7 @@ void Player::changeState(Player::MoveState newState, bool flip)
 	}
 }
 
-void Player::changeLadderState(Player::MoveState newState)
+void Character::changeLadderState(Character::MoveState newState)
 {
 	_ladderState = newState;
 	switch (_ladderState)

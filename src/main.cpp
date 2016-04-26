@@ -27,7 +27,7 @@
 #include "Size.h"
 #include "Vector.h"
 #include "Audio.h"
-#include "Player.h"
+#include "Character.h"
 #include "LevelPiece.h"
 #include "TileMap.h"
 #include "Menu.h"
@@ -36,7 +36,7 @@ std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 
-std::unique_ptr<Player> player;
+std::unique_ptr<Character> player;
 
 std::unique_ptr<TileMap> levelMap;
 
@@ -71,7 +71,7 @@ void StartLevel()
 {
 	renderLoadingScreen();
 
-	player = (std::unique_ptr<Player>(new Player(ren, "./assets/player.png", "./assets/walking.json", Vector(), Vector(550, 0), Size(50, 50))));
+	player = (std::unique_ptr<Character>(new Character(ren, "./assets/player.png", "./assets/walking.json", Vector(), Vector(550, 0), Size(50, 50))));
 
 	texts["SCORE"] = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
 
