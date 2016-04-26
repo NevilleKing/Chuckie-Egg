@@ -56,6 +56,9 @@ bool _windowed = true;
 
 int musicChannel = 0;
 
+void renderLoadingScreen();
+void addScore(int);
+
 Menu* menu;
 
 // TEMP
@@ -64,6 +67,37 @@ std::map<std::string, std::unique_ptr<Text>> texts;
 int score = 0;
 std::unique_ptr<Text> scoreTxt;
 // END TEMP
+void StartLevel()
+{
+	renderLoadingScreen();
+
+	player = (std::unique_ptr<Player>(new Player(ren, "./assets/player.png", "./assets/walking.json", Vector(), Vector(550, 0), Size(50, 50))));
+
+	texts["SCORE"] = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
+
+	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
+
+	levelMap = std::unique_ptr<TileMap>(new TileMap("./assets/level1.txt", ren, addScore));
+}
+
+void restartLevel()
+{
+	// delete menu
+	delete menu;
+	menu = nullptr;
+
+	// delete objects
+	player.release();
+	texts.clear();
+	scoreTxt.release();
+	levelMap.release();
+
+	// recreate level
+	StartLevel();
+
+	_isPaused = false;
+	score = 0;
+}
 
 float toSeconds(float nanoseconds)
 {
@@ -88,7 +122,17 @@ void updateVolume(int valueToChange)
 
 void MenuCallback(const Text* myText)
 {
-	std::cout << "Menu item clicked: " << myText->GetText() << std::endl;
+	std::string textString = myText->GetText();
+	std::cout << "Menu item clicked: " << textString << std::endl;
+	
+	if (textString == "EXIT")
+		done = true;
+	else if (textString == "RESUME")
+		_isPaused = false;
+	else if (textString == "RESTART")
+	{
+		restartLevel();
+	}
 }
 
 void handleInput()
@@ -227,7 +271,10 @@ void render()
 		if (menu == nullptr)
 		{
 			menu = new Menu();
-			menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", "PAUSED", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2), 150), MenuCallback); // create pause text in middle of screen
+			menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", "PAUSED", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2 - 200), 150), MenuCallback); // create pause text in middle of screen
+			menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", "RESUME", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2 - 100), 150), MenuCallback); // create pause text in middle of screen
+			menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", "RESTART", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2), 150), MenuCallback); // create pause text in middle of screen
+			menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", "EXIT", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2 + 100), 150), MenuCallback); // create pause text in middle of screen
 			Audio::Pause_SFX(musicChannel);
 		}
 	}
@@ -254,12 +301,12 @@ void render()
 	for (auto const& spr : texts)
 		spr.second->render(ren);
 
-	if (menu != nullptr)
-		menu->renderMenu(ren);
-
 	player->render(ren);
 
 	scoreTxt->render(ren);
+	
+	if (menu != nullptr)
+		menu->renderMenu(ren);
 
 	//Update the screen
 	SDL_RenderPresent(ren);
@@ -328,15 +375,7 @@ int main( int argc, char* args[] )
 		cleanExit(1);
 	}
 
-	renderLoadingScreen();
-
-	player = (std::unique_ptr<Player>(new Player(ren, "./assets/player.png", "./assets/walking.json", Vector(), Vector(550, 0), Size(50, 50))));
-
-	texts["SCORE"] = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
-
-	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
-
-	levelMap = std::unique_ptr<TileMap>(new TileMap("./assets/level1.txt", ren, addScore));
+	StartLevel();
 
 	if (!Audio::init())
 	{
