@@ -51,6 +51,7 @@ int minMaxVolume[2] = { 0, 128 };
 int currentVolume = 128;
 
 bool _isPaused = false;
+bool _windowed = true;
 
 int musicChannel = 0;
 
@@ -134,6 +135,18 @@ void handleInput()
 					break;
 				case SDLK_p:
 					_isPaused = !_isPaused; // toggle pause
+					break;
+				case SDLK_F11:
+					if (_windowed)
+					{
+						SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN); // set fullscreen
+						_windowed = false;
+					}
+					else
+					{
+						SDL_SetWindowFullscreen(win, 0); // set back to windowed mode
+						_windowed = true;
+					}
 					break;
 				}
 
