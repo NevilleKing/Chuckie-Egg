@@ -180,15 +180,6 @@ void handleInput()
 			break;
 		case SDL_WINDOWEVENT:
 			prevTime = Clock::now(); // make sure that animation doesn't keep going when has been moved
-			switch (event.window.event)
-			{
-			case SDL_WINDOWEVENT_RESIZED:
-				int w, h;
-				SDL_GetWindowSize(win, &w, &h);
-				windowSize.width = w;
-				windowSize.height = h;
-				break;
-			}
 		}
 	}
 }
