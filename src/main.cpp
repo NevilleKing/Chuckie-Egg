@@ -78,6 +78,8 @@ void StartLevel()
 	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
 
 	levelMap = std::unique_ptr<TileMap>(new TileMap("./assets/level1.txt", ren, addScore));
+
+	musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 }
 
 void restartLevel()
@@ -91,6 +93,9 @@ void restartLevel()
 	texts.clear();
 	scoreTxt.release();
 	levelMap.release();
+
+	// stop music on channel
+	Audio::Stop_SFX(musicChannel);
 
 	// recreate level
 	StartLevel();
