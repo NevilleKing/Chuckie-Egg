@@ -246,12 +246,16 @@ void renderLoadingScreen()
 {
 	SDL_RenderClear(ren);
 
+	// instantiate the loading text
 	texts["LOADING"] = std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "LOADING...", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2), 150)); // create pause text in middle of screen
 
+	// render the loading text
 	texts["LOADING"]->render(ren);
 
+	// present the renderer
 	SDL_RenderPresent(ren);
 
+	// cleanup the text (so the screen gets overwritten when everything is loaded)
 	texts.erase("LOADING");
 }
 
