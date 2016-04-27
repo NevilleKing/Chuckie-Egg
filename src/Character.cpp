@@ -96,6 +96,13 @@ void Character::StopMovingDown()
 	if (_ladderState == DOWN) changeLadderState(IDLE);
 }
 
+void Character::StopAllMovement()
+{
+	_afterState = IDLE;
+	changeLadderState(IDLE);
+	changeState(IDLE);
+}
+
 void Character::setOnGround()
 {
 	if (_isJumping && _yVelocity > 0)

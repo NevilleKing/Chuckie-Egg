@@ -28,6 +28,8 @@ public:
 	void StopMovingRight();
 	void StopMovingUp();
 	void StopMovingDown();
+	
+	void StopAllMovement();
 
 	void Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 

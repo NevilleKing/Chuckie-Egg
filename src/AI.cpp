@@ -28,6 +28,7 @@ void AI::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Siz
 {
 	if (checkIfReachedDestination())
 	{
+		std::cout << "Direction change" << std::endl;
 		ChooseNextDestination();
 	}
 
@@ -68,7 +69,8 @@ void AI::ChooseNextDestination()
 			}
 			else
 			{
-				StopMovingUp();
+				StopAllMovement();
+				setOnGround();
 				ran = (rand() % 10);
 				_destination.y++;
 				if (ran > 4)
@@ -122,6 +124,7 @@ void AI::ChooseNextDestination()
 		}
 
 		if (_moveDirection == LEFT && !_onLadder) _destination.x++;
+		if (_moveDirection == RIGHT && !_onLadder) _destination.x--;
 
 		if (_destination.x == 0)
 			_destination.x = 1;
