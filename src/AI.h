@@ -22,6 +22,6 @@ private:
 	TileMap* _tilemap;
 
 	Vector _destination;
-	Vector currentPos = Vector(11, 5);
+	Vector currentPos = Vector(0, 25);
 };
 

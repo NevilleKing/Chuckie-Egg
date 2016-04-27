@@ -52,7 +52,7 @@ void AI::ChooseNextDestination()
 {
 	_destination = currentPos;
 
-	while (_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] != 1 && _tilemap->levelIntMap[(int)_destination.y + 1][(int)_destination.x] == 1)
+	while ((_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] != 1 || _tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] != 2) && _tilemap->levelIntMap[(int)_destination.y + 1][(int)_destination.x] == 1)
 	{
 		if (_moveDirection == RIGHT)
 			_destination.x++;
@@ -64,4 +64,7 @@ void AI::ChooseNextDestination()
 	}
 
 	if (_moveDirection == LEFT) _destination.x++;
+
+	if (_destination.x == 0)
+		_destination.x = 1;
 }

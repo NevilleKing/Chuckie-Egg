@@ -404,7 +404,7 @@ int main( int argc, char* args[] )
 		musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 	}
 
-	enemy = new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(750, 100), Size(40, 60));
+	enemy = new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60));
 
 	prevTime = Clock::now();
 
