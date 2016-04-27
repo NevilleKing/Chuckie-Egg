@@ -171,10 +171,17 @@ void AI::ChooseNextDestination()
 			}
 		}
 
-		if (needsMinus)
-			_destination.y++;
+		if (_moveDirection != DOWN)
+		{
+			if (needsMinus)
+				_destination.y++;
+			else
+				_destination.y -= 2;
+		}
 		else
-			_destination.y -= 2;
+		{
+			_destination.y-= 2;
+		}
 	}
 
 	std::cout << "CALLED" << std::endl;
