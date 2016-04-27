@@ -36,12 +36,14 @@ public:
 
 	enum MoveState {LEFT = -1, IDLE = 0, RIGHT = 1, UP = -1, DOWN = 1};
 
+protected:
+	MoveState _state = IDLE;
+
 private:
 	bool _isJumping = false;
 	bool _isFalling = false;
 	bool _isOnGround = false;
 	bool _isOnLadder = false;
-	MoveState _state = IDLE;
 	MoveState _ladderState = IDLE;
 	MoveState _afterState = IDLE;
 	float _yVelocity = 0;

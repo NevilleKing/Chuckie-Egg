@@ -31,6 +31,7 @@
 #include "LevelPiece.h"
 #include "TileMap.h"
 #include "Menu.h"
+#include "AI.h"
 
 std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
@@ -60,6 +61,8 @@ void renderLoadingScreen();
 void addScore(int);
 
 Menu* menu;
+
+AI* enemy;
 
 // TEMP
 TimePoint prevTime;
@@ -264,6 +267,8 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 
 	player->Update(toSeconds(currTime), levelMap->level, windowSize);
 
+	enemy->Update(toSeconds(currTime), levelMap->level, windowSize);
+
 	for (auto const& spr : levelMap->level_animated)
 		spr->Update(currTime);
 }
@@ -307,6 +312,8 @@ void render()
 		spr.second->render(ren);
 
 	player->render(ren);
+
+	enemy->render(ren);
 
 	scoreTxt->render(ren);
 	
@@ -396,6 +403,8 @@ int main( int argc, char* args[] )
 
 		musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 	}
+
+	enemy = new AI(ren, "./assets/player.png", "./assets/walking.json", levelMap.get(), Vector(), Vector(750, 100), Size(50, 50));
 
 	prevTime = Clock::now();
 
