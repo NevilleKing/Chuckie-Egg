@@ -3,6 +3,13 @@
 #include "Character.h"
 #include "TileMap.h"
 
+#include <stdlib.h>
+#include <time.h>
+
+#include <chrono>
+
+using namespace std::chrono;
+
 class AI :
 	public Character
 {
@@ -17,9 +24,11 @@ public:
 	void ChooseNextDestination();
 
 private:
-	Character::MoveState _moveDirection = RIGHT;
+	Character::MoveState _moveDirection = LEFT;
 
 	TileMap* _tilemap;
+	bool _onLadder = false;
+	bool _horizontal = true;
 
 	Vector _destination;
 	Vector currentPos = Vector(0, 25);

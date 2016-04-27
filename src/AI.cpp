@@ -8,6 +8,10 @@
 
 AI::AI(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, TileMap* tm, Vector velocity1, Vector location, Size size1) : Character(ren, imagePath, JSONPath, velocity1, location, size1)
 {
+	_destination = currentPos;
+
+	srand(time(NULL));
+
 	MOVE_SPEED = 120;
 	_tilemap = tm;
 	MoveRight();
@@ -23,6 +27,63 @@ void AI::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Siz
 {
 	if (checkIfReachedDestination())
 	{
+		ChooseNextDestination();
+	}
+
+	Character::Update(time, level, windowSize);
+}
+
+bool AI::checkIfReachedDestination()
+{
+	if (_horizontal)
+	{
+		if (_moveDirection == RIGHT)
+			return position.x > (_destination.x * SPRITE_WIDTH) + (SPRITE_WIDTH / 2);
+		else if (_moveDirection == LEFT)
+			return position.x < (_destination.x * SPRITE_WIDTH) + (SPRITE_WIDTH / 2);
+	}
+	else
+	{
+		if (_moveDirection == UP)
+			return position.y < (_destination.y * SPRITE_HEIGHT) + (SPRITE_HEIGHT / 2);
+		else if (_moveDirection == DOWN)
+			return position.y > (_destination.y * SPRITE_HEIGHT) + (SPRITE_HEIGHT / 2);
+	}
+	return false;
+}
+
+void AI::ChooseNextDestination()
+{
+	if (_onLadder)
+	{
+		int ran = (rand() % 10);
+		std::cout << ran << std::endl;
+		if (ran > 4)
+		{
+			if (_horizontal)
+			{
+				_moveDirection = UP;
+				MoveUp();
+			}
+			else
+			{
+				ran = (rand() % 10);
+				if (ran > 4)
+				{
+					_moveDirection = RIGHT;
+					MoveRight();
+				}
+				else
+				{
+					_moveDirection = LEFT;
+					MoveLeft();
+				}
+			}
+			_horizontal = !_horizontal;
+		}
+	}
+	else
+	{
 		if (_moveDirection == RIGHT)
 		{
 			_moveDirection = LEFT;
@@ -33,35 +94,54 @@ void AI::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Siz
 			_moveDirection = RIGHT;
 			MoveRight();
 		}
-
-		ChooseNextDestination();
 	}
 
-	Character::Update(time, level, windowSize);
-}
-
-bool AI::checkIfReachedDestination()
-{
-	if (_moveDirection == RIGHT)
-		return position.x > _destination.x * SPRITE_WIDTH;
-	else
-		return position.x < _destination.x * SPRITE_WIDTH;
-}
-
-void AI::ChooseNextDestination()
-{
-	_destination = currentPos;
-
-	while ((_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] != 1 || _tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] != 2) && _tilemap->levelIntMap[(int)_destination.y + 1][(int)_destination.x] == 1)
+	if (_horizontal)
 	{
-		if (_moveDirection == RIGHT)
-			_destination.x++;
-		else
-			_destination.x--;
+		_onLadder = false;
+		while (_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] != 1 && _tilemap->levelIntMap[(int)_destination.y + 1][(int)_destination.x] == 1)
+		{
+			if (_moveDirection == RIGHT)
+				_destination.x++;
+			else
+				_destination.x--;
 
-		if (_destination.x == 19 || _destination.x == 0)
-			break;
+			if (_destination.x == 19 || _destination.x == 0)
+				break;
+
+			if (_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] == 2)
+			{
+				_onLadder = true;
+				break;
+			}
+		}
 	}
+	else
+	{
+		_onLadder = true;
+		bool needsMinus = true;
+		while (_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] == 2)
+		{
+			if (_moveDirection == UP)
+				_destination.y--;
+
+			if (_destination.y == 26 || _destination.y == 0)
+				break;
+
+			if (_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x - 1] == 1 || _tilemap->levelIntMap[(int)_destination.y][(int)_destination.x + 1] == 1)
+			{
+				needsMinus = false;
+				break;
+			}
+		}
+
+		if (needsMinus)
+			_destination.y--;
+		else
+			_destination.y++;
+	}
+
+	std::cout << "CALLED" << std::endl;
 
 	if (_moveDirection == LEFT) _destination.x++;
 
