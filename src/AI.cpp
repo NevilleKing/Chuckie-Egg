@@ -68,8 +68,17 @@ void AI::ChooseNextDestination()
 				ran = (rand() % 10);
 				if (ran > 4)
 				{
-					_moveDirection = UP;
-					MoveUp();
+					if (_tilemap->levelIntMap[(int)_destination.y - 2][(int)_destination.x] == 2)
+					{
+						_moveDirection = UP;
+						MoveUp();
+					} 
+					else
+					{
+						std::cout << "Can't go up : going down" << std::endl;
+						_moveDirection = DOWN;
+						MoveDown();
+					}
 				}
 				else
 				{
