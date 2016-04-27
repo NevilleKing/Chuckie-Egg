@@ -70,6 +70,7 @@ void AI::ChooseNextDestination()
 			{
 				StopMovingUp();
 				ran = (rand() % 10);
+				_destination.y++;
 				if (ran > 4)
 				{
 					_moveDirection = RIGHT;
@@ -120,7 +121,7 @@ void AI::ChooseNextDestination()
 			}
 		}
 
-		if (_moveDirection == LEFT) _destination.x++;
+		if (_moveDirection == LEFT && !_onLadder) _destination.x++;
 
 		if (_destination.x == 0)
 			_destination.x = 1;
