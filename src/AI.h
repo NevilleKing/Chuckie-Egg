@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Character.h"
 #include "TileMap.h"
+#include "Character.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -17,9 +17,9 @@ public:
 	AI(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, TileMap* tm, Vector velocity1 = Vector(), Vector location = Vector(100, 100), Size size1 = Size(100, 100));
 	~AI();
 
-	void UpdateEnemyCollisions(std::unique_ptr<Character> &player, void(*enemyCollisionCallback)(void));
+	void UpdateEnemyCollisions(std::vector<std::unique_ptr<Character>>& players, void(*enemyCollisionCallback)(void));
 
-	void Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, std::unique_ptr<Character> &player, Size windowSize, void(*enemyCollisionCallback)(void));
+	void Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, std::vector<std::unique_ptr<Character>> &players, Size windowSize, void(*enemyCollisionCallback)(void));
 
 	void ResetPosition();
 

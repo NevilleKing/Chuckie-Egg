@@ -148,14 +148,20 @@ void Character::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level
 				_isOnLadder = true;
 				break;
 			case LevelPiece::TileType::EGG:
-				level[i]->releaseScore();
-				level.erase(level.begin() + i);
-				Audio::Play_SFX("Pickup");
+				if (!_isAI)
+				{
+					level[i]->releaseScore();
+					level.erase(level.begin() + i);
+					Audio::Play_SFX("Pickup");
+				}
 				break;
 			case LevelPiece::TileType::FOOD:
-				level[i]->releaseScore();
-				level.erase(level.begin() + i);
-				Audio::Play_SFX("Pickup");
+				if (!_isAI)
+				{
+					level[i]->releaseScore();
+					level.erase(level.begin() + i);
+					Audio::Play_SFX("Pickup");
+				}
 				break;
 			default:
 				switch (this->checkCollisionDirection(*level[i]))

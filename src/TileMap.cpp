@@ -3,9 +3,9 @@
 #define SPRITE_WIDTH 65
 #define SPRITE_HEIGHT 22
 
-TileMap::TileMap(std::string levelFile, SDL_Renderer* ren, void(*scoreCallback)(int))
+TileMap::TileMap(std::string levelFile, SDL_Renderer* ren, void(*scoreCallback)(int), std::vector<std::unique_ptr<Character>> &enemies, std::vector<std::unique_ptr<Character>> &players)
 {
-	readFromFile(levelFile, ren, scoreCallback);
+	readFromFile(levelFile, ren, scoreCallback, enemies, players);
 }
 
 
@@ -13,7 +13,7 @@ TileMap::~TileMap()
 {
 }
 
-void TileMap::readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreCallback)(int))
+void TileMap::readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreCallback)(int), std::vector<std::unique_ptr<Character>> &enemies, std::vector<std::unique_ptr<Character>> &players)
 {
 	// For default each level piece is 65 wide and 22 high
 
@@ -28,17 +28,15 @@ void TileMap::readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreC
 	{
 		// blank line
 		if (line == "") continue;
-		else if (line.find("Swan") != std::string::npos)
+		else
 		{
-			
+			if (line.length() != 20) return; // line is not big enough
+			for (int col = 0; col < line.length(); col++)
+			{
+				levelIntMap[row][col] = line[col] - '0';
+			}
+			row++;
 		}
-
-		if (line.length() != 20) return; // line is not big enough
-		for (int col = 0; col < line.length(); col++)
-		{
-			levelIntMap[row][col] = line[col] - '0';
-		}
-		row++;
 	}
 
 	file.close();
@@ -65,6 +63,11 @@ void TileMap::readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreC
 			case 4: // grain
 				level.push_back(std::unique_ptr<LevelPiece>(new LevelPiece(ren, "./assets/food.png", Vector(SPRITE_WIDTH * j + (SPRITE_WIDTH / 2), SPRITE_HEIGHT * i + (SPRITE_HEIGHT / 2)), Size(60, 15), LevelPiece::FOOD)));
 				level.back()->addScoreCallback(scoreCallback);
+				break;
+			case 5: // enemy
+				break;
+			case 6: // player start
+				players.push_back(std::unique_ptr<Character>(new Character(ren, "./assets/player.png", "./assets/player.json", Vector(), Vector(SPRITE_WIDTH * j + (SPRITE_WIDTH / 2), SPRITE_HEIGHT * i + (SPRITE_HEIGHT / 2)), Size(50, 50))));
 				break;
 			}
 		}

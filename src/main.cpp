@@ -44,6 +44,10 @@ bool done = false;
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::steady_clock::time_point TimePoint;
 
+std::vector<std::unique_ptr<AI>> enemies;
+
+std::vector<std::unique_ptr<Character>> players;
+
 Size windowSize = Size(1300, 594);
 Vector windowPosition = Vector(50, 50);
 
@@ -70,13 +74,13 @@ void StartLevel()
 {
 	renderLoadingScreen();
 
-	player = (std::unique_ptr<Character>(new Character(ren, "./assets/player.png", "./assets/player.json", Vector(), Vector(550, 0), Size(50, 50))));
+	//players.push_back(std::unique_ptr<Character>(new Character(ren, "./assets/player.png", "./assets/player.json", Vector(), Vector(550, 0), Size(50, 50))));
 
 	texts["SCORE"] = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
 
 	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
 
-	levelMap = std::unique_ptr<TileMap>(new TileMap("./assets/level1.txt", ren, addScore));
+	levelMap = std::unique_ptr<TileMap>(new TileMap("./assets/level1.txt", ren, addScore, players, players));
 
 	musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 }
@@ -88,7 +92,8 @@ void restartLevel()
 	menu = nullptr;
 
 	// delete objects
-	player.release();
+	for (int i = 0; i < players.size(); i++)
+		players[i].release();
 	texts.clear();
 	scoreTxt.release();
 	levelMap.release();
@@ -107,7 +112,8 @@ void enemyCollisionCallback()
 {
 	std::cout << "enemy collision" << std::endl;
 
-	player->ResetPosition();
+	for (int i = 0; i < players.size(); i++)
+		players[i]->ResetPosition();
 
 	for (auto const& spr : enemies)
 		spr->ResetPosition();
@@ -185,19 +191,19 @@ void handleInput()
 					//hit escape to exit
 				case SDLK_ESCAPE: done = true; break;
 				case SDLK_SPACE: 
-					if (!_isPaused) player->Jump();
+					if (!_isPaused) players[0]->Jump();
 					break;
 				case SDLK_LEFT:
-					if (!_isPaused) player->MoveLeft();
+					if (!_isPaused) players[0]->MoveLeft();
 					break;
 				case SDLK_RIGHT:
-					if (!_isPaused) player->MoveRight();
+					if (!_isPaused) players[0]->MoveRight();
 					break;
 				case SDLK_UP:
-					if (!_isPaused) player->MoveUp();
+					if (!_isPaused) players[0]->MoveUp();
 					break;
 				case SDLK_DOWN:
-					if (!_isPaused) player->MoveDown();
+					if (!_isPaused) players[0]->MoveDown();
 					break;
 				case SDLK_p:
 					_isPaused = !_isPaused; // toggle pause
@@ -231,16 +237,16 @@ void handleInput()
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_LEFT:
-					if (!_isPaused) player->StopMovingLeft();
+					if (!_isPaused) players[0]->StopMovingLeft();
 					break;
 				case SDLK_RIGHT:
-					if (!_isPaused) player->StopMovingRight();
+					if (!_isPaused) players[0]->StopMovingRight();
 					break;
 				case SDLK_UP:
-					if (!_isPaused) player->StopMovingUp();
+					if (!_isPaused) players[0]->StopMovingUp();
 					break;
 				case SDLK_DOWN:
-					if (!_isPaused) player->StopMovingDown();
+					if (!_isPaused) players[0]->StopMovingDown();
 					break;
 				}
 			break;
@@ -271,10 +277,11 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	if (_isPaused)
 		currTime = 0;
 
-	player->Update(toSeconds(currTime), levelMap->level, windowSize);
+	for (int i = 0; i < players.size(); i++)
+		players[i]->Update(toSeconds(currTime), levelMap->level, windowSize);
 
 	for (auto const& enemy : enemies)
-		enemy->Update(toSeconds(currTime), levelMap->level, player, windowSize, enemyCollisionCallback);
+		enemy->Update(toSeconds(currTime), levelMap->level, players, windowSize, enemyCollisionCallback);
 
 	for (auto const& spr : levelMap->level_animated)
 		spr->Update(currTime);
@@ -311,6 +318,7 @@ void render()
 	//Draw the level on screen
 	for (auto const& spr : levelMap->level)
 		spr->render(ren);
+
 	for (auto const& spr : levelMap->level_animated)
 		spr->render(ren);
 
@@ -318,7 +326,8 @@ void render()
 	for (auto const& spr : texts)
 		spr.second->render(ren);
 
-	player->render(ren);
+	for (auto const& player : players)
+		player->render(ren);
 
 	for (auto const& enemy : enemies)
 		enemy->render(ren);
