@@ -39,6 +39,8 @@ public:
 protected:
 	MoveState _state = IDLE;
 
+	float MOVE_SPEED = 200;
+
 private:
 	bool _isJumping = false;
 	bool _isFalling = false;

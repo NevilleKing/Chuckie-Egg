@@ -1,6 +1,5 @@
 #include "Character.h"
 
-#define MOVE_SPEED 200
 #define GRAVITY 150
 
 Character::Character(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, Vector velocity1, Vector location, Size size1) : AnimatedSprite(ren, imagePath, JSONPath, velocity1, location, size1)

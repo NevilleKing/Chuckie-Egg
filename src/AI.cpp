@@ -8,6 +8,7 @@
 
 AI::AI(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, TileMap* tm, Vector velocity1, Vector location, Size size1) : Character(ren, imagePath, JSONPath, velocity1, location, size1)
 {
+	MOVE_SPEED = 120;
 	_tilemap = tm;
 	MoveRight();
 	ChooseNextDestination();
@@ -57,6 +58,9 @@ void AI::ChooseNextDestination()
 			_destination.x++;
 		else
 			_destination.x--;
+
+		if (_destination.x == 19 || _destination.x == 0)
+			break;
 	}
 
 	if (_moveDirection == LEFT) _destination.x++;

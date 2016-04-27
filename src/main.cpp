@@ -74,7 +74,7 @@ void StartLevel()
 {
 	renderLoadingScreen();
 
-	player = (std::unique_ptr<Character>(new Character(ren, "./assets/player.png", "./assets/walking.json", Vector(), Vector(550, 0), Size(50, 50))));
+	player = (std::unique_ptr<Character>(new Character(ren, "./assets/player.png", "./assets/player.json", Vector(), Vector(550, 0), Size(50, 50))));
 
 	texts["SCORE"] = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
 
@@ -404,7 +404,7 @@ int main( int argc, char* args[] )
 		musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 	}
 
-	enemy = new AI(ren, "./assets/player.png", "./assets/walking.json", levelMap.get(), Vector(), Vector(750, 100), Size(50, 50));
+	enemy = new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(750, 100), Size(40, 60));
 
 	prevTime = Clock::now();
 
