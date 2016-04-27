@@ -29,7 +29,7 @@ void Character::Jump()
 
 void Character::MoveLeft()
 {
-	if (!_isJumping && !_isFalling) // when jumping no movement can occur
+	if (!_isJumping && !_isFalling || _isAI) // when jumping no movement can occur
 	{
 		changeState(LEFT);
 	}
@@ -41,7 +41,7 @@ void Character::MoveLeft()
 
 void Character::MoveRight()
 {
-	if (!_isJumping && !_isFalling) // when jumping no movement can occur
+	if (!_isJumping && !_isFalling || _isAI) // when jumping no movement can occur
 	{
 		changeState(RIGHT);
 	}

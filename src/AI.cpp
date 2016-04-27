@@ -8,6 +8,7 @@
 
 AI::AI(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, TileMap* tm, Vector velocity1, Vector location, Size size1) : Character(ren, imagePath, JSONPath, velocity1, location, size1)
 {
+	_isAI = true;
 	_destination = currentPos;
 
 	srand(time(NULL));
@@ -67,6 +68,7 @@ void AI::ChooseNextDestination()
 			}
 			else
 			{
+				StopMovingUp();
 				ran = (rand() % 10);
 				if (ran > 4)
 				{
@@ -99,8 +101,10 @@ void AI::ChooseNextDestination()
 	if (_horizontal)
 	{
 		_onLadder = false;
-		while (_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] != 1 && _tilemap->levelIntMap[(int)_destination.y + 1][(int)_destination.x] == 1)
+		bool firstTime = true;
+		while ((_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] != 1 && _tilemap->levelIntMap[(int)_destination.y + 1][(int)_destination.x] == 1) || firstTime)
 		{
+			firstTime = false;
 			if (_moveDirection == RIGHT)
 				_destination.x++;
 			else
@@ -115,6 +119,11 @@ void AI::ChooseNextDestination()
 				break;
 			}
 		}
+
+		if (_moveDirection == LEFT) _destination.x++;
+
+		if (_destination.x == 0)
+			_destination.x = 1;
 	}
 	else
 	{
@@ -136,15 +145,10 @@ void AI::ChooseNextDestination()
 		}
 
 		if (needsMinus)
-			_destination.y--;
-		else
 			_destination.y++;
+		else
+			_destination.y -= 2;
 	}
 
 	std::cout << "CALLED" << std::endl;
-
-	if (_moveDirection == LEFT) _destination.x++;
-
-	if (_destination.x == 0)
-		_destination.x = 1;
 }

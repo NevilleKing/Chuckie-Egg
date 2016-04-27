@@ -41,11 +41,13 @@ protected:
 
 	float MOVE_SPEED = 200;
 
+	bool _isAI = false;
+
 private:
+	bool _isOnLadder = false;
 	bool _isJumping = false;
 	bool _isFalling = false;
 	bool _isOnGround = false;
-	bool _isOnLadder = false;
 	MoveState _ladderState = IDLE;
 	MoveState _afterState = IDLE;
 	float _yVelocity = 0;
