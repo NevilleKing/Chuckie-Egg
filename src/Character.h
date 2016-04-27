@@ -31,6 +31,8 @@ public:
 	
 	void StopAllMovement();
 
+	void ResetPosition();
+
 	void Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 
 
@@ -54,6 +56,8 @@ private:
 	MoveState _afterState = IDLE;
 	float _yVelocity = 0;
 	float _xVelocity = 0;
+
+	Vector _originalLocation;
 
 	bool _walkingPlaying = false;
 	int _walkingChannel = 0;

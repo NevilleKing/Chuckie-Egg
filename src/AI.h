@@ -21,6 +21,8 @@ public:
 
 	void Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, std::unique_ptr<Character> &player, Size windowSize, void(*enemyCollisionCallback)(void));
 
+	void ResetPosition();
+
 	bool checkIfReachedDestination();
 
 	void ChooseNextDestination();
@@ -33,6 +35,6 @@ private:
 	bool _horizontal = true;
 
 	Vector _destination;
-	Vector currentPos = Vector(0, 25);
+	Vector originalPos = Vector(0, 25);
 };
 

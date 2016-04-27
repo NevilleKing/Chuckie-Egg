@@ -110,6 +110,11 @@ void restartLevel()
 void enemyCollisionCallback()
 {
 	std::cout << "enemy collision" << std::endl;
+
+	player->ResetPosition();
+
+	for (auto const& spr : enemies)
+		spr->ResetPosition();
 }
 
 float toSeconds(float nanoseconds)
@@ -411,8 +416,6 @@ int main( int argc, char* args[] )
 		musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 	}
 
-	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60))));
-	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60))));
 	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60))));
 
 	prevTime = Clock::now();

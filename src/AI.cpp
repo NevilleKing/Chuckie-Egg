@@ -9,7 +9,7 @@
 AI::AI(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, TileMap* tm, Vector velocity1, Vector location, Size size1) : Character(ren, imagePath, JSONPath, velocity1, location, size1)
 {
 	_isAI = true;
-	_destination = currentPos;
+	_destination = originalPos;
 
 	srand(time(NULL));
 
@@ -42,6 +42,18 @@ void AI::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, std
 
 	UpdateEnemyCollisions(player, enemyCollisionCallback);
 	Character::Update(time, level, windowSize);
+}
+
+void AI::ResetPosition()
+{
+	Character::ResetPosition();
+	
+	_destination = originalPos;
+	MoveRight();
+	_moveDirection = RIGHT;
+	_horizontal = true;
+	_onLadder = false;
+	ChooseNextDestination();
 }
 
 bool AI::checkIfReachedDestination()
