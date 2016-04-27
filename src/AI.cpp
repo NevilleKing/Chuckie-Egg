@@ -24,13 +24,23 @@ AI::~AI()
 {
 }
 
-void AI::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
+void AI::UpdateEnemyCollisions(std::unique_ptr<Character> &player, void(*enemyCollisionCallback)(void))
+{
+	if (player->isColliding(*this))
+	{
+		enemyCollisionCallback();
+		return;
+	}
+}
+
+void AI::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, std::unique_ptr<Character> &player, Size windowSize, void(*enemyCollisionCallback)(void))
 {
 	if (checkIfReachedDestination())
 	{
 		ChooseNextDestination();
 	}
 
+	UpdateEnemyCollisions(player, enemyCollisionCallback);
 	Character::Update(time, level, windowSize);
 }
 

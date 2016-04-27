@@ -62,7 +62,7 @@ void addScore(int);
 
 Menu* menu;
 
-std::vector<AI*> enemies;
+std::vector<std::unique_ptr<AI>> enemies;
 
 // TEMP
 TimePoint prevTime;
@@ -105,6 +105,11 @@ void restartLevel()
 
 	_isPaused = false;
 	score = 0;
+}
+
+void enemyCollisionCallback()
+{
+	std::cout << "enemy collision" << std::endl;
 }
 
 float toSeconds(float nanoseconds)
@@ -267,8 +272,8 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 
 	player->Update(toSeconds(currTime), levelMap->level, windowSize);
 
-	for (auto enemy : enemies)
-		enemy->Update(toSeconds(currTime), levelMap->level, windowSize);
+	for (auto const& enemy : enemies)
+		enemy->Update(toSeconds(currTime), levelMap->level, player, windowSize, enemyCollisionCallback);
 
 	for (auto const& spr : levelMap->level_animated)
 		spr->Update(currTime);
@@ -314,7 +319,7 @@ void render()
 
 	player->render(ren);
 
-	for (auto enemy : enemies)
+	for (auto const& enemy : enemies)
 		enemy->render(ren);
 
 	scoreTxt->render(ren);
@@ -406,9 +411,9 @@ int main( int argc, char* args[] )
 		musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 	}
 
-	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
-	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
-	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
+	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60))));
+	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60))));
+	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60))));
 
 	prevTime = Clock::now();
 
