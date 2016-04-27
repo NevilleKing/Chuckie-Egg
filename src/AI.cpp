@@ -28,7 +28,6 @@ void AI::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Siz
 {
 	if (checkIfReachedDestination())
 	{
-		std::cout << "Direction change" << std::endl;
 		ChooseNextDestination();
 	}
 
@@ -59,7 +58,6 @@ void AI::ChooseNextDestination()
 	if (_onLadder)
 	{
 		int ran = (rand() % 10);
-		std::cout << ran << std::endl;
 		if (ran > 4)
 		{
 			if (_horizontal)
@@ -75,7 +73,6 @@ void AI::ChooseNextDestination()
 					} 
 					else
 					{
-						std::cout << "Can't go up : going down" << std::endl;
 						_moveDirection = DOWN;
 						MoveDown();
 					}
@@ -102,13 +99,30 @@ void AI::ChooseNextDestination()
 				_destination.y++;
 				if (ran > 4)
 				{
-					_moveDirection = RIGHT;
-					MoveRight();
+					if (_tilemap->levelIntMap[(int)_destination.y + 1][(int)_destination.x + 1] == 1)
+					{
+						_moveDirection = RIGHT;
+						MoveRight();
+					}
+					else
+					{
+						std::cout << "Can't move right : moving left" << std::endl;
+						_moveDirection = LEFT;
+						MoveLeft();
+					}
 				}
 				else
 				{
-					_moveDirection = LEFT;
-					MoveLeft();
+					if (_tilemap->levelIntMap[(int)_destination.y + 1][(int)_destination.x - 1] == 1)
+					{
+						_moveDirection = LEFT;
+						MoveLeft();
+					}
+					else
+					{
+						_moveDirection = RIGHT;
+						MoveRight();
+					}
 				}
 			}
 			_horizontal = !_horizontal;
@@ -192,6 +206,4 @@ void AI::ChooseNextDestination()
 			_destination.y-= 2;
 		}
 	}
-
-	std::cout << "CALLED" << std::endl;
 }
