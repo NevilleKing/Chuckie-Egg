@@ -26,6 +26,13 @@ void TileMap::readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreC
 	int row = 0;
 	while (std::getline(file, line))
 	{
+		// blank line
+		if (line == "") continue;
+		else if (line.find("Swan") != std::string::npos)
+		{
+			
+		}
+
 		if (line.length() != 20) return; // line is not big enough
 		for (int col = 0; col < line.length(); col++)
 		{
@@ -33,6 +40,7 @@ void TileMap::readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreC
 		}
 		row++;
 	}
+
 	file.close();
 
 	// loop through and add to level

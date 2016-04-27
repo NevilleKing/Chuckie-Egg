@@ -37,8 +37,6 @@ std::string exeName;
 SDL_Window *win; //pointer to the SDL_Window
 SDL_Renderer *ren; //pointer to the SDL_Renderer
 
-std::unique_ptr<Character> player;
-
 std::unique_ptr<TileMap> levelMap;
 
 bool done = false;
@@ -61,8 +59,6 @@ void renderLoadingScreen();
 void addScore(int);
 
 Menu* menu;
-
-std::vector<std::unique_ptr<AI>> enemies;
 
 // TEMP
 TimePoint prevTime;
