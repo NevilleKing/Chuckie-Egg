@@ -64,8 +64,26 @@ void AI::ChooseNextDestination()
 		{
 			if (_horizontal)
 			{
-				_moveDirection = UP;
-				MoveUp();
+				StopAllMovement();
+				ran = (rand() % 10);
+				if (ran > 4)
+				{
+					_moveDirection = UP;
+					MoveUp();
+				}
+				else
+				{
+					if (_tilemap->levelIntMap[(int)_destination.y + 1][(int)_destination.x] != 1)
+					{
+						_moveDirection = DOWN;
+						MoveDown();
+					}
+					else
+					{
+						_moveDirection = UP;
+						MoveUp();
+					}
+				}
 			}
 			else
 			{
@@ -137,14 +155,19 @@ void AI::ChooseNextDestination()
 		{
 			if (_moveDirection == UP)
 				_destination.y--;
+			else
+				_destination.y++;
 
 			if (_destination.y == 26 || _destination.y == 0)
 				break;
 
-			if (_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x - 1] == 1 || _tilemap->levelIntMap[(int)_destination.y][(int)_destination.x + 1] == 1)
+			if (_moveDirection == UP)
 			{
-				needsMinus = false;
-				break;
+				if (_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x - 1] == 1 || _tilemap->levelIntMap[(int)_destination.y][(int)_destination.x + 1] == 1)
+				{
+					needsMinus = false;
+					break;
+				}
 			}
 		}
 
