@@ -174,6 +174,7 @@ void AI::ChooseNextDestination()
 	{
 		_onLadder = true;
 		bool needsMinus = true;
+		bool firstTime = true;
 		while (_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x] == 2)
 		{
 			if (_moveDirection == UP)
@@ -184,14 +185,13 @@ void AI::ChooseNextDestination()
 			if (_destination.y == 26 || _destination.y == 0)
 				break;
 
-			if (_moveDirection == UP)
+			if ((_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x - 1] == 1 || _tilemap->levelIntMap[(int)_destination.y][(int)_destination.x + 1] == 1) && !firstTime)
 			{
-				if (_tilemap->levelIntMap[(int)_destination.y][(int)_destination.x - 1] == 1 || _tilemap->levelIntMap[(int)_destination.y][(int)_destination.x + 1] == 1)
-				{
-					needsMinus = false;
-					break;
-				}
+				needsMinus = false;
+				break;
 			}
+
+			firstTime = false;
 		}
 
 		if (_moveDirection != DOWN)
@@ -204,6 +204,7 @@ void AI::ChooseNextDestination()
 		else
 		{
 			_destination.y-= 2;
+			position.y -= 5;
 		}
 	}
 }

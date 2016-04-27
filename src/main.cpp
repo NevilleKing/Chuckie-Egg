@@ -409,13 +409,6 @@ int main( int argc, char* args[] )
 	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
 	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
 	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
-	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
-	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
-	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
-	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
-	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
-	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
-	enemies.push_back(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60)));
 
 	prevTime = Clock::now();
 
