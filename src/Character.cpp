@@ -305,7 +305,7 @@ void Character::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &lev
 		}
 	}
 
-	if (checkLadder != nullptr && _isOnLadder && !_isOnGround)
+	if (checkLadder != nullptr && _isOnLadder && !_isOnGround && !_isJumping)
 	{
 		Vector pos = checkLadder(position, false);
 		if (pos != Vector(-1, -1))
@@ -341,6 +341,9 @@ void Character::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &lev
 	{
 		changeState(IDLE);
 	}
+
+	if (!_isOnLadder && _state == IDLE && _horizontalButtonDown)
+		std::cout << true << std::endl;
 
 	setVelocity(Vector(MOVE_SPEED * _xVelocity, _yVelocity));
 
