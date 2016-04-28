@@ -21,7 +21,7 @@ void LevelPiece::releaseScore()
 		}
 }
 
-void LevelPiece::addScoreCallback(void(*scoreFunc)(int))
+void LevelPiece::addScoreCallback(void(*scoreFunc)(LevelPiece::TileType))
 {
 	addScore = scoreFunc;
 }

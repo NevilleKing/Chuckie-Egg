@@ -18,7 +18,7 @@
 class TileMap
 {
 public:
-	TileMap(std::string levelFile, SDL_Renderer* ren, void(*scoreCallback)(int), std::vector<std::unique_ptr<Character>> &players);
+	TileMap(std::string levelFile, SDL_Renderer* ren, void(*scoreCallback)(LevelPiece::TileType), std::vector<std::unique_ptr<Character>> &players);
 	~TileMap();
 
 	std::vector<std::unique_ptr<LevelPiece>> level;
@@ -28,7 +28,9 @@ public:
 	std::vector<Vector> enemyList;
 	std::vector<Vector> enemyList2;
 
+	int eggsRequired = 0;
+
 private:
-	void readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreCallback)(int), std::vector<std::unique_ptr<Character>> &players);
+	void readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreCallback)(LevelPiece::TileType), std::vector<std::unique_ptr<Character>> &players);
 };
 

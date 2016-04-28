@@ -11,14 +11,14 @@ public:
 
 	void releaseScore();
 
-	void addScoreCallback(void(*scoreFunc)(int));
+	void addScoreCallback(void(*scoreFunc)(LevelPiece::TileType));
 	void removeCallback();
 
 	TileType getType();
 
 private:
 	TileType _type;
-	void(*addScore)(int) = nullptr;
+	void(*addScore)(LevelPiece::TileType) = nullptr;
 	bool _scoreReleased = false;
 };
 

@@ -60,9 +60,11 @@ bool _windowed = true;
 int musicChannel = 0;
 
 void renderLoadingScreen();
-void addScore(int);
+void addScore(LevelPiece::TileType);
 
 Menu* menu;
+
+int currentEggs = 0;
 
 // TEMP
 TimePoint prevTime;
@@ -136,12 +138,16 @@ float toSeconds(float nanoseconds)
 	return nanoseconds / 1000000000;
 }
 
-void addScore(int scoreToAdd)
+void addScore(LevelPiece::TileType type)
 {
+	int scoreToAdd = type;
 	score += scoreToAdd;
 	std::stringstream ss;
 	ss << std::setw(6) << std::setfill('0') << score;
 	scoreTxt->ChangeText(ss.str(), ren);
+
+	if (type == LevelPiece::EGG)
+		currentEggs++;
 }
 
 void updateVolume(int valueToChange)
@@ -312,6 +318,11 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	// Time since last frame
 	auto currTime = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - prevTime).count();
 	prevTime = Clock::now();
+
+	if (currentEggs >= levelMap->eggsRequired)
+	{
+		std::cout << "Level Complete" << std::endl;
+	}
 
 	if (_isPaused)
 		currTime = 0;
