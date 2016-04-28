@@ -63,12 +63,12 @@ void renderLoadingScreen();
 void addScore(LevelPiece::TileType);
 void restartLevel();
 
-std::vector<std::string> levelStrings = { "./assets/level1.txt", "./assets/level2.txt" };
+std::vector<std::string> levelStrings = { "./assets/level1.txt", "./assets/level2.txt", "./assets/level3.txt"};
 
 Menu* menu;
 
 int currentEggs = 0;
-int currentLevel = 0;
+int currentLevel = 2;
 
 // TEMP
 TimePoint prevTime;
