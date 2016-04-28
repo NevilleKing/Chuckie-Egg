@@ -6,9 +6,11 @@
 #define SPRITE_WIDTH 65
 #define SPRITE_HEIGHT 22
 
-AI::AI(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, TileMap* tm, Vector velocity1, Vector location, Size size1) : Character(ren, imagePath, JSONPath, velocity1, location, size1)
+AI::AI(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, TileMap* tm, Vector velocity1, Vector location, Size size1, Vector tilePosition) : Character(ren, imagePath, JSONPath, velocity1, location, size1)
 {
 	_isAI = true;
+	originalPos = tilePosition;
+
 	_destination = originalPos;
 
 	srand(time(NULL));

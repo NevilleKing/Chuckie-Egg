@@ -18,14 +18,17 @@
 class TileMap
 {
 public:
-	TileMap(std::string levelFile, SDL_Renderer* ren, void(*scoreCallback)(int), std::vector<std::unique_ptr<Character>> &enemies, std::vector<std::unique_ptr<Character>> &players);
+	TileMap(std::string levelFile, SDL_Renderer* ren, void(*scoreCallback)(int), std::vector<std::unique_ptr<Character>> &players);
 	~TileMap();
 
 	std::vector<std::unique_ptr<LevelPiece>> level;
 	std::vector<std::unique_ptr<AnimatedSprite>> level_animated;
 	int levelIntMap[LEVEL_HEIGHT][LEVEL_WIDTH];
 
+	std::vector<Vector> enemyList;
+	std::vector<Vector> enemyList2;
+
 private:
-	void readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreCallback)(int), std::vector<std::unique_ptr<Character>> &enemies, std::vector<std::unique_ptr<Character>> &players);
+	void readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreCallback)(int), std::vector<std::unique_ptr<Character>> &players);
 };
 

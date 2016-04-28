@@ -70,6 +70,12 @@ std::map<std::string, std::unique_ptr<Text>> texts;
 int score = 0;
 std::unique_ptr<Text> scoreTxt;
 // END TEMP
+
+void addEnemy(Vector position, Vector tilePosition)
+{
+	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), position, Size(40, 60), tilePosition)));
+}
+
 void StartLevel()
 {
 	renderLoadingScreen();
@@ -80,7 +86,13 @@ void StartLevel()
 
 	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
 
-	levelMap = std::unique_ptr<TileMap>(new TileMap("./assets/level1.txt", ren, addScore, players, players));
+	levelMap = std::unique_ptr<TileMap>(new TileMap("./assets/level1.txt", ren, addScore, players));
+
+	// run through enemy lists
+	for (int i = 0; i < levelMap->enemyList.size(); i++)
+	{
+		addEnemy(levelMap->enemyList[i], levelMap->enemyList2[i]);
+	}
 
 	musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 }
@@ -420,8 +432,6 @@ int main( int argc, char* args[] )
 
 		musicChannel = Audio::Fade_In_SFX_And_Loop("Music", 5.0f, -1);
 	}
-
-	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), Vector(50, 550), Size(40, 60))));
 
 	prevTime = Clock::now();
 

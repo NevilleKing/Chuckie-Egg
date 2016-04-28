@@ -14,7 +14,7 @@ class AI :
 	public Character
 {
 public:
-	AI(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, TileMap* tm, Vector velocity1 = Vector(), Vector location = Vector(100, 100), Size size1 = Size(100, 100));
+	AI(SDL_Renderer* ren, std::string imagePath, std::string JSONPath, TileMap* tm, Vector velocity1 = Vector(), Vector location = Vector(100, 100), Size size1 = Size(100, 100), Vector tilePosition = Vector(0,0));
 	~AI();
 
 	void UpdateEnemyCollisions(std::vector<std::unique_ptr<Character>>& players, void(*enemyCollisionCallback)(void));
