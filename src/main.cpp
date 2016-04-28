@@ -55,9 +55,12 @@ int minMaxVolume[2] = { 0, 128 };
 int currentVolume = 128;
 
 bool _isPaused = false;
+bool _pauseDisabled = false;
 bool _windowed = true;
 
 int musicChannel = 0;
+
+int lives = 5;
 
 void renderLoadingScreen();
 void addScore(LevelPiece::TileType);
@@ -75,11 +78,27 @@ TimePoint prevTime;
 std::map<std::string, std::unique_ptr<Text>> texts;
 int score = 0;
 std::unique_ptr<Text> scoreTxt;
+std::unique_ptr<Text> livesText;
 // END TEMP
 
 void addEnemy(Vector position, Vector tilePosition)
 {
 	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), position, Size(40, 60), tilePosition)));
+}
+
+void HandleGameOverMenu(const Text* txt)
+{
+
+}
+
+void GameOverMenu()
+{
+	_pauseDisabled = true;
+	_isPaused = true;
+
+	menu = new Menu();
+	menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", "GAME OVER!", { 255,0,0 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2 - 200), 150), HandleGameOverMenu); // create pause text in middle of screen
+	Audio::Pause_SFX(musicChannel);
 }
 
 void NextLevel()
@@ -97,6 +116,10 @@ void StartLevel()
 	texts["SCORE"] = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
 
 	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
+
+	texts["LIVES"] = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "LIVES", { 255,0,255 }, Size(100, 50), Vector(1100, 30), 25)));
+	
+	livesText = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "5", { 255,0,255 }, Size(25, 50), Vector(1200, 30), 25)));
 
 	levelMap = std::unique_ptr<TileMap>(new TileMap(levelStrings[currentLevel], ren, addScore, players));
 
@@ -138,6 +161,14 @@ void restartLevel()
 void enemyCollisionCallback()
 {
 	std::cout << "enemy collision" << std::endl;
+
+	lives--;
+	livesText->ChangeText(std::to_string(lives), ren);
+	if (lives == 0)
+	{
+		lives = 5;
+		GameOverMenu();
+	}
 
 	for (int i = 0; i < players.size(); i++)
 		players[i]->ResetPosition();
@@ -252,7 +283,7 @@ void handleInput()
 					if (!_isPaused) players[1]->MoveDown();
 					break;
 				case SDLK_p:
-					_isPaused = !_isPaused; // toggle pause
+					if (!_pauseDisabled) _isPaused = !_isPaused; // toggle pause
 					break;
 				case SDLK_F11:
 					if (_windowed)
@@ -397,6 +428,7 @@ void render()
 		enemy->render(ren);
 
 	scoreTxt->render(ren);
+	livesText->render(ren);
 	
 	if (menu != nullptr)
 		menu->renderMenu(ren);
