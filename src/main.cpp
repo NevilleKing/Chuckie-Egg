@@ -430,6 +430,9 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 
 	for (auto const& spr : levelMap->level_animated)
 		spr->Update(currTime);
+
+	if (players[0]->getPosition().y > windowSize.height || players[1]->getPosition().y > windowSize.height)
+		enemyCollisionCallback();
 }
 
 void render()
