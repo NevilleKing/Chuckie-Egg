@@ -202,7 +202,7 @@ void handleInput()
 				{
 					//hit escape to exit
 				case SDLK_ESCAPE: done = true; break;
-				case SDLK_SPACE: 
+				case SDLK_RCTRL: 
 					if (!_isPaused) players[0]->Jump();
 					break;
 				case SDLK_LEFT:
@@ -216,6 +216,21 @@ void handleInput()
 					break;
 				case SDLK_DOWN:
 					if (!_isPaused) players[0]->MoveDown();
+					break;
+				case SDLK_SPACE:
+					if (!_isPaused) players[1]->Jump();
+					break;
+				case SDLK_a:
+					if (!_isPaused) players[1]->MoveLeft();
+					break;
+				case SDLK_d:
+					if (!_isPaused) players[1]->MoveRight();
+					break;
+				case SDLK_w:
+					if (!_isPaused) players[1]->MoveUp();
+					break;
+				case SDLK_s:
+					if (!_isPaused) players[1]->MoveDown();
 					break;
 				case SDLK_p:
 					_isPaused = !_isPaused; // toggle pause
@@ -259,6 +274,18 @@ void handleInput()
 					break;
 				case SDLK_DOWN:
 					if (!_isPaused) players[0]->StopMovingDown();
+					break;
+				case SDLK_a:
+					if (!_isPaused) players[1]->StopMovingLeft();
+					break;
+				case SDLK_d:
+					if (!_isPaused) players[1]->StopMovingRight();
+					break;
+				case SDLK_w:
+					if (!_isPaused) players[1]->StopMovingUp();
+					break;
+				case SDLK_s:
+					if (!_isPaused) players[1]->StopMovingDown();
 					break;
 				}
 			break;
