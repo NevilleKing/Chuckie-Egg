@@ -74,7 +74,7 @@ std::vector<std::string> levelStrings = { "./assets/level1.txt", "./assets/level
 Menu* menu;
 
 int currentEggs = 0;
-int currentLevel = 1;
+int currentLevel = 0;
 
 // TEMP
 TimePoint prevTime;
@@ -87,6 +87,50 @@ std::unique_ptr<Text> livesText;
 void addEnemy(Vector position, Vector tilePosition)
 {
 	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), position, Size(40, 60), tilePosition)));
+}
+
+void loadKeyMaps()
+{
+	std::ifstream file;
+	std::string line;
+	file.open("./assets/keys1.txt");
+	if (!file.is_open())
+		return;
+	int i = 0;
+	int keys[5];
+	while (std::getline(file, line))
+	{
+		keys[i] = std::stoi(line);
+		i++;
+	}
+
+	players[0]->UP_KEY = keys[0];
+	players[0]->DOWN_KEY = keys[1];
+	players[0]->LEFT_KEY = keys[2];
+	players[0]->RIGHT_KEY = keys[3];
+	players[0]->JUMP_KEY = keys[4];
+
+	file.close();
+
+	file.open("./assets/keys2.txt");
+	if (!file.is_open())
+		return;
+	
+	i = 0;
+	while (std::getline(file, line))
+	{
+		keys[i] = std::stoi(line);
+		i++;
+	}
+
+	file.close();
+
+	players[1]->UP_KEY = keys[0];
+	players[1]->DOWN_KEY = keys[1];
+	players[1]->LEFT_KEY = keys[2];
+	players[1]->RIGHT_KEY = keys[3];
+	players[1]->JUMP_KEY = keys[4];
+
 }
 
 void HandleGameOverMenu(const Text* txt)
@@ -172,6 +216,8 @@ void StartLevel()
 	livesText = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "5", { 255,0,255 }, Size(25, 50), Vector(1200, 30), 25)));
 
 	levelMap = std::unique_ptr<TileMap>(new TileMap(levelStrings[currentLevel], ren, addScore, players));
+
+	loadKeyMaps();
 
 	// run through enemy lists
 	for (int i = 0; i < levelMap->enemyList.size(); i++)
@@ -267,6 +313,87 @@ void MenuCallback(const Text* myText)
 	}
 }
 
+void KeyDown(const int keycode)
+{
+	std::cout << players[0]->LEFT_KEY << std::endl;
+	if (keycode == players[0]->JUMP_KEY)
+	{
+		if (!_isPaused) players[0]->Jump();
+	}
+	else if (keycode == players[0]->LEFT_KEY)
+	{
+		if (!_isPaused) players[0]->MoveLeft();
+	}
+	else if (keycode == players[0]->RIGHT_KEY)
+	{
+		if (!_isPaused) players[0]->MoveRight();
+	}
+	else if (keycode == players[0]->UP_KEY)
+	{
+		if (!_isPaused) players[0]->MoveUp();
+	}
+	else if (keycode == players[0]->DOWN_KEY)
+	{
+		if (!_isPaused) players[0]->MoveDown();
+	}
+	else if (keycode == players[1]->JUMP_KEY)
+	{
+		if (!_isPaused) players[1]->Jump();
+	}
+	else if (keycode == players[1]->LEFT_KEY)
+	{
+		if (!_isPaused) players[1]->MoveLeft();
+	}
+	else if (keycode == players[1]->RIGHT_KEY)
+	{
+		if (!_isPaused) players[1]->MoveRight();
+	}
+	else if (keycode == players[1]->UP_KEY)
+	{
+		if (!_isPaused) players[1]->MoveUp();
+	}
+	else if (keycode == players[1]->DOWN_KEY)
+	{
+		if (!_isPaused) players[1]->MoveDown();
+	}
+}
+
+void KeyUp(const int keycode)
+{
+	if (keycode == players[0]->LEFT_KEY)
+	{
+		if (!_isPaused) players[0]->StopMovingLeft();
+	}
+	else if (keycode == players[0]->RIGHT_KEY)
+	{
+		if (!_isPaused) players[0]->StopMovingRight();
+	}
+	else if (keycode == players[0]->UP_KEY)
+	{
+		if (!_isPaused) players[0]->StopMovingUp();
+	}
+	else if (keycode == players[0]->DOWN_KEY)
+	{
+		if (!_isPaused) players[0]->StopMovingDown();
+	}
+	else if (keycode == players[1]->LEFT_KEY)
+	{
+		if (!_isPaused) players[1]->StopMovingLeft();
+	}
+	else if (keycode == players[1]->RIGHT_KEY)
+	{
+		if (!_isPaused) players[1]->StopMovingRight();
+	}
+	else if (keycode == players[1]->UP_KEY)
+	{
+		if (!_isPaused) players[1]->StopMovingUp();
+	}
+	else if (keycode == players[1]->DOWN_KEY)
+	{
+		if (!_isPaused) players[1]->StopMovingDown();
+	}
+}
+
 void handleInput()
 {
 	//Event-based input handling
@@ -298,40 +425,12 @@ void handleInput()
 			//  - in our case, we're going to ignore repeat events
 			//  - https://wiki.libsdl.org/SDL_KeyboardEvent
 			if (!event.key.repeat)
+			{
+				KeyDown(event.key.keysym.sym);
 				switch (event.key.keysym.sym)
 				{
 					//hit escape to exit
 				case SDLK_ESCAPE: done = true; break;
-				case SDLK_RCTRL: 
-					if (!_isPaused) players[0]->Jump();
-					break;
-				case SDLK_LEFT:
-					if (!_isPaused) players[0]->MoveLeft();
-					break;
-				case SDLK_RIGHT:
-					if (!_isPaused) players[0]->MoveRight();
-					break;
-				case SDLK_UP:
-					if (!_isPaused) players[0]->MoveUp();
-					break;
-				case SDLK_DOWN:
-					if (!_isPaused) players[0]->MoveDown();
-					break;
-				case SDLK_SPACE:
-					if (!_isPaused) players[1]->Jump();
-					break;
-				case SDLK_a:
-					if (!_isPaused) players[1]->MoveLeft();
-					break;
-				case SDLK_d:
-					if (!_isPaused) players[1]->MoveRight();
-					break;
-				case SDLK_w:
-					if (!_isPaused) players[1]->MoveUp();
-					break;
-				case SDLK_s:
-					if (!_isPaused) players[1]->MoveDown();
-					break;
 				case SDLK_p:
 					if (!_pauseDisabled) _isPaused = !_isPaused; // toggle pause
 					break;
@@ -348,6 +447,7 @@ void handleInput()
 					}
 					break;
 				}
+			}
 
 			switch (event.key.keysym.sym)
 			{
@@ -360,34 +460,7 @@ void handleInput()
 			}
 			break;
 		case SDL_KEYUP:
-			if (!event.key.repeat)
-				switch (event.key.keysym.sym)
-				{
-				case SDLK_LEFT:
-					if (!_isPaused) players[0]->StopMovingLeft();
-					break;
-				case SDLK_RIGHT:
-					if (!_isPaused) players[0]->StopMovingRight();
-					break;
-				case SDLK_UP:
-					if (!_isPaused) players[0]->StopMovingUp();
-					break;
-				case SDLK_DOWN:
-					if (!_isPaused) players[0]->StopMovingDown();
-					break;
-				case SDLK_a:
-					if (!_isPaused) players[1]->StopMovingLeft();
-					break;
-				case SDLK_d:
-					if (!_isPaused) players[1]->StopMovingRight();
-					break;
-				case SDLK_w:
-					if (!_isPaused) players[1]->StopMovingUp();
-					break;
-				case SDLK_s:
-					if (!_isPaused) players[1]->StopMovingDown();
-					break;
-				}
+			KeyUp(event.key.keysym.sym);
 			break;
 		case SDL_WINDOWEVENT:
 			prevTime = Clock::now(); // make sure that animation doesn't keep going when has been moved

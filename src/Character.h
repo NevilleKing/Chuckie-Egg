@@ -40,6 +40,12 @@ public:
 
 	enum MoveState {LEFT = -1, IDLE = 0, RIGHT = 1, UP = -1, DOWN = 1};
 
+	int UP_KEY;
+	int DOWN_KEY;
+	int LEFT_KEY;
+	int RIGHT_KEY;
+	int JUMP_KEY;
+
 protected:
 	MoveState _state = IDLE;
 
