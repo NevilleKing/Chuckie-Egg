@@ -148,6 +148,8 @@ void Character::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level
 				break;
 			case LevelPiece::TileType::LADDER:
 				_isOnLadder = true;
+				if (_ladderState != IDLE)
+					this->position.x = level[i]->getPosition().x;
 				break;
 			case LevelPiece::TileType::EGG:
 				if (!_isAI)
