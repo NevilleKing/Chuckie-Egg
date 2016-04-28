@@ -61,10 +61,14 @@ int musicChannel = 0;
 
 void renderLoadingScreen();
 void addScore(LevelPiece::TileType);
+void restartLevel();
+
+std::vector<std::string> levelStrings = { "./assets/level1.txt", "./assets/level2.txt" };
 
 Menu* menu;
 
 int currentEggs = 0;
+int currentLevel = 0;
 
 // TEMP
 TimePoint prevTime;
@@ -78,17 +82,23 @@ void addEnemy(Vector position, Vector tilePosition)
 	enemies.push_back(std::unique_ptr<AI>(new AI(ren, "./assets/enemy.png", "./assets/enemy.json", levelMap.get(), Vector(), position, Size(40, 60), tilePosition)));
 }
 
+void NextLevel()
+{
+	currentEggs = 0;
+	currentLevel++;
+
+	restartLevel();
+}
+
 void StartLevel()
 {
 	renderLoadingScreen();
-
-	//players.push_back(std::unique_ptr<Character>(new Character(ren, "./assets/player.png", "./assets/player.json", Vector(), Vector(550, 0), Size(50, 50))));
 
 	texts["SCORE"] = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "SCORE", { 255,0,255 }, Size(100, 50), Vector(70, 30), 25)));
 
 	scoreTxt = (std::unique_ptr<Text>(new Text(ren, "./assets/Hack-Regular.ttf", "000000", { 255,0,255 }, Size(100, 50), Vector(200, 30), 25)));
 
-	levelMap = std::unique_ptr<TileMap>(new TileMap("./assets/level1.txt", ren, addScore, players));
+	levelMap = std::unique_ptr<TileMap>(new TileMap(levelStrings[currentLevel], ren, addScore, players));
 
 	// run through enemy lists
 	for (int i = 0; i < levelMap->enemyList.size(); i++)
@@ -111,6 +121,9 @@ void restartLevel()
 	texts.clear();
 	scoreTxt.release();
 	levelMap.release();
+	players.clear();
+
+	enemies.clear();
 
 	// stop music on channel
 	Audio::Stop_SFX(musicChannel);
@@ -322,6 +335,7 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 	if (currentEggs >= levelMap->eggsRequired)
 	{
 		std::cout << "Level Complete" << std::endl;
+		NextLevel();
 	}
 
 	if (_isPaused)
