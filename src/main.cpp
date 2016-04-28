@@ -10,6 +10,7 @@
 #include <time.h>
 #include <chrono>
 #include <math.h>
+#include <fstream>
 
 #ifdef _WIN32 // compiling on windows
 #include <SDL.h>
@@ -51,6 +52,8 @@ std::vector<std::unique_ptr<Character>> players;
 Size windowSize = Size(1300, 594);
 Vector windowPosition = Vector(50, 50);
 
+int highScore = 0;
+
 int minMaxVolume[2] = { 0, 128 };
 int currentVolume = 128;
 
@@ -66,12 +69,12 @@ void renderLoadingScreen();
 void addScore(LevelPiece::TileType);
 void restartLevel();
 
-std::vector<std::string> levelStrings = { "./assets/level1.txt", "./assets/level2.txt", "./assets/level3.txt"};
+std::vector<std::string> levelStrings = { "./assets/level1.txt", "./assets/level2.txt", "./assets/level3.txt" };
 
 Menu* menu;
 
 int currentEggs = 0;
-int currentLevel = 2;
+int currentLevel = 1;
 
 // TEMP
 TimePoint prevTime;
@@ -88,17 +91,61 @@ void addEnemy(Vector position, Vector tilePosition)
 
 void HandleGameOverMenu(const Text* txt)
 {
+	std::string textString = txt->GetText();
+	std::cout << "Menu item clicked: " << textString << std::endl;
 
+	if (textString == "EXIT")
+		done = true;
+	else if (textString == "RESTART")
+		restartLevel();
 }
 
-void GameOverMenu()
+void readHighscore()
+{
+	std::ifstream file;
+	std::string line;
+	file.open("./assets/highscore.txt");
+	if (!file.is_open())
+		return;
+	while (std::getline(file, line))
+	{
+		highScore = std::stoi(line);
+	}
+
+	file.close();
+}
+
+void afterMenu(std::string text)
 {
 	_pauseDisabled = true;
 	_isPaused = true;
 
+
 	menu = new Menu();
-	menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", "GAME OVER!", { 255,0,0 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2 - 200), 150), HandleGameOverMenu); // create pause text in middle of screen
+	menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", text, { 255,0,0 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2 - 200), 150), HandleGameOverMenu); // create pause text in middle of screen
+	if (score > highScore)
+	{
+		std::string highScoreText = "New Highscore: " + std::to_string(score);
+		menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", highScoreText, { 0, 0, 255 }, Size(400, 100), Vector(windowSize.width / 2, windowSize.height / 2 - 100), 150), HandleGameOverMenu); // create pause text in middle of screen
+		std::ofstream myfile;
+		myfile.open("./assets/highscore.txt");
+		myfile << score;
+		myfile.close();
+		highScore = score;
+	}
+	else
+	{
+		std::string highScoreText = "Highscore: " + std::to_string(highScore);
+		menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", highScoreText, { 255, 0, 0 }, Size(400, 100), Vector(windowSize.width / 2, windowSize.height / 2 - 100), 150), HandleGameOverMenu); // create pause text in middle of screen
+	}
+
+	menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", "RESTART", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2), 150), HandleGameOverMenu); // create pause text in middle of screen
+	menu->addText(new Text(ren, "./assets/Hack-Regular.ttf", "EXIT", { 255,255,255 }, Size(250, 100), Vector(windowSize.width / 2, windowSize.height / 2 + 100), 150), HandleGameOverMenu); // create pause text in middle of screen
 	Audio::Pause_SFX(musicChannel);
+
+	score = 0;
+	lives = 5;
+	currentLevel = 0;
 }
 
 void NextLevel()
@@ -106,7 +153,10 @@ void NextLevel()
 	currentEggs = 0;
 	currentLevel++;
 
-	restartLevel();
+	if (currentLevel == levelStrings.size())
+		afterMenu("YOU WIN!");
+	else
+		restartLevel();
 }
 
 void StartLevel()
@@ -167,7 +217,7 @@ void enemyCollisionCallback()
 	if (lives == 0)
 	{
 		lives = 5;
-		GameOverMenu();
+		afterMenu("GAME OVER!");
 	}
 
 	for (int i = 0; i < players.size(); i++)
@@ -499,6 +549,8 @@ int main( int argc, char* args[] )
 		std::cout << "TTF_Init Failed: " << TTF_GetError() << std::endl;
 		cleanExit(1);
 	}
+
+	readHighscore();
 
 	StartLevel();
 
