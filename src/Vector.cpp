@@ -44,6 +44,14 @@ Vector Vector::operator-(const Vector& other) const
 	return v;
 }
 
+bool Vector::operator!=(const Vector& other) const
+{
+	if (x == other.x && y == other.y)
+		return false;
+	else
+		return true;
+}
+
 Vector Vector::operator/(const Vector& other) const
 {
 	Vector v = Vector(x, y);

@@ -136,7 +136,6 @@ void loadKeyMaps()
 void HandleGameOverMenu(const Text* txt)
 {
 	std::string textString = txt->GetText();
-	std::cout << "Menu item clicked: " << textString << std::endl;
 
 	if (textString == "EXIT")
 		done = true;
@@ -256,8 +255,6 @@ void restartLevel()
 
 void enemyCollisionCallback()
 {
-	std::cout << "enemy collision" << std::endl;
-
 	lives--;
 	livesText->ChangeText(std::to_string(lives), ren);
 	if (lives == 0)
@@ -301,7 +298,6 @@ void updateVolume(int valueToChange)
 void MenuCallback(const Text* myText)
 {
 	std::string textString = myText->GetText();
-	std::cout << "Menu item clicked: " << textString << std::endl;
 	
 	if (textString == "EXIT")
 		done = true;
@@ -315,7 +311,6 @@ void MenuCallback(const Text* myText)
 
 void KeyDown(const int keycode)
 {
-	std::cout << players[0]->LEFT_KEY << std::endl;
 	if (keycode == players[0]->JUMP_KEY)
 	{
 		if (!_isPaused) players[0]->Jump();
@@ -467,7 +462,6 @@ void handleInput()
 		case SDL_MOUSEBUTTONUP:
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
-				std::cout << event.button.x << " " << event.button.y << std::endl;
 				if (menu != nullptr)
 				{
 					menu->clickMenuItem(Vector(event.button.x, event.button.y));
@@ -479,6 +473,11 @@ void handleInput()
 }
 // end::handleInput[]
 
+Vector checkLadderMovement(Vector playerpos, bool right)
+{
+	return levelMap->checkPlayerLadderMovement(playerpos, right);
+}
+
 // tag::updateSimulation[]
 void updateSimulation(double simLength = 0.02) //update simulation with an amount of time to simulate for (in seconds)
 {
@@ -488,7 +487,6 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 
 	if (currentEggs >= levelMap->eggsRequired)
 	{
-		std::cout << "Level Complete" << std::endl;
 		NextLevel();
 	}
 
@@ -496,7 +494,7 @@ void updateSimulation(double simLength = 0.02) //update simulation with an amoun
 		currTime = 0;
 
 	for (int i = 0; i < players.size(); i++)
-		players[i]->Update(toSeconds(currTime), levelMap->level, windowSize);
+		players[i]->Update(toSeconds(currTime), levelMap->level, windowSize, checkLadderMovement);
 
 	for (auto const& enemy : enemies)
 		enemy->Update(toSeconds(currTime), levelMap->level, players, windowSize, enemyCollisionCallback);
@@ -656,6 +654,8 @@ int main( int argc, char* args[] )
 		render(); // this should render the world state according to VARIABLES
 
 		//SDL_Delay(20); // unless vsync is on??
+
+		std::cout << players[1]->_state << std::endl;
 	}
 
 	cleanExit(0);

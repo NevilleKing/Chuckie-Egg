@@ -13,6 +13,37 @@ TileMap::~TileMap()
 {
 }
 
+Vector TileMap::checkPlayerLadderMovement(Vector playerPosition, bool right)
+{
+	// get player in tile pixels
+	Vector pixelPosition = Vector((int)(playerPosition.x - (SPRITE_WIDTH / 2)) / SPRITE_WIDTH, (int)(playerPosition.y - (SPRITE_HEIGHT / 2)) / SPRITE_HEIGHT);
+
+	if (right)
+	{
+		if (pixelPosition.x == 19) return Vector(-1, -1);
+		if (levelIntMap[(int)pixelPosition.y + 2][(int)pixelPosition.x + 1] == 1)
+		{
+			return Vector(0, (pixelPosition.y * SPRITE_HEIGHT) + (SPRITE_HEIGHT/2) + 6);
+		}
+		else
+		{
+			return Vector(-1, -1);
+		}
+	}
+	else
+	{
+		if (pixelPosition.x == 0) return Vector(-1, -1);
+		if (levelIntMap[(int)pixelPosition.y + 2][(int)pixelPosition.x - 1] == 1)
+		{
+			return Vector(0, (pixelPosition.y * SPRITE_HEIGHT) + (SPRITE_HEIGHT / 2) + 6);
+		}
+		else
+		{
+			return Vector(-1, -1);
+		}
+	}
+}
+
 void TileMap::readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreCallback)(LevelPiece::TileType), std::vector<std::unique_ptr<Character>> &players)
 {
 	// For default each level piece is 65 wide and 22 high

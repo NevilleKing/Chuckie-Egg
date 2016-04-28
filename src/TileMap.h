@@ -30,6 +30,8 @@ public:
 
 	int eggsRequired = 0;
 
+	Vector checkPlayerLadderMovement(Vector playerPosition, bool right);
+
 private:
 	void readFromFile(std::string filePath, SDL_Renderer* ren, void(*scoreCallback)(LevelPiece::TileType), std::vector<std::unique_ptr<Character>> &players);
 };

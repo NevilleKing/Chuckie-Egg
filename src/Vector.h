@@ -20,6 +20,8 @@ public:
 
 	Vector operator/(float other) const;
 
+	bool Vector::operator!=(const Vector& other) const;
+
 	Vector pow1();
 };
 

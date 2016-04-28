@@ -46,7 +46,7 @@ void AI::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, std
 	}
 
 	UpdateEnemyCollisions(players, enemyCollisionCallback);
-	Character::Update(time, level, windowSize);
+	Character::Update(time, level, windowSize, nullptr);
 }
 
 void AI::ResetPosition()
@@ -133,7 +133,6 @@ void AI::ChooseNextDestination()
 					}
 					else
 					{
-						std::cout << "Can't move right : moving left" << std::endl;
 						_moveDirection = LEFT;
 						MoveLeft();
 					}

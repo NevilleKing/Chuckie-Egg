@@ -30,7 +30,7 @@ void Character::Jump()
 
 void Character::MoveLeft()
 {
-	if (!_isJumping && !_isFalling || _isAI) // when jumping no movement can occur
+	if (!_isJumping && !_isFalling || _isAI || _ladderAllowedLeft) // when jumping no movement can occur
 	{
 		changeState(LEFT);
 	}
@@ -43,7 +43,7 @@ void Character::MoveLeft()
 
 void Character::MoveRight()
 {
-	if (!_isJumping && !_isFalling || _isAI) // when jumping no movement can occur
+	if (!_isJumping && !_isFalling || _isAI || _ladderAllowedRight) // when jumping no movement can occur
 	{
 		changeState(RIGHT);
 	}
@@ -69,7 +69,7 @@ void Character::MoveDown()
 
 void Character::StopMovingLeft()
 {
-	if (!_isJumping && !_isFalling) // when jumping no movement can occur
+	if (!_isJumping && !_isFalling || _ladderAllowedLeft) // when jumping no movement can occur
 	{
 		if (_state == LEFT) changeState(IDLE);
 
@@ -83,7 +83,7 @@ void Character::StopMovingLeft()
 
 void Character::StopMovingRight()
 {
-	if (!_isJumping && !_isFalling) // when jumping no movement can occur
+	if (!_isJumping && !_isFalling || _ladderAllowedRight) // when jumping no movement can occur
 	{
 		if (_state == RIGHT) changeState(IDLE);
 	}
@@ -223,7 +223,7 @@ void Character::UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level
 	}
 }
 
-void Character::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize)
+void Character::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize, Vector(*checkLadder)(Vector,bool))
 {
 	UpdateCollisions(level, windowSize);
 
@@ -303,6 +303,38 @@ void Character::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &lev
 			Audio::Stop_SFX(_ladderClimbChannel);
 			_ladderClimbPlaying = false;
 		}
+	}
+
+	if (checkLadder != nullptr && _isOnLadder && !_isOnGround)
+	{
+		Vector pos = checkLadder(position, false);
+		if (pos != Vector(-1, -1))
+		{
+			_ladderAllowedLeft = true;
+			if (_state != IDLE)
+				position.y = checkLadder(position, false).y;
+		}
+		else
+		{
+			_ladderAllowedLeft = false;
+		}
+
+		pos = checkLadder(position, true);
+
+		if (pos != Vector(-1, -1))
+		{
+			_ladderAllowedRight = true;
+			if (_state != IDLE) position.y = checkLadder(position, true).y;
+		}
+		else
+		{
+			_ladderAllowedRight = false;
+		}
+	}
+	else
+	{
+		_ladderAllowedLeft = false;
+		_ladderAllowedRight = false;
 	}
 
 	if (_state != IDLE && !_horizontalButtonDown && !_isJumping)

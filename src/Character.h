@@ -33,7 +33,7 @@ public:
 
 	void ResetPosition();
 
-	void Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
+	void Update(float time, std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize, Vector(*checkLadder)(Vector,bool));
 
 
 	void setOnGround();
@@ -46,18 +46,18 @@ public:
 	int RIGHT_KEY;
 	int JUMP_KEY;
 
-protected:
 	MoveState _state = IDLE;
+protected:
 
 	float MOVE_SPEED = 200;
 
 	bool _isAI = false;
 
 private:
+	bool _isOnGround = false;
 	bool _isOnLadder = false;
 	bool _isJumping = false;
 	bool _isFalling = false;
-	bool _isOnGround = false;
 	MoveState _ladderState = IDLE;
 	MoveState _afterState = IDLE;
 	float _yVelocity = 0;
@@ -71,6 +71,9 @@ private:
 	int _walkingChannel = 0;
 	bool _ladderClimbPlaying = false;
 	int _ladderClimbChannel = 0;
+
+	bool _ladderAllowedRight = false;
+	bool _ladderAllowedLeft = false;
 
 	void UpdateCollisions(std::vector<std::unique_ptr<LevelPiece>> &level, Size windowSize);
 
