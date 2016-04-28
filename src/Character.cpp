@@ -38,6 +38,7 @@ void Character::MoveLeft()
 	{
 		_afterState = LEFT;
 	}
+	_horizontalButtonDown = true;
 }
 
 void Character::MoveRight()
@@ -50,6 +51,8 @@ void Character::MoveRight()
 	{
 		_afterState = RIGHT;
 	}
+	_horizontalButtonDown = true;
+
 }
 
 void Character::MoveUp()
@@ -75,6 +78,7 @@ void Character::StopMovingLeft()
 	{
 		if (_afterState == LEFT)  _afterState = IDLE;
 	}
+	_horizontalButtonDown = false;
 }
 
 void Character::StopMovingRight()
@@ -87,6 +91,7 @@ void Character::StopMovingRight()
 	{
 		if (_afterState == RIGHT)  _afterState = IDLE;
 	}
+	_horizontalButtonDown = false;
 }
 
 void Character::StopMovingUp()
@@ -298,6 +303,11 @@ void Character::Update(float time, std::vector<std::unique_ptr<LevelPiece>> &lev
 			Audio::Stop_SFX(_ladderClimbChannel);
 			_ladderClimbPlaying = false;
 		}
+	}
+
+	if (_state != IDLE && !_horizontalButtonDown && !_isJumping)
+	{
+		changeState(IDLE);
 	}
 
 	setVelocity(Vector(MOVE_SPEED * _xVelocity, _yVelocity));

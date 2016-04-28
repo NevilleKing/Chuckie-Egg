@@ -63,6 +63,8 @@ private:
 	float _yVelocity = 0;
 	float _xVelocity = 0;
 
+	bool _horizontalButtonDown = false;
+
 	Vector _originalLocation;
 
 	bool _walkingPlaying = false;
