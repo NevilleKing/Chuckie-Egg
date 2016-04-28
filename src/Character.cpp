@@ -54,12 +54,14 @@ void Character::MoveRight()
 
 void Character::MoveUp()
 {
-	changeLadderState(UP);
+	if (_isOnLadder)
+		changeLadderState(UP);
 }
 
 void Character::MoveDown()
 {
-	changeLadderState(DOWN);
+	if (_isOnLadder)
+		changeLadderState(DOWN);
 }
 
 void Character::StopMovingLeft()
