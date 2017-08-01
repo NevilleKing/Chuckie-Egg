@@ -1,7 +1,7 @@
 # Chuckie Egg
 ![chuckieegg](https://user-images.githubusercontent.com/9254173/28695775-290fccfc-7329-11e7-9c71-78f2b30b4acc.png)
 
-A clone of the game Chuckie Egg originally released in 1983. This version using SDL 2 (among other helper libraries) in C++, for the
+A clone of the game Chuckie Egg originally released in 1983. This version, using SDL 2 (among other helper libraries) in C++, was created for the
 Games Programming module at the University of Lincoln.
 
 ## Playing the Game
@@ -18,7 +18,7 @@ Default controls are:
 - SPACE - jump
 ###### Player 2
 - Arrow Keys - move
-- Left CTRL - jump
+- Right CTRL - jump
 
 ## Features
 Here is a list of extra features:
